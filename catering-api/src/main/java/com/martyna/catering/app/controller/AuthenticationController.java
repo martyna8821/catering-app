@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.SSLSession;
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
 import java.security.Principal;
 import java.util.Base64;
 import java.util.Optional;
