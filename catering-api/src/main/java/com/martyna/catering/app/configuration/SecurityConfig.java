@@ -2,6 +2,7 @@ package com.martyna.catering.app.configuration;
 
 import com.martyna.catering.app.security.jwt.JwtAuthEntryPoint;
 import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
+import com.martyna.catering.app.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
     JwtAuthEntryPoint unauthorizedHandler;
 
     @Bean
@@ -30,13 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
             throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password("password")
-                .roles("USER");
+        authenticationManagerBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -55,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/auth/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

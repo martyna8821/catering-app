@@ -1,6 +1,7 @@
 package com.martyna.catering.app.security.jwt;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.TextCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +30,8 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject((userPrinciple.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime()))
-                .signWith(SignatureAlgorithm.ES512, jwtSecret)
+                .setExpiration(new Date((new Date()).getTime() + jwtExpiration*1000))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 

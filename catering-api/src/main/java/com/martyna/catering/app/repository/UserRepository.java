@@ -2,6 +2,7 @@ package com.martyna.catering.app.repository;
 
 import com.martyna.catering.app.model.Role;
 import com.martyna.catering.app.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class UserRepository {
         user.setName(username);
         user.setEmail("ds");
         user.setId(1);
-        user.setPassword("123");
+        user.setPassword(new BCryptPasswordEncoder().encode("123"));
         return user;
     }
 
@@ -26,13 +27,13 @@ public class UserRepository {
         user.setName("usesr1");
         user.setEmail("ds");
         user.setId(1);
-        user.setPassword("123");
+        user.setPassword(new BCryptPasswordEncoder().encode("123"));
 
         User user1 = new User();
         user1.setName("user2");
         user1.setEmail("ds");
         user1.setId(1);
-        user1.setPassword("123");
+        user.setPassword(new BCryptPasswordEncoder().encode("123"));
 
         return List.of(user,user1);
 

@@ -26,7 +26,7 @@ import java.security.Principal;
 import java.util.Base64;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 4800, allowCredentials = "false")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
