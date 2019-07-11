@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -38,7 +39,7 @@ public class AuthenticationController {
         String jwtToken = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
         return ResponseEntity.ok(new LoginResponse( jwtToken, userDetails.getUsername(),
-                    Integer.toString(userDetails.getId()), userDetails.getAuthorities()));
+                userDetails.getId().toString(), userDetails.getAuthorities()));
     }
 
 
