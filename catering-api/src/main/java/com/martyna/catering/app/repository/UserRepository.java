@@ -15,6 +15,7 @@ public class UserRepository {
 
     public User findByUsername(String username){
         User user = new User();
+        user.setUsername(username);
         user.setName(username);
         user.setEmail("ds");
         user.setId(1);
@@ -24,7 +25,8 @@ public class UserRepository {
 
     public List<User> findAll(){
         User user = new User();
-        user.setName("usesr1");
+        user.setUsername("user");
+        user.setName("name of user");
         user.setEmail("ds");
         user.setId(1);
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
