@@ -1,7 +1,6 @@
-package com.martyna.catering.app.security.message;
+package com.martyna.catering.app.security.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 

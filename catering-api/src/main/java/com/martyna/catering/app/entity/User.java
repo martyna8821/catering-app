@@ -1,6 +1,7 @@
 package com.martyna.catering.app.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
@@ -16,9 +17,19 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"username", "email"})})
 public class User implements Serializable {
+
+    public User(@NotBlank String username, @NotBlank String password,
+                @Email @NotBlank String email, @NotBlank String firstName, @NotBlank String lastName) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     @Id
     private UUID id;
@@ -38,7 +49,6 @@ public class User implements Serializable {
     private String email;
 
     @Column
-    @NotEmpty
     private boolean enabled;
 
     @NotBlank

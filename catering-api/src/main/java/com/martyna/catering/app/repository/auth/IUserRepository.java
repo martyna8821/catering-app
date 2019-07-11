@@ -10,12 +10,14 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByUsername(String username);
     List<User> findAll();
+    Boolean existsUserByUsernameOrEmail(String username, String email);
 
     @Modifying
     @Transactional
