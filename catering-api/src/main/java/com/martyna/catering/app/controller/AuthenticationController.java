@@ -1,9 +1,7 @@
 package com.martyna.catering.app.controller;
 
-import com.martyna.catering.app.dto.LoginResponse;
-import com.martyna.catering.app.dto.LoginRequest;
-import com.martyna.catering.app.repository.RoleRepository;
-import com.martyna.catering.app.repository.UserRepository;
+import com.martyna.catering.app.security.message.LoginResponse;
+import com.martyna.catering.app.security.message.LoginRequest;
 import com.martyna.catering.app.security.jwt.JwtProvider;
 import com.martyna.catering.app.security.service.UserPrinciple;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,34 +19,26 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private JwtProvider jwtProvider;
 
     @Autowired
-    UserRepository userRepository;
-
-   @Autowired
-   RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtProvider jwtProvider;
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
+        this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateJwtToken(authentication);
+        String jwtToken = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
-
-        LoginResponse toRet = new LoginResponse( jwt, userDetails.getUsername(),
-                Integer.toString(userDetails.getId()), userDetails.getAuthorities());
-        return ResponseEntity.ok(toRet);
+        return ResponseEntity.ok(new LoginResponse( jwtToken, userDetails.getUsername(),
+                    Integer.toString(userDetails.getId()), userDetails.getAuthorities()));
     }
 
 

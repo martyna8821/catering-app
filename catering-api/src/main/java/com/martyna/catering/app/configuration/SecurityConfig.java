@@ -1,5 +1,6 @@
 package com.martyna.catering.app.configuration;
 
+import com.martyna.catering.app.repository.UserRepository;
 import com.martyna.catering.app.security.jwt.JwtAuthEntryPoint;
 import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
 import com.martyna.catering.app.security.service.UserDetailsServiceImpl;

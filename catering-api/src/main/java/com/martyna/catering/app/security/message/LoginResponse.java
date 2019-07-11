@@ -1,4 +1,4 @@
-package com.martyna.catering.app.dto;
+package com.martyna.catering.app.security.message;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

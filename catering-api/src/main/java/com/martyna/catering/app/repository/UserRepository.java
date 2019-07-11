@@ -19,17 +19,17 @@ public class UserRepository {
         user.setName(username);
         user.setEmail("ds");
         user.setId(1);
-        user.setPassword(new BCryptPasswordEncoder().encode("123"));
+        user.setPassword(new BCryptPasswordEncoder().encode("admin"));
         return user;
     }
 
     public List<User> findAll(){
         User user = new User();
-        user.setUsername("user");
+        user.setUsername("admin");
         user.setName("name of user");
         user.setEmail("ds");
         user.setId(1);
-        user.setPassword(new BCryptPasswordEncoder().encode("123"));
+        user.setPassword(new BCryptPasswordEncoder().encode("admin"));
 
         User user1 = new User();
         user1.setName("user2");

@@ -1,15 +1,12 @@
 package com.martyna.catering.app.security.jwt;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.TextCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
-
 import com.martyna.catering.app.security.service.UserPrinciple;
 
 @Component
@@ -35,28 +32,29 @@ public class JwtProvider {
                 .compact();
     }
 
-    public boolean validateJwtToken(String authToken){
+     boolean validateJwtToken(String authToken){
         try{
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
-            logger.error("invalid signature");
+            logger.error("Invalid signature: "+ ex.getMessage());
         } catch (MalformedJwtException ex) {
-            logger.error("invalid jwt token");
+            logger.error("Invalid jwt token: " + ex.getMessage());
         } catch (ExpiredJwtException ex) {
-            logger.error("expired token");
+            logger.error("Expired token");
         } catch  (UnsupportedJwtException ex) {
-            logger.error("unsupported jwt token");
+            logger.error("Unsupported jwt token: "+ ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            logger.error("emmpty string");
+            logger.error( ex.getMessage());
         }
         return false;
     }
 
-    public String getUserNameFromJwtToken(String token){
+    String getUserNameFromJwtToken(String token){
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
-                .getBody().getSubject();
+                .getBody()
+                .getSubject();
     }
 }
