@@ -56,7 +56,7 @@ public class AuthenticationController {
         if(userService.existsUserByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())){
             return ResponseEntity.unprocessableEntity().body("Username or email address alredy taken");
         }
-    //TODO add role to register request
+
         User savedUser = userService.save(registerRequest);
         return ResponseEntity.ok(savedUser);
     }
