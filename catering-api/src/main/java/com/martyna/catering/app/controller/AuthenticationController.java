@@ -54,6 +54,7 @@ public class AuthenticationController {
             return ResponseEntity.unprocessableEntity().body("Username or email address alredy taken");
         }
 
+        //TODO user should be logged?
         User savedUser = userService.save(registerRequest);
         return ResponseEntity.ok(savedUser);
     }

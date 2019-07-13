@@ -1,6 +1,8 @@
 package com.martyna.catering.app.service;
 
+import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.repository.auth.IRoleRepository;
 import com.martyna.catering.app.repository.auth.IUserRepository;
 import com.martyna.catering.app.security.dto.RegisterRequest;
 import net.bytebuddy.asm.Advice;
@@ -8,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -18,11 +18,14 @@ public class UserService implements IUserService{
 
     private IUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private IRoleRepository roleRepository;
 
     @Autowired
-    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
+                       IRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -67,6 +70,17 @@ public class UserService implements IUserService{
                 registerRequest.getFirstName(), registerRequest.getLastName());
         userToSave.setId(UUID.randomUUID());
         userToSave.setEnabled(false);
-        return userRepository.saveAndFlush(userToSave);
+
+        Set<Role> roles = new HashSet<>();
+        registerRequest.getRoles().forEach(role ->
+            roles.add( roleRepository
+                        .findByRole(role)
+                        .orElseThrow(( () ->
+                                new RuntimeException("Invalid user role: "+  role))))
+        );
+
+       userToSave.setRoles(roles);
+
+       return userRepository.saveAndFlush(userToSave);
     }
 }
