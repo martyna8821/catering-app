@@ -8,14 +8,11 @@ import com.martyna.catering.app.security.jwt.JwtProvider;
 import com.martyna.catering.app.security.service.UserPrinciple;
 import com.martyna.catering.app.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,7 +53,7 @@ public class AuthenticationController {
         if(userService.existsUserByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())){
             return ResponseEntity.unprocessableEntity().body("Username or email address alredy taken");
         }
-    //TODO add role to register request
+
         User savedUser = userService.save(registerRequest);
         return ResponseEntity.ok(savedUser);
     }
