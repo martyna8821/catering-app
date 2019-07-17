@@ -34,6 +34,11 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public Stream<User> findAll() {
         return userRepository.findAll().stream();
     }
@@ -41,6 +46,11 @@ public class UserService implements IUserService{
     @Override
     public Boolean existsUserByUsernameOrEmail(String username, String email) {
         return userRepository.existsUserByUsernameOrEmail(username, email);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsUserByEmail(email);
     }
 
     @Override
@@ -54,8 +64,15 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void resetPassword(String password, UUID id) {
-        userRepository.resetPassword(password, id);
+    public String resetPassword(String id) {
+        String generatedPassword = UUID.randomUUID().toString();
+        userRepository.resetPassword(passwordEncoder.encode(generatedPassword), UUID.fromString(id));
+        return generatedPassword;
+    }
+
+    @Override
+    public void changePassword(String newPassword, String id) {
+        userRepository.resetPassword(passwordEncoder.encode(newPassword), UUID.fromString(id));
     }
 
     @Override

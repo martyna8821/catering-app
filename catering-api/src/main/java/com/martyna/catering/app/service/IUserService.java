@@ -14,11 +14,14 @@ import java.util.stream.Stream;
 public interface IUserService {
 
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
     Stream<User> findAll();
     Boolean existsUserByUsernameOrEmail(String username, String email);
+    boolean existsUserByEmail(String email);
     void delete(UUID id);
     void updateUser(String firstName, String lastName, String userName, String email, UUID id);
-    void resetPassword(String password, UUID id);
+    String resetPassword( String id);
+    void changePassword(String newPassword, String id);
     void updateRole(UUID roleId, UUID userId);
     User save(RegisterRequest registerRequest);
 }
