@@ -1,11 +1,12 @@
 package com.martyna.catering.app.service;
 
+import com.martyna.catering.app.entity.PasswordResetToken;
 import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
 import com.martyna.catering.app.repository.auth.IUserRepository;
 import com.martyna.catering.app.security.dto.RegisterRequest;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,14 @@ public class UserService implements IUserService{
     private IUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private IRoleRepository roleRepository;
-
+    private IPasswordResetTokenRepository passwordTokenRepository;
     @Autowired
     public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
-                       IRoleRepository roleRepository) {
+                       IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.passwordTokenRepository = passwordTokenRepository;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class UserService implements IUserService{
 
     @Override
     public String resetPassword(String id) {
-        String generatedPassword = UUID.randomUUID().toString().split("-")[0];
+        String generatedPassword = UUID.randomUUID().toString().split("")[0];
         userRepository.resetPassword(passwordEncoder.encode(generatedPassword), UUID.fromString(id));
         return generatedPassword;
     }
@@ -99,5 +101,11 @@ public class UserService implements IUserService{
        userToSave.setRoles(roles);
 
        return userRepository.saveAndFlush(userToSave);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(user,token);
+        passwordTokenRepository.save(myToken);
     }
 }

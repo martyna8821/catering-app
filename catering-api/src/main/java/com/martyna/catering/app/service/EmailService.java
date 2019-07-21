@@ -1,11 +1,13 @@
 package com.martyna.catering.app.service;
 
+import com.martyna.catering.app.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Email;
+import java.util.Locale;
 
 @Component
 public class EmailService  implements IEmailService {
@@ -24,12 +26,17 @@ public class EmailService  implements IEmailService {
     }
 
     @Override
-    public void sendGeneratedPasswowrd(String userEmail, String password) {
+    public void sendPasswordResetToken(String contextPath, Locale locale, String token, User user) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(userEmail);
+        message.setTo(user.getEmail());
         message.setSubject("Retrieve your password");
-        message.setText(String.format("Możesz zalogować się do swojego konta za pomocą hasła:\n%s ." +
-                "\n Po zalogowaniu do systemu zmień swoje hasło. \n", password));
+        //TODO hash token
+        String url = "localhost:4200/change-password?id=" +
+                user.getId() + "&token=" + token;
+      //  String url = contextPath + "/user/changePassword?id=" +
+      //          user.getId() + "&token=" + token;
+        message.setText(String.format("Kliknij link:\n%s .\n Twoja lokalizacja: %s \n",
+                url, locale.getDisplayName()));
         emailSender.send(message);
     }
 

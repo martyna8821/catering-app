@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -66,19 +67,25 @@ public class AuthenticationController {
         return ResponseEntity.ok(savedUser);
     }
 
-    @PostMapping("/retrieve-password")
-    public ResponseEntity<?> retrievePassword(@Valid @RequestBody String email){
+    @PostMapping("/password-retrievement")
+    public ResponseEntity<?> retrievePassword(@Valid @RequestBody String email,
+                                              HttpServletRequest request){
 
-        String userId = userService.findByEmail(email)
-                                    .map(User::getId)
-                                    .map(UUID::toString)
+        User user = userService.findByEmail(email)
                                     .orElseThrow(UserNotFoundException::new);
 
-        String newPassword = userService.resetPassword(userId);
-        emailService.sendGeneratedPasswowrd(email, newPassword);
+        String token = UUID.randomUUID().toString();
+                userService.createPasswordResetTokenForUser(user, token);
+        emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),token, user);
 
         return new ResponseEntity<>("Sent email with new password", HttpStatus.NO_CONTENT);
 
+    }
+
+    @PostMapping("reset-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody String id, @RequestBody String
+                                            newPassword, @RequestBody String oldPassword){
+        return null;
     }
 
 }

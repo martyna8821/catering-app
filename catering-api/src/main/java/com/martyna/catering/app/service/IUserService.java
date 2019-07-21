@@ -24,4 +24,5 @@ public interface IUserService {
     void changePassword(String newPassword, String id);
     void updateRole(UUID roleId, UUID userId);
     User save(RegisterRequest registerRequest);
+    void createPasswordResetTokenForUser(User user, String token);
 }
