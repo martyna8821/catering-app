@@ -75,25 +75,10 @@ public class AuthenticationController {
                                     .orElseThrow(UserNotFoundException::new);
 
         String newPassword = userService.resetPassword(userId);
-        //send mail with new password
+        emailService.sendGeneratedPasswowrd(email, newPassword);
 
-        //return
-        return new ResponseEntity<>("Sent email with new password", HttpStatus.OK);
+        return new ResponseEntity<>("Sent email with new password", HttpStatus.NO_CONTENT);
 
     }
 
-    @RequestMapping("/mail")
-    public String sendMail(){
-        emailService.sendSimpleMessage("martyna.drabinska@gmail.com","mail", ":)");
-        return "";
-    }
-
-    @RequestMapping("/encrypt")
-    public String encrypt(){
-        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        String privateData = "Yourdiet123";
-        textEncryptor.setPasswordCharArray("mail-password".toCharArray());
-        String myEncryptedText = textEncryptor.encrypt(privateData);
-        return myEncryptedText;
-    }
 }

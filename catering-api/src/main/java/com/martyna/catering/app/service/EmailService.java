@@ -23,6 +23,16 @@ public class EmailService  implements IEmailService {
         emailSender.send(message);
     }
 
+    @Override
+    public void sendGeneratedPasswowrd(String userEmail, String password) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(userEmail);
+        message.setSubject("Retrieve your password");
+        message.setText(String.format("Możesz zalogować się do swojego konta za pomocą hasła:\n%s ." +
+                "\n Po zalogowaniu do systemu zmień swoje hasło. \n", password));
+        emailSender.send(message);
+    }
+
 
 }
 

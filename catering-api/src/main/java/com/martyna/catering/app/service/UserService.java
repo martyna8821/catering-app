@@ -65,7 +65,7 @@ public class UserService implements IUserService{
 
     @Override
     public String resetPassword(String id) {
-        String generatedPassword = UUID.randomUUID().toString();
+        String generatedPassword = UUID.randomUUID().toString().split("-")[0];
         userRepository.resetPassword(passwordEncoder.encode(generatedPassword), UUID.fromString(id));
         return generatedPassword;
     }

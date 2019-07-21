@@ -34,7 +34,7 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
 
     @Modifying
     @Transactional
-    @Query(value = "update users password = ?1 where id = ?2", nativeQuery = true)
+    @Query(value = "update users set password = ?1 where id = ?2", nativeQuery = true)
     void resetPassword(String password, UUID id);
 
     @Modifying
