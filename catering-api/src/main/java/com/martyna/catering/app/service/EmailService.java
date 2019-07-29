@@ -31,12 +31,8 @@ public class EmailService  implements IEmailService {
         message.setTo(user.getEmail());
         message.setSubject("Retrieve your password");
         //TODO hash token
-        String url = "localhost:4200/change-password?id=" +
-                user.getId() + "&token=" + token;
-      //  String url = contextPath + "/user/changePassword?id=" +
-      //          user.getId() + "&token=" + token;
-        message.setText(String.format("Kliknij link:\n%s .\n Twoja lokalizacja: %s \n",
-                url, locale.getDisplayName()));
+        String url = "localhost:4200/reset-password&token=" + token;
+        message.setText(String.format("Kliknij link:\n%s .\n", url));
         emailSender.send(message);
     }
 

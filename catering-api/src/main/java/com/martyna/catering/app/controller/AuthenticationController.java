@@ -1,13 +1,17 @@
 package com.martyna.catering.app.controller;
 
+import com.martyna.catering.app.entity.PasswordResetToken;
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.exception.ResourceNotFoundException;
 import com.martyna.catering.app.exception.UserNotFoundException;
+import com.martyna.catering.app.exception.UserUnauthorized;
 import com.martyna.catering.app.security.dto.LoginResponse;
 import com.martyna.catering.app.security.dto.LoginRequest;
 import com.martyna.catering.app.security.dto.RegisterRequest;
 import com.martyna.catering.app.security.jwt.JwtProvider;
 import com.martyna.catering.app.security.service.UserPrinciple;
 import com.martyna.catering.app.service.IEmailService;
+import com.martyna.catering.app.service.IPasswordResetTokenService;
 import com.martyna.catering.app.service.IUserService;
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -19,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,13 +38,17 @@ public class AuthenticationController {
     private JwtProvider jwtProvider;
     private IUserService userService;
     private IEmailService emailService;
+    private IPasswordResetTokenService passwordTokenService;
+
     @Autowired
     public AuthenticationController(AuthenticationManager authenticationManager, JwtProvider jwtProvider,
-                                    IUserService userService, IEmailService emailService) {
+                                    IUserService userService, IEmailService emailService,
+                                    IPasswordResetTokenService passwordTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.emailService = emailService;
+        this.passwordTokenService  = passwordTokenService;
     }
 
     @PostMapping("/login")
@@ -55,37 +64,34 @@ public class AuthenticationController {
                 userDetails.getId().toString(), userDetails.getAuthorities()));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest){
-
-        if(userService.existsUserByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())){
-            return ResponseEntity.unprocessableEntity().body("Username or email address alredy taken");
-        }
-
-        //TODO user should be logged?
-        User savedUser = userService.save(registerRequest);
-        return ResponseEntity.ok(savedUser);
-    }
-
-    @PostMapping("/password-retrievement")
-    public ResponseEntity<?> retrievePassword(@Valid @RequestBody String email,
+    @PostMapping("/password-token")
+    public ResponseEntity<?> createResetPasswordToken(@Valid @RequestBody String email,
                                               HttpServletRequest request){
 
         User user = userService.findByEmail(email)
                                     .orElseThrow(UserNotFoundException::new);
 
-        String token = UUID.randomUUID().toString();
-                userService.createPasswordResetTokenForUser(user, token);
-        emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),token, user);
 
-        return new ResponseEntity<>("Sent email with new password", HttpStatus.NO_CONTENT);
+        PasswordResetToken passwordToken = passwordTokenService.createTokenForUser(user);
+        emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),
+                passwordToken.getToken(), user);
 
+        return new ResponseEntity<>(passwordToken, HttpStatus.CREATED);
     }
 
-    @PostMapping("reset-password")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody String id, @RequestBody String
-                                            newPassword, @RequestBody String oldPassword){
-        return null;
+    @DeleteMapping("/password-token/{token}")
+    public ResponseEntity<?> deletePasswordToken(@PathVariable String token){
+
+        passwordTokenService.delete(token);
+        return new ResponseEntity<>("Reset password token successfully deleted", HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/password-token/{token}/user")
+    public ResponseEntity<?> getUserFromToken(@PathVariable String passwordToken){
+
+        User userFromToken = passwordTokenService.getUserFromToken(passwordToken)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        return new ResponseEntity<>(userFromToken, HttpStatus.OK);
+    }
 }

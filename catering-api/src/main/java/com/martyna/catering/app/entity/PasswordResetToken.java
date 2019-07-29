@@ -4,6 +4,7 @@ import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,14 +18,13 @@ import java.util.UUID;
 @Table(name = "password_reset_token")
 public class PasswordResetToken {
 
-    //TODO 48h
     private static final int EXPIRATION_TIME = 60 * 48;
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column
+    @Column(unique = true)
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)

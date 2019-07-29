@@ -15,14 +15,15 @@ public interface IUserService {
 
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+    Optional<User> findById(UUID id);
     Stream<User> findAll();
     Boolean existsUserByUsernameOrEmail(String username, String email);
     boolean existsUserByEmail(String email);
     void delete(UUID id);
     void updateUser(String firstName, String lastName, String userName, String email, UUID id);
-    String resetPassword( String id);
-    void changePassword(String newPassword, String id);
+  //  String resetPassword( String id);
+    void resetPassword(String newPassword, UUID userId);
     void updateRole(UUID roleId, UUID userId);
     User save(RegisterRequest registerRequest);
-    void createPasswordResetTokenForUser(User user, String token);
+    Optional<Boolean> validateOldPassword(String username, String oldPassword);
 }

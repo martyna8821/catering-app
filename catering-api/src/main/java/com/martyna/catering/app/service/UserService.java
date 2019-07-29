@@ -3,6 +3,7 @@ package com.martyna.catering.app.service;
 import com.martyna.catering.app.entity.PasswordResetToken;
 import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
 import com.martyna.catering.app.repository.auth.IUserRepository;
@@ -20,14 +21,13 @@ public class UserService implements IUserService{
     private IUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private IRoleRepository roleRepository;
-    private IPasswordResetTokenRepository passwordTokenRepository;
+
     @Autowired
     public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
                        IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-        this.passwordTokenRepository = passwordTokenRepository;
     }
 
     @Override
@@ -38,6 +38,11 @@ public class UserService implements IUserService{
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id){
+        return userRepository.findById(id);
     }
 
     @Override
@@ -65,16 +70,10 @@ public class UserService implements IUserService{
         userRepository.updateUser(firstName, lastName, userName, email, id );
     }
 
-    @Override
-    public String resetPassword(String id) {
-        String generatedPassword = UUID.randomUUID().toString().split("")[0];
-        userRepository.resetPassword(passwordEncoder.encode(generatedPassword), UUID.fromString(id));
-        return generatedPassword;
-    }
 
     @Override
-    public void changePassword(String newPassword, String id) {
-        userRepository.resetPassword(passwordEncoder.encode(newPassword), UUID.fromString(id));
+    public void resetPassword(String newPassword, UUID userId) {
+        userRepository.resetPassword(passwordEncoder.encode(newPassword), userId);
     }
 
     @Override
@@ -104,8 +103,12 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void createPasswordResetTokenForUser(User user, String token) {
-        PasswordResetToken myToken = new PasswordResetToken(user,token);
-        passwordTokenRepository.save(myToken);
+    public Optional<Boolean> validateOldPassword(String username, String oldPassword) {
+
+        String userPassword = findByUsername(username)
+                                .map(User::getPassword)
+                                .orElseThrow(UserNotFoundException::new);
+
+        return Optional.of (oldPassword.equals(passwordEncoder.encode(userPassword)));
     }
 }
