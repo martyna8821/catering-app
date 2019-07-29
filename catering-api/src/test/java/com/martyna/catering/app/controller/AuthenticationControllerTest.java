@@ -2,12 +2,14 @@ package com.martyna.catering.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.martyna.catering.app.security.dto.LoginRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,11 +40,11 @@ public class AuthenticationControllerTest {
 
     @Test
     public void shouldAuthenticate() throws Exception {
-
         LoginRequest loginRequest = new LoginRequest("admin", "admin");
         mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk());
     }
+
 }

@@ -1,16 +1,23 @@
 package com.martyna.catering.app.service;
 
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.Email;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.Locale;
 
 @Component
 public class EmailService  implements IEmailService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Autowired
     public JavaMailSender emailSender;
@@ -27,15 +34,24 @@ public class EmailService  implements IEmailService {
 
     @Override
     public void sendPasswordResetToken(String contextPath, Locale locale, String token, User user) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Retrieve your password");
         //TODO hash token
-        String url = "localhost:4200/reset-password&token=" + token;
-        message.setText(String.format("Kliknij link:\n%s .\n", url));
-        emailSender.send(message);
+        String url = "http://localhost:4200/reset-password&token=" + token;
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+            String htmlMessage = String.format("<h3>Kliknij link:<h3>\n" +
+                   " <form action=\"%s\">\n" +
+                    "    <input type=\"submit\" value=\"Link\" />\n" +
+                    "</form> \n", url);
+
+            mimeMessage.setContent(htmlMessage, "text/html");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Retrieve your password");
+        }
+        catch(MessagingException ex){
+            logger.error(ex.getMessage());
+        }
+        emailSender.send(mimeMessage);
     }
-
-
 }
 

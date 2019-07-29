@@ -1,7 +1,7 @@
 package com.martyna.catering.app.security.service;
 
 import com.martyna.catering.app.entity.User;
-import com.martyna.catering.app.repository.auth.IUserRepository;
+import com.martyna.catering.app.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -42,10 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (!user.getPassword().equals("")) {
             userRepository.resetPassword(encoder.encode(user.getPassword()), user.getId());
         }
-    }
-
-    public void deleteUser(UUID id) {
-        userRepository.delete(id);
     }
 
 }

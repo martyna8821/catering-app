@@ -1,12 +1,11 @@
 package com.martyna.catering.app.service;
 
-import com.martyna.catering.app.entity.PasswordResetToken;
 import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
-import com.martyna.catering.app.repository.auth.IUserRepository;
+import com.martyna.catering.app.repository.IUserRepository;
 import com.martyna.catering.app.security.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,7 +68,6 @@ public class UserService implements IUserService{
     public void updateUser(String firstName, String lastName, String userName, String email, UUID id) {
         userRepository.updateUser(firstName, lastName, userName, email, id );
     }
-
 
     @Override
     public void resetPassword(String newPassword, UUID userId) {

@@ -1,13 +1,11 @@
 package com.martyna.catering.app.entity;
 
-import lombok.Cleanup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,7 +14,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @Table(name = "password_reset_token")
-public class PasswordResetToken {
+public class PasswordResetToken implements Serializable {
 
     private static final int EXPIRATION_TIME = 60 * 48;
 
@@ -27,7 +25,7 @@ public class PasswordResetToken {
     @Column(unique = true)
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 

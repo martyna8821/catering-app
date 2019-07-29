@@ -46,6 +46,7 @@ public class User implements Serializable {
     @Email
     @Column
     @NotBlank
+    @NaturalId
     private String email;
 
     @Column

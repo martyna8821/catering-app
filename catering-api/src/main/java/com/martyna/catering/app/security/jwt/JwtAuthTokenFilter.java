@@ -31,23 +31,22 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        try{ //TODO check if can delete this try
+        try{ 
         String jwt = getJwt(httpServletRequest);
         if(tokenProvider.validateJwtToken(jwt)){
-            String userName = tokenProvider.getUserNameFromJwtToken(jwt);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                String userName = tokenProvider.getUserNameFromJwtToken(jwt);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+                );
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
-        } catch(Exception ex){
+        catch(Exception ex){
             logger.error("cannot authenticate");
         }
-
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private String getJwt(HttpServletRequest request){

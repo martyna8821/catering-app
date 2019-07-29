@@ -21,7 +21,6 @@ public interface IUserService {
     boolean existsUserByEmail(String email);
     void delete(UUID id);
     void updateUser(String firstName, String lastName, String userName, String email, UUID id);
-  //  String resetPassword( String id);
     void resetPassword(String newPassword, UUID userId);
     void updateRole(UUID roleId, UUID userId);
     User save(RegisterRequest registerRequest);
