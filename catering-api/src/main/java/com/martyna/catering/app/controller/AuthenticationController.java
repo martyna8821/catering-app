@@ -17,10 +17,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -66,24 +70,25 @@ public class AuthenticationController {
 
         PasswordResetToken passwordToken = passwordTokenService.createTokenForUser(user);
         emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),
-                passwordToken.getToken(), user);
+              passwordToken.getToken(), user);
 
         return new ResponseEntity<>(passwordToken, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/password-token/{token}")
     public ResponseEntity<?> deletePasswordToken(@PathVariable String token){
-
         passwordTokenService.delete(token);
         return new ResponseEntity<>("Reset password token successfully deleted", HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/password-token/{token}/user")
-    public ResponseEntity<?> getUserFromToken(@PathVariable String passwordToken){
+    @GetMapping("/password-token/{token}/user/id")
+    public ResponseEntity<?> getUserIdFromToken(@PathVariable String token){
 
-        User userFromToken = passwordTokenService.getUserFromToken(passwordToken)
+        UUID userId = passwordTokenService.getUserFromToken(token)
+                .map(User::getId)
+             //   .map(UUID::toString)
                 .orElseThrow(UserNotFoundException::new);
 
-        return new ResponseEntity<>(userFromToken, HttpStatus.OK);
+        return new ResponseEntity<>(userId, HttpStatus.OK);
     }
 }

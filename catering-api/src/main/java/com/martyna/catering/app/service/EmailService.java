@@ -35,7 +35,7 @@ public class EmailService  implements IEmailService {
     @Override
     public void sendPasswordResetToken(String contextPath, Locale locale, String token, User user) {
         //TODO hash token
-        String url = "http://localhost:4200/reset-password&token=" + token;
+        String url = "http://localhost:4200/reset-password/" + token;
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");

@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<?> resetPassword(@Valid @RequestBody String newPassword, @PathVariable UUID id){
 
         userService.resetPassword(newPassword, id);
-        return new ResponseEntity<>("Password reset successfully", HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
 
