@@ -1,8 +1,10 @@
 package com.martyna.catering.app.service;
 
+import com.martyna.catering.app.entity.Address;
 import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
+import com.martyna.catering.app.repository.IAddressRepository;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
 import com.martyna.catering.app.repository.IUserRepository;
@@ -20,13 +22,16 @@ public class UserService implements IUserService{
     private IUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private IRoleRepository roleRepository;
+    private IAddressRepository addressRepository;
 
     @Autowired
     public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
-                       IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository) {
+                       IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository,
+                       IAddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -95,9 +100,12 @@ public class UserService implements IUserService{
                                 new RuntimeException("Invalid user role: "+  role))))
         );
 
-       userToSave.setRoles(roles);
+        userToSave.setRoles(roles);
 
-       return userRepository.saveAndFlush(userToSave);
+        registerRequest.getAddress().setUser(userToSave);
+        addressRepository.save(registerRequest.getAddress());
+
+        return  userRepository.saveAndFlush(userToSave);
     }
 
     @Override

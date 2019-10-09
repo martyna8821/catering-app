@@ -43,15 +43,6 @@ public class User implements Serializable {
     @NotBlank
     private String password;
 
-    @Email
-    @Column
-    @NotBlank
-    @NaturalId
-    private String email;
-
-    @Column
-    private boolean enabled;
-
     @NotBlank
     @Column(name = "first_name")
     private String firstName;
@@ -59,6 +50,21 @@ public class User implements Serializable {
     @NotBlank
     @Column(name = "last_name")
     private  String lastName;
+
+    @Email
+    @Column
+    @NotBlank
+    @NaturalId
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Address address;
+
+    @Column
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
