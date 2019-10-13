@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Address {
 
     @Id
-    @Column(name="id")
+    @Column(name="user_id")
     private UUID id;
 
     @Column(name = "street")

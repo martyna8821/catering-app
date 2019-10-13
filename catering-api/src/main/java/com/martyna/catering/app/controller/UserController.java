@@ -68,5 +68,10 @@ public class UserController {
                .collect(Collectors.toList());
     }
 
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+        User userToReturn = userService.findByUsername(username).orElse(null);
+        return new ResponseEntity<>(userToReturn, HttpStatus.OK);
+    }
 
 }
