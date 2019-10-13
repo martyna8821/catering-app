@@ -1,18 +1,25 @@
 package com.martyna.catering.app.controller;
 
+import com.martyna.catering.app.dto.UserDTO;
 import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.security.dto.RegisterRequest;
 import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
 import com.martyna.catering.app.service.IUserService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -20,9 +27,11 @@ import java.util.UUID;
 public class UserController {
 
     private IUserService userService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public UserController(IUserService userService){
+    public UserController(IUserService userService, ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
         this.userService = userService;
     }
 
@@ -42,6 +51,21 @@ public class UserController {
 
         userService.resetPassword(newPassword, id);
         return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable UUID id){
+
+            return userService.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @GetMapping("")
+    public List<UserDTO> getUsers(){
+
+        List<User> allUsers = userService.findAll();
+       return allUsers.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+               .collect(Collectors.toList());
     }
 
 

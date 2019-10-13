@@ -50,8 +50,8 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public Stream<User> findAll() {
-        return userRepository.findAll().stream();
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface IUserService {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);
-    Stream<User> findAll();
+    List<User> findAll();
     Boolean existsUserByUsernameOrEmail(String username, String email);
     boolean existsUserByEmail(String email);
     void delete(UUID id);
