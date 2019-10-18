@@ -1,5 +1,6 @@
 package com.martyna.catering.app.service;
 
+import com.martyna.catering.app.dto.UserDTO;
 import com.martyna.catering.app.entity.Address;
 import com.martyna.catering.app.entity.Role;
 import com.martyna.catering.app.entity.User;
@@ -9,11 +10,13 @@ import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
 import com.martyna.catering.app.repository.IUserRepository;
 import com.martyna.catering.app.security.dto.RegisterRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -23,15 +26,17 @@ public class UserService implements IUserService{
     private PasswordEncoder passwordEncoder;
     private IRoleRepository roleRepository;
     private IAddressRepository addressRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
     public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
                        IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository,
-                       IAddressRepository addressRepository) {
+                       IAddressRepository addressRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.addressRepository = addressRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -100,11 +105,13 @@ public class UserService implements IUserService{
                                 new RuntimeException("Invalid user role: "+  role))))
         );
 
+
         userToSave.setRoles(roles);
-
-        registerRequest.getAddress().setUser(userToSave);
+       // modelMapper.map(registerRequest.getAddress(), Address.class).
+         //       .collect(Collectors.toList());
+        registerRequest.getAddress().setId(UUID.randomUUID());
         addressRepository.save(registerRequest.getAddress());
-
+        userToSave.setAddress(registerRequest.getAddress());
         return  userRepository.saveAndFlush(userToSave);
     }
 
