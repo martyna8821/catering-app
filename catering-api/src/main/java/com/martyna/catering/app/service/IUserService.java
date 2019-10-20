@@ -25,4 +25,5 @@ public interface IUserService {
     void updateRole(UUID roleId, UUID userId);
     User save(RegisterRequest registerRequest);
     Optional<Boolean> validateOldPassword(String username, String oldPassword);
+    void deleteByEmail(String email);
 }

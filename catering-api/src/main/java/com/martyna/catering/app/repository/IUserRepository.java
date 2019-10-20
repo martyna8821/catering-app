@@ -20,6 +20,8 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     List<User> findAll();
     Boolean existsUserByUsernameOrEmail(String username, String email);
     Boolean existsUserByEmail(String email);
+    @Transactional
+    void deleteByEmail(String email);
 
     @Modifying
     @Transactional

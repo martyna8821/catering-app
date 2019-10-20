@@ -124,4 +124,10 @@ public class UserService implements IUserService{
 
         return Optional.of (oldPassword.equals(passwordEncoder.encode(userPassword)));
     }
+
+    @Override
+    public void deleteByEmail(String email){
+        this.userRepository.deleteByEmail(email);
+    }
+
 }
