@@ -68,11 +68,14 @@ public class UserController {
                .collect(Collectors.toList());
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
-        User userToReturn = userService.findByUsername(username).orElse(null);
-        return new ResponseEntity<>(userToReturn, HttpStatus.OK);
-    }
+    //@TODO zrobic z query parameter pobieranie usera po username
+    //  albo sprawdzajacy czy istnieje dany user
+
+  //  @GetMapping("/{username}")
+   // public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+    //    User userToReturn = userService.findByUsername(username).orElse(null);
+     //   return new ResponseEntity<>(userToReturn, HttpStatus.OK);
+   // }
 
     @DeleteMapping("/{email}")
     public ResponseEntity<?> deleteUserByEmail(@PathVariable String email){
