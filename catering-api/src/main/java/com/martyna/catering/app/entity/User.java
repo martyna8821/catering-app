@@ -23,12 +23,14 @@ import java.util.UUID;
 public class User implements Serializable {
 
     public User(@NotBlank String username, @NotBlank String password,
-                @Email @NotBlank String email, @NotBlank String firstName, @NotBlank String lastName) {
+                @Email @NotBlank String email, @NotBlank String firstName, @NotBlank String lastName,
+                @NotBlank String phoneNumber) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     @Id
