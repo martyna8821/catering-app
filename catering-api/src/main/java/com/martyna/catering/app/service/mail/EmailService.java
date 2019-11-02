@@ -1,4 +1,4 @@
-package com.martyna.catering.app.service;
+package com.martyna.catering.app.service.mail;
 
 import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
@@ -9,12 +9,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
 
-@Component
+@Service
 public class EmailService  implements IEmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);

@@ -1,4 +1,4 @@
-package com.martyna.catering.app.service;
+package com.martyna.catering.app.service.users;
 
 import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.security.dto.RegisterRequest;

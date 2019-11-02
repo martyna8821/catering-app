@@ -33,6 +33,7 @@ public class User implements Serializable {
     }
 
     @Id
+    @Column(name = "user_id")
     private UUID id;
 
     @Column

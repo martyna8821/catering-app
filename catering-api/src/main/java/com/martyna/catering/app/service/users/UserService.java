@@ -1,12 +1,12 @@
-package com.martyna.catering.app.service;
+package com.martyna.catering.app.service.users;
 
 import com.martyna.catering.app.entity.users.Role;
 import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
-import com.martyna.catering.app.repository.IAddressRepository;
+import com.martyna.catering.app.repository.users.IAddressRepository;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import com.martyna.catering.app.repository.auth.IRoleRepository;
-import com.martyna.catering.app.repository.IUserRepository;
+import com.martyna.catering.app.repository.users.IUserRepository;
 import com.martyna.catering.app.security.dto.RegisterRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

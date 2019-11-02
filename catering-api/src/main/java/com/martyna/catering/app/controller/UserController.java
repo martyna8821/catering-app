@@ -4,7 +4,7 @@ import com.martyna.catering.app.dto.UserDTO;
 import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.security.dto.RegisterRequest;
-import com.martyna.catering.app.service.IUserService;
+import com.martyna.catering.app.service.users.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

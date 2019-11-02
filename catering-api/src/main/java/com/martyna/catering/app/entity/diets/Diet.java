@@ -2,6 +2,7 @@ package com.martyna.catering.app.entity.diets;
 
 import com.martyna.catering.app.entity.dishes.Ingredient;
 import com.martyna.catering.app.entity.dishes.IngredientType;
+import com.martyna.catering.app.entity.users.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.type.descriptor.java.StringTypeDescriptor;
@@ -36,5 +37,9 @@ public class Diet {
 
     @ManyToMany
     Set<IngredientType> forbiddenIngredientTypes;
+
+    @ManyToOne
+    @JoinColumn(name = "dietitian_id", referencedColumnName = "user_id")
+    private User dietitian;
 
 }

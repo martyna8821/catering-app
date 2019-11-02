@@ -1,4 +1,4 @@
-package com.martyna.catering.app.service;
+package com.martyna.catering.app.service.mail;
 
 import com.martyna.catering.app.entity.users.User;
 

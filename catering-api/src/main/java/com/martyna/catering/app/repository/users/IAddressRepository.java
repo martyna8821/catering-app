@@ -1,4 +1,4 @@
-package com.martyna.catering.app.repository;
+package com.martyna.catering.app.repository.users;
 
 import com.martyna.catering.app.entity.users.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
