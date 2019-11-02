@@ -1,7 +1,6 @@
 package com.martyna.catering.app.repository.auth;
 
-import com.martyna.catering.app.entity.PasswordResetToken;
-import com.martyna.catering.app.entity.Role;
+import com.martyna.catering.app.entity.users.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.martyna.catering.app.service;
 
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.User;
 
 import java.util.Locale;
 

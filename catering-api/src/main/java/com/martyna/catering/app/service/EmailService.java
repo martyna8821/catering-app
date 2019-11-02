@@ -1,6 +1,6 @@
 package com.martyna.catering.app.service;
 
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

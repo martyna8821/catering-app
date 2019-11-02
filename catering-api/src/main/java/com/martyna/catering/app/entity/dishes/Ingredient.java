@@ -1,7 +1,6 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.dishes;
 
 
-import io.micrometer.core.instrument.Measurement;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +20,8 @@ public class Ingredient {
     @Column(name = "name")
     private String name;
 
-    //@TODO check onetomany and one to one mappings
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "measurement_unit_id", referencedColumnName = "measurement_unit_id")
     private MeasurementUnit measurementUnit;
 
 }

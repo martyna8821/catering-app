@@ -1,7 +1,7 @@
 package com.martyna.catering.app.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

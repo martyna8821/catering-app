@@ -1,4 +1,4 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.dishes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class MeasurementUnit {
 
     @Id
-    @Column(name = "measurement_usnit_id")
+    @Column(name = "measurement_unit_id")
     UUID id;
 
     @Column(name = "name")
@@ -24,5 +24,8 @@ public class MeasurementUnit {
 
     @Column(name = "basic_value")
     private int basicValue;
+
+    @Column(name= "abbreviation")
+    private String abbreviation;
 
 }

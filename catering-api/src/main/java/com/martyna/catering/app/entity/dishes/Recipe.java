@@ -1,13 +1,11 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.dishes;
 
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -24,6 +22,8 @@ public class Recipe {
     @Column(name = "name")
     private String name;
 
-    
+    @OneToMany
+    @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
+    private Set<RecipeStep> recipeSteps;
 
 }

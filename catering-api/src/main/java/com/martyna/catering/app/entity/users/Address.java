@@ -1,4 +1,4 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.users;
 
 
 import lombok.Getter;

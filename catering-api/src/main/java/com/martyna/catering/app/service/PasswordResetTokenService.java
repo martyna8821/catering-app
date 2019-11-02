@@ -1,7 +1,7 @@
 package com.martyna.catering.app.service;
 
-import com.martyna.catering.app.entity.PasswordResetToken;
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.PasswordResetToken;
+import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

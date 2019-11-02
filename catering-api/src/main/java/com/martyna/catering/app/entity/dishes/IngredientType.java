@@ -1,4 +1,4 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.dishes;
 
 
 import lombok.Getter;
@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.security.SecureRandom;
 import java.util.UUID;
 
 @Getter
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class IngredientType {
 
     @Id
-    @Column(name = "ingredient_typpe_id")
+    @Column(name = "ingredient_type_id")
     private UUID id;
 
     @Column(name = "name")

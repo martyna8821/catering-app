@@ -1,4 +1,4 @@
-package com.martyna.catering.app.entity;
+package com.martyna.catering.app.entity.dishes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,17 +13,18 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "nutrient_details")
-public class NutrientDetials {
+public class NutrientDetails {
 
     @Id
     @Column(name = "nutrient_details_id")
     UUID id;
 
-    @Column(name = "descripption")
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "min_value")
+    private int minValue;
 
-
-    //@TODO min i max value for nutrient detalis, maybe unit?
-    //@Column(name = "min_val")
+    @Column(name = "max_value")
+    private int maxValue;
 }

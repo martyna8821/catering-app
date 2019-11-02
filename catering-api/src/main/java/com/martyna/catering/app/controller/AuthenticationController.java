@@ -1,7 +1,7 @@
 package com.martyna.catering.app.controller;
 
-import com.martyna.catering.app.entity.PasswordResetToken;
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.PasswordResetToken;
+import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.security.dto.LoginResponse;
 import com.martyna.catering.app.security.dto.LoginRequest;
@@ -17,13 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

@@ -1,6 +1,6 @@
 package com.martyna.catering.app.repository;
 
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, UUID> {

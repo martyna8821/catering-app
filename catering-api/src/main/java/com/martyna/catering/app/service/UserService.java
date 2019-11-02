@@ -1,9 +1,7 @@
 package com.martyna.catering.app.service;
 
-import com.martyna.catering.app.dto.UserDTO;
-import com.martyna.catering.app.entity.Address;
-import com.martyna.catering.app.entity.Role;
-import com.martyna.catering.app.entity.User;
+import com.martyna.catering.app.entity.users.Role;
+import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.exception.UserNotFoundException;
 import com.martyna.catering.app.repository.IAddressRepository;
 import com.martyna.catering.app.repository.auth.IPasswordResetTokenRepository;
@@ -16,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserService implements IUserService{

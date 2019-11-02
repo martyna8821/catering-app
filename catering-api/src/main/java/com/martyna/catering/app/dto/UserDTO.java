@@ -1,6 +1,5 @@
 package com.martyna.catering.app.dto;
 
-import com.martyna.catering.app.entity.Address;
 import lombok.Getter;
 import lombok.Setter;
 

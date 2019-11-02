@@ -1,6 +1,6 @@
 package com.martyna.catering.app.repository.auth;
 
-import com.martyna.catering.app.entity.Role;
+import com.martyna.catering.app.entity.users.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
