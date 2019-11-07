@@ -24,18 +24,18 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
 
     @Modifying
     @Transactional
-    @Query(value = "delete from users where id = ?1", nativeQuery = true)
+    @Query(value = "delete from users where user_id = ?1", nativeQuery = true)
     void delete(UUID id);
 
     @Modifying
     @Transactional
     @Query(value = "update users set first_name = ?1, last_name = ?2 , username = ?3, " +
-            "email = ?4 where id = ?5" ,nativeQuery = true)
+            "email = ?4 where user_id = ?5" ,nativeQuery = true)
     void updateUser(String firstName, String lastName, String userName, String email, UUID id);
 
     @Modifying
     @Transactional
-    @Query(value = "update users set password = ?1 where id = ?2", nativeQuery = true)
+    @Query(value = "update users set password = ?1 where user_id = ?2", nativeQuery = true)
     void resetPassword(String password, UUID id);
 
     @Modifying

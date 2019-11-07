@@ -18,11 +18,6 @@ public class MenuEntry {
     @Column(name = "menu_entry_id")
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
-    @Type( type = "pgsql_enum" )
-    @Column(columnDefinition = "gender_t")
-
-    
     @ManyToOne
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Recipe recipe;
