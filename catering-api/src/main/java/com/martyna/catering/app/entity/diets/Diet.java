@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Diet {
 
     @Id
-    @Column(name = "diet_id")
+    @Column(name = "diet_id", columnDefinition = "uuid default uuid_generate_v4")
     private UUID id;
 
     @Column(name = "name")
@@ -29,6 +29,9 @@ public class Diet {
 
     @Column(name = "weekly_price")
     private int price;
+
+    @Column(name = "active")
+    private boolean active;
 
     //@TODO kalorycznosc jakis enumik
 
