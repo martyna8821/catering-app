@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/catering-api/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/catering-api/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/import-database/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/import-database/src/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/catering-api/src/main" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/import-database/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/catering-api/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/import-database/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/catering-api/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

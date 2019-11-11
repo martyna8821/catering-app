@@ -4,8 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import pl.martyna.importer.dto.IngredientToCreate;
-import com.google.common.primitives.Ints;
+import pl.martyna.importer.builder.Ingredient;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,21 +16,12 @@ import java.util.stream.Stream;
 
 public class IngredientsFromJSONImporterService {
 
-    private IngredientToCreate getSingleIngredient(){
-        return null;
-    }
-
-
     static int counter = 0;
-    private Set<IngredientToCreate> getAllIngredients(){
-        return null;
-    }
 
-    public Set<IngredientToCreate> importIngredientsFromJSON(String fileName){
+    public Set<Ingredient> importIngredientsFromJSON(String fileName){
 
         JSONParser jsonParser = new JSONParser();
-        Set<IngredientToCreate> ingredients = new HashSet<>();
-
+        Set<Ingredient> ingredients = new HashSet<>();
 
         try(FileReader reader = new FileReader(fileName)){
 
@@ -39,14 +29,28 @@ public class IngredientsFromJSONImporterService {
 
             JSONArray ingredientsList = (JSONArray) obj;
 
-            ingredientsList.forEach( ingredient -> parseIngredientObject((JSONObject) ingredient )
-                                                        .ifPresent(parsedIngredient -> {ingredients.add(parsedIngredient);
-                                                        })
-            );
+            for(Object ingredientObj: ingredientsList){
+                JSONObject ingredient = (JSONObject) ingredientObj;
 
-            ingredients.stream().forEach(ing -> System.out.println("Quantity: "+ing.getQuantity()));
-            System.out.println(String.format("Liczba skladnikow: %d", counter));
+                Ingredient.builder()
+                        .name((String) ingredient.get("product_name"))
+                        .ingredientTypes((String) ingredient.get("categories"))
+                        .quantity((String) ingredient.get("quantity"))
+                        .unit((String) ingredient.get("quantity"))
+                        .brands((String) ingredient.get("brands"))
+                        .allergens((String) ingredient.get("allergens") +","
+                                + (String) ingredient.get("allergens_tags") + ","
+                                + (String) ingredient.get("traces") + ","
+                                + (String) ingredient.get("traces_tags"))
+                        .labels((String) ingredient.get("labels_tags"))
+                        .nutrition(ingredient)
+                        .build()
+                        .ifPresent(ingredients::add);
 
+                counter++;
+            }
+
+            System.out.println(String.format("Nuber of read ingredients: %d", counter));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -54,46 +58,10 @@ public class IngredientsFromJSONImporterService {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (ClassCastException e){
+            e.printStackTrace();
         }
-
-        return null;
+        return ingredients;
     }
 
-    private static Optional<IngredientToCreate> parseIngredientObject(JSONObject ingredient) {
-            IngredientToCreate ingredientToCreate = new IngredientToCreate();
-
-            String name = (String) ingredient.get("product_name");
-            if(name.isBlank()){
-                return Optional.empty();
-            }
-            else{
-                ingredientToCreate.setName(name);
-                counter++;
-            }
-
-            //System.out.println("INGREDIENT: " +ingredientToCreate.getName());
-            String ingredientTypesString = (String) ingredient.get("categories");
-
-            Stream.of(ingredientTypesString.split(","))
-                    .forEach( ingredientType -> {
-                                        if(ingredientType.startsWith("pl:"))
-                                         {
-                                                ingredientToCreate.addIngredientType(ingredientType.substring(3));
-                                                System.out.println(ingredientType.substring(3));
-                                        }
-            });
-
-            String[] strQuantity = ((String) ingredient.get("quantity")).split("[^-?0-9]+");
-   //        switch(strQuantity.length)
-
-
-        long quantity = Long.parseLong(strQuantity[0]);
-
-        //String unit = strQuantity[1];
-            System.out.println(String.format("Quantity:%d", quantity));
-           // System.out.println("UNIT: "+ unit);
-            ingredientToCreate.setQuantity(( int) quantity);
-
-            return Optional.of(ingredientToCreate);
-    }
 }
