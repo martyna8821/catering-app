@@ -1,11 +1,11 @@
 package com.martyna.catering.app.repository.dishes;
 
-import com.martyna.catering.app.entity.dishes.Nutrient;
+import com.martyna.catering.app.entity.dishes.Nutrition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface INutrientRepository extends JpaRepository<Nutrient, UUID> {
+public interface INutrientRepository extends JpaRepository<Nutrition, UUID> {
 }

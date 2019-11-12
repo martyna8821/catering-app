@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "nutrient_details")
-public class NutrientDetails {
+public class NutritionDetails {
 
     @Id
     @Column(name = "nutrient_details_id")

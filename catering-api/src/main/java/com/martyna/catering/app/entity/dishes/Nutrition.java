@@ -9,11 +9,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "nutrients")
-public class Nutrient {
+@Table(name = "nutrition")
+public class Nutrition {
 
     @Id
-    @Column(name = "nutrient_id")
+    @Column(name = "nutrition_id")
     private UUID id;
 
     @Column(name = "name")
@@ -25,6 +25,6 @@ public class Nutrient {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrient_details_id", referencedColumnName = "nutrient_details_id")
-    private NutrientDetails nutrientDetails;
+    private NutritionDetails nutrientDetails;
 
 }

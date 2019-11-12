@@ -45,9 +45,10 @@ public class Ingredient {
     @Column(name = "labels")
     Set<String> labels = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "ingredient_ingredient-types",
-            joinColumns = @JoinColumn(name = "ingredient_type_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_type_id"))
-    private Set<Role> types = new HashSet<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    private Set<Nutrition> nutrition = new HashSet<>();
+
 }
