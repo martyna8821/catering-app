@@ -4,6 +4,8 @@ import com.martyna.catering.app.dto.IngredientToCreate;
 import com.martyna.catering.app.dto.IngredientToCreateDTO;
 import com.martyna.catering.app.entity.users.User;
 import com.martyna.catering.app.security.dto.RegisterRequest;
+import com.martyna.catering.app.service.dishes.IIngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,14 @@ import java.util.List;
 @RequestMapping("api/ingredient")
 public class IngredientController {
 
-    @PostMapping("s")
+    private IIngredientService ingredientService;
+
+    @Autowired
+    public IngredientController(IIngredientService ingredientService){
+        this.ingredientService = ingredientService;
+    }
+
+    @PostMapping("/list")
     public ResponseEntity<?> add(@Valid @RequestBody List<IngredientToCreate> ingredients){
 
         //if(userService.existsUserByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())){
