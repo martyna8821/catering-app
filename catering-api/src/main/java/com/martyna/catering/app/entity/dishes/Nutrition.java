@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "nutrition")
-public class Nutrition {
+public class Nutrition implements Serializable {
 
     @Id
     @Column(name = "nutrition_id")

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "ingredients")
-public class Ingredient {
+public class Ingredient implements Serializable {
 
     @Id
     @Column(name = "ingredient_id")
@@ -47,8 +48,14 @@ public class Ingredient {
 
 
     @OneToMany(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "nutrition"
     )
-    private Set<Nutrition> nutrition = new HashSet<>();
+    private Set<IngredientNutrition> nutrition = new HashSet<>();
+
+    public void addNutrition(Nutrition nutrition, double value ){
+        this.nutrition.add(new IngredientNutrition(this, nutrition, value));
+    }
 
 }

@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -14,11 +16,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class IngredientNutritionId implements Serializable {
 
-    @Column(name = "ingredient_id")
-    private UUID ingredientId;
+    @ManyToOne
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
-    @Column(name = "nutrition_id")
-    private UUID nutritionId;
+    @ManyToOne
+    @JoinColumn(name = "nutrition_id")
+    private Nutrition nutrition;
 
     private IngredientNutritionId() {}
 
@@ -30,12 +34,12 @@ public class IngredientNutritionId implements Serializable {
             return false;
 
         IngredientNutritionId that = (IngredientNutritionId) o;
-        return Objects.equals(ingredientId, that.ingredientId) &&
-                Objects.equals(nutritionId, that.nutritionId);
+        return Objects.equals(ingredient.id, that.ingredient.id) &&
+                Objects.equals(nutrition.getId(), that.nutrition.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredientId, nutritionId);
+        return Objects.hash(ingredient.id, nutrition.getId());
     }
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface INutrientRepository extends JpaRepository<Nutrition, UUID> {
+public interface INutritionRepository extends JpaRepository<Nutrition, UUID> {
 
     //Nutrition save(Nutrition nutrition);
     Optional<Nutrition> getByName(String name);

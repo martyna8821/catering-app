@@ -35,8 +35,15 @@ public class IngredientService implements IIngredientService{
         ingredientToSave.setAllergens(ingredient.getAllergens());
         ingredientToSave.setBrands(ingredient.getBrands());
         ingredientToSave.setLabels(ingredient.getLabels());
-        //ingredientToSave.setNutrition();
+        //Ingredient saved = t
+        ingredient.getNutrition().forEach(nutrition -> {
+                        ingredientToSave.addNutrition(
+                                    this.nutritionService.getByName(
+                                                    nutrition.getPolishName()),
+                                    nutrition.getValue()
+                        );
+        });
 
-        return null;
+        return this.ingredientRepository.save(ingredientToSave);
     }
 }

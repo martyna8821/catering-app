@@ -1,46 +1,40 @@
 package com.martyna.catering.app.entity.dishes;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Setter
 @Getter
 @Entity
 @Table(name= "ingredients_nutrition")
-public class IngredientNutrition {
+@NoArgsConstructor
+public class IngredientNutrition implements Serializable {
 
 
     @EmbeddedId
     private IngredientNutritionId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("ingredientId")
-    private Ingredient ingredient;
+   @ManyToOne
+   @MapsId("ingredient")
+   private Ingredient ingredient;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("nutritionId")
-    private Nutrition nutrition;
+   @ManyToOne
+   @MapsId("nutrition")
+   private Nutrition nutrition;
 
     @Column(name = "value")
     private double value;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        IngredientNutrition that = (IngredientNutrition) o;
-        return Objects.equals(ingredient, that.ingredient) &&
-                Objects.equals(nutrition, that.nutrition);
+    public IngredientNutrition(Ingredient ingredient, Nutrition nutrition, double value) {
+        this.setIngredient(ingredient);
+        this.setNutrition(nutrition);
+        this.value = value;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(ingredient, nutrition);
-    }
 }

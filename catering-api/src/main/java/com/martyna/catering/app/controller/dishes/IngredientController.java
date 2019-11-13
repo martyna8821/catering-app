@@ -30,12 +30,14 @@ public class IngredientController {
     @PostMapping("/list")
     public ResponseEntity<?> add(@Valid @RequestBody List<IngredientToCreate> ingredients){
 
+
+        ingredients.forEach(this.ingredientService::saveIngredient);
         //if(userService.existsUserByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail())){
           //  return ResponseEntity.unprocessableEntity().body("Username or email address alredy taken");
         //}
 
        // User savedUser = userService.save(registerRequest);
        // return new ResponseEntity(savedUser, HttpStatus.CREATED);
-        return null;
+        return ResponseEntity.ok("ok");
     }
 }
