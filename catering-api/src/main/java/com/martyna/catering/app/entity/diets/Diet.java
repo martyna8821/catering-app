@@ -1,11 +1,10 @@
 package com.martyna.catering.app.entity.diets;
 
-import com.martyna.catering.app.entity.dishes.Ingredient;
-import com.martyna.catering.app.entity.dishes.IngredientType;
+import com.martyna.catering.app.entity.ingredients.Ingredient;
+import com.martyna.catering.app.entity.ingredients.IngredientType;
 import com.martyna.catering.app.entity.users.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.type.descriptor.java.StringTypeDescriptor;
 
 import javax.persistence.*;
 import java.util.Set;
