@@ -16,7 +16,7 @@ import java.util.Set;
 public class IngredientToCreate {
 
     private String name;
-    private int quantity;
+    private double quantity;
     private String unit;
     private Set<String> allergens;
     private Set<String> brands;

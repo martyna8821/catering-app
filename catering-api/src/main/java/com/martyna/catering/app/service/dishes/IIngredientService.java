@@ -6,5 +6,5 @@ import com.martyna.catering.app.entity.dishes.Ingredient;
 public interface IIngredientService {
 
     Ingredient saveIngredient(IngredientToCreate ingredient);
-
+    void addNutritions(IngredientToCreate ingredientN, Ingredient ing);
 }

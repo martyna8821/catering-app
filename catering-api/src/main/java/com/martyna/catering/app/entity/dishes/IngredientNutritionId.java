@@ -1,45 +1,52 @@
 package com.martyna.catering.app.entity.dishes;
 
-import lombok.AllArgsConstructor;
+
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.EmbeddedId;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-@Embeddable
 @Getter
-@AllArgsConstructor
+@Setter
+@Embeddable
+@NoArgsConstructor
 public class IngredientNutritionId implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredient;
+    @Column(name = "ingredient")
+    private UUID ingredient;
 
-    @ManyToOne
-    @JoinColumn(name = "nutrition_id")
-    private Nutrition nutrition;
+    @Column(name = "nutrition")
+    private  UUID nutrition;
 
-    private IngredientNutritionId() {}
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        IngredientNutritionId that = (IngredientNutritionId) o;
-        return Objects.equals(ingredient.id, that.ingredient.id) &&
-                Objects.equals(nutrition.getId(), that.nutrition.getId());
+    public IngredientNutritionId(UUID ingredient, UUID nutrition) {
+        this.ingredient = ingredient;
+        this.nutrition = nutrition;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(ingredient.id, nutrition.getId());
+    public boolean equals(Object obj) {
+        if(this == obj )
+            return true;
+
+        if(!(obj instanceof IngredientNutritionId))
+            return false;
+
+        IngredientNutritionId that = (IngredientNutritionId) obj;
+
+        return Objects.equals(ingredient, that.ingredient)
+                && Objects.equals(nutrition, that.nutrition);
+            //    && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(ingredient, nutrition);
     }
 }

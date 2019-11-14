@@ -18,14 +18,13 @@ import java.util.UUID;
 public class Ingredient implements Serializable {
 
     @Id
-    @Column(name = "ingredient_id")
     UUID id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "quantity")
-    private int quantity;
+    private double quantity;
 
     @ManyToOne
     @JoinColumn(name = "measurement_unit_id", referencedColumnName = "measurement_unit_id")
@@ -55,7 +54,10 @@ public class Ingredient implements Serializable {
     private Set<IngredientNutrition> nutrition = new HashSet<>();
 
     public void addNutrition(Nutrition nutrition, double value ){
-        this.nutrition.add(new IngredientNutrition(this, nutrition, value));
+        IngredientNutrition ingredientNutrition = new IngredientNutrition(
+                this, nutrition, value);
+        this.nutrition.add(ingredientNutrition);
+        //his.nutrition.add(new IngredientNutrition(this, nutrition, value));
     }
 
 }

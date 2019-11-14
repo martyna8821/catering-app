@@ -2,6 +2,8 @@ package com.martyna.catering.app.entity.dishes;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,10 +13,11 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "nutrition")
-public class Nutrition implements Serializable {
+@NaturalIdCache
+@org.hibernate.annotations.Cache( usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Nutrition {
 
     @Id
-    @Column(name = "nutrition_id")
     private UUID id;
 
     @Column(name = "name")
