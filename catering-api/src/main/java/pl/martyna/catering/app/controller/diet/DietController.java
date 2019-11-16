@@ -1,6 +1,5 @@
 package pl.martyna.catering.app.controller.diet;
 
-import io.micrometer.shaded.org.pcollections.AmortizedPQueue;
 import org.springframework.http.HttpStatus;
 import pl.martyna.catering.app.dto.diet.DietResource;
 import pl.martyna.catering.app.dto.input.DietInput;

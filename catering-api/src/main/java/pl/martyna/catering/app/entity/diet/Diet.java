@@ -1,5 +1,7 @@
 package pl.martyna.catering.app.entity.diet;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.auth.User;
 import lombok.Getter;
@@ -10,8 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "diets")
 public class Diet {
@@ -33,20 +34,20 @@ public class Diet {
     private boolean published;
 
     @ElementCollection
-    @CollectionTable(name = "diets_caloric-version", joinColumns = @JoinColumn(name = "diet_id"))
-    @Column(name = "caloric-version")
+    @CollectionTable(name = "diets_caloric_version", joinColumns = @JoinColumn(name = "diet_id"))
+    @Column(name = "caloric_version")
     private Set<String> caloricVersion = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "diets_forbidden-ingredients",
+    @ManyToMany
+    @JoinTable(name = "diets_forbidden_ingredients",
             joinColumns = @JoinColumn(name = "diet_id"),
             inverseJoinColumns = @JoinColumn(name = "id"))
-    Set<Ingredient> forbiddenIngredients;
+    Set<Ingredient> forbiddenIngredients = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "recipe_labels", joinColumns = @JoinColumn(name = "diet_id"))
     @Column(name = "labels")
-    Set<String> labels;
+    Set<String> labels = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "dietitian_id", referencedColumnName = "user_id")

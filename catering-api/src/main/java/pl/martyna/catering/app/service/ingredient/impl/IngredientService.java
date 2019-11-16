@@ -54,7 +54,7 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public List<Ingredient> getAll() {
-        return null;
+        return this.ingredientRepository.findAll();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.entity.ingredient;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import pl.martyna.catering.app.dto.input.NutritionInput;
@@ -11,8 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "ingredients")
 public class Ingredient implements Serializable {

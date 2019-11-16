@@ -3,6 +3,7 @@ package pl.martyna.catering.app.configuration;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.martyna.catering.app.dto.diet.DietResource;
@@ -20,23 +21,15 @@ public class AppConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.createTypeMap(Ingredient.class, IngredientResource.class);
-        modelMapper.createTypeMap(Diet.class, DietResource.class);
-        modelMapper.getTypeMap(Ingredient.class, IngredientResource.class)
-                     .addMappings(mapper -> {
-                         mapper.map( src -> src.getMeasurementUnit().getAbbreviation(),
-                         IngredientResource::setUnit);
-                });
 
-        modelMapper.getTypeMap(Diet.class, DietResource.class)
-                .addMappings(mapper -> {
-                    mapper.map( src -> src.getDietitian().getUsername(),
+        modelMapper.typeMap(Ingredient.class, String.class)
+          .setConverter(ctx -> ctx.getSource().getName());
+        modelMapper.typeMap(MeasurementUnit.class, String.class)
+                .setConverter(ctx -> ctx.getSource().getAbbreviation());
+
+        modelMapper.createTypeMap(Diet.class, DietResource.class)
+                .addMapping(src -> src.getDietitian().getUsername(),
                             DietResource::setDietitianUsername);
-                   // mapper.map(src -> src.getForbiddenIngredients().stream()
-                     //                               .map(Ingredient::getName)
-                       //                             .collect(Collectors.toSet()),
-                        //    DietResource::setForbiddenIngredients);
-                });
 
         return modelMapper;
     }
