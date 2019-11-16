@@ -1,7 +1,7 @@
 package pl.martyna.catering.app.controller.diet;
 
 import org.springframework.http.HttpStatus;
-import pl.martyna.catering.app.dto.diet.DietResource;
+import pl.martyna.catering.app.dto.resource.DietResource;
 import pl.martyna.catering.app.dto.input.DietInput;
 import pl.martyna.catering.app.entity.diet.Diet;
 import pl.martyna.catering.app.service.diet.IDietService;
@@ -28,9 +28,10 @@ public class DietController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Diet> addDiet(@RequestBody DietInput dietToCreate){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Diet addDiet(@RequestBody DietInput dietToCreate){
 
-        return null;
+        return this.dietService.save(modelMapper.map(dietToCreate, Diet.class));
     }
 
     @GetMapping("")

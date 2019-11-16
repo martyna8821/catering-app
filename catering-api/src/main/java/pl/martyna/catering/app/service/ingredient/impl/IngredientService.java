@@ -4,6 +4,7 @@ import pl.martyna.catering.app.dto.input.IngredientInput;
 import pl.martyna.catering.app.dto.input.NutritionInput;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.ingredient.MeasurementUnit;
+import pl.martyna.catering.app.exception.ResourceNotFoundException;
 import pl.martyna.catering.app.repository.ingredient.IIngredientRepository;
 import pl.martyna.catering.app.service.ingredient.IIngredientService;
 import pl.martyna.catering.app.service.ingredient.IMeasurementUnitService;
@@ -29,6 +30,7 @@ public class IngredientService implements IIngredientService {
         this.unitService = unitService;
         this.nutritionService = nutritionService;
     }
+
 
     @Override
     public Ingredient saveIngredient(IngredientInput ingredient) {
@@ -65,5 +67,10 @@ public class IngredientService implements IIngredientService {
     @Override
     public boolean removeById(UUID id) {
         return false;
+    }
+
+    @Override
+    public Ingredient getByName(String ingredientName) {
+        return this.ingredientRepository.findByName(ingredientName).orElseThrow(ResourceNotFoundException::new);
     }
 }

@@ -23,7 +23,7 @@ public class DietService implements IDietService {
 
     @Override
     public Diet save(Diet dietToSave) {
-        return null;
+        return this.dietRepository.save(dietToSave);
     }
 
     @Override

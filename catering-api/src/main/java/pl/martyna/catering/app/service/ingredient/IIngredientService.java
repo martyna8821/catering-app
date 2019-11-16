@@ -17,4 +17,5 @@ public interface IIngredientService {
     List<Ingredient> getAll();
     Optional<Ingredient> getById(UUID id);
     boolean removeById(UUID id);
+    Ingredient getByName(String ingredientName);
 }

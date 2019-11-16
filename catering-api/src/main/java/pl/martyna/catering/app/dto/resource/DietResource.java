@@ -1,4 +1,4 @@
-package pl.martyna.catering.app.dto.diet;
+package pl.martyna.catering.app.dto.resource;
 
 import lombok.Data;
 import pl.martyna.catering.app.entity.auth.User;

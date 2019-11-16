@@ -23,17 +23,17 @@ public class UserService implements IUserService {
     private PasswordEncoder passwordEncoder;
     private IRoleRepository roleRepository;
     private IAddressRepository addressRepository;
-    private ModelMapper modelMapper;
 
     @Autowired
-    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder,
-                       IRoleRepository roleRepository, IPasswordResetTokenRepository passwordTokenRepository,
-                       IAddressRepository addressRepository, ModelMapper modelMapper) {
+    public UserService( IUserRepository userRepository,
+             PasswordEncoder passwordEncoder,
+             IRoleRepository roleRepository,
+             IAddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.addressRepository = addressRepository;
-        this.modelMapper = modelMapper;
+
     }
 
     @Override

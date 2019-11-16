@@ -1,22 +1,27 @@
 package pl.martyna.catering.app.configuration;
 
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.modelmapper.spi.MappingContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.martyna.catering.app.dto.diet.DietResource;
-import pl.martyna.catering.app.dto.input.IngredientInput;
-import pl.martyna.catering.app.dto.resource.IngredientResource;
+import pl.martyna.catering.app.dto.input.DietInput;
+import pl.martyna.catering.app.dto.resource.DietResource;
 import pl.martyna.catering.app.entity.diet.Diet;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.ingredient.MeasurementUnit;
-
-import java.util.stream.Collectors;
+import pl.martyna.catering.app.service.ingredient.IIngredientService;
+import pl.martyna.catering.app.service.users.IUserService;
 
 @Configuration
-public class AppConfiguration {
+public class ModelMapperConfiguration {
+
+
+    @Autowired
+    private  IUserService userService;
+
+    @Autowired
+    private IIngredientService ingredientService;
+
 
     @Bean
     public ModelMapper modelMapper() {
@@ -26,11 +31,17 @@ public class AppConfiguration {
           .setConverter(ctx -> ctx.getSource().getName());
         modelMapper.typeMap(MeasurementUnit.class, String.class)
                 .setConverter(ctx -> ctx.getSource().getAbbreviation());
+        modelMapper.typeMap(String.class, Ingredient.class)
+                .setConverter(ctx -> this.ingredientService.getByName(ctx.getSource()));
 
         modelMapper.createTypeMap(Diet.class, DietResource.class)
                 .addMapping(src -> src.getDietitian().getUsername(),
                             DietResource::setDietitianUsername);
 
+        modelMapper.createTypeMap(DietInput.class, Diet.class)
+                .addMappings( mapper -> mapper.map(
+                                        src ->  this.userService.findByUsername(src.getDietitianUsername()),
+                                        Diet::setDietitian));
         return modelMapper;
     }
 
