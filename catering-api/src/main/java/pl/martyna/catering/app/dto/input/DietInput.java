@@ -2,6 +2,7 @@ package pl.martyna.catering.app.dto.input;
 
 import lombok.Data;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,4 +17,5 @@ public class DietInput {
     private Set<String> forbiddenIngredients = new HashSet<>();
     private Set<String> labels = new HashSet<>();
     private String dietitianUsername;
+    private File image;
 }

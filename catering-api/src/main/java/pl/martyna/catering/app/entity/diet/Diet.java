@@ -53,4 +53,8 @@ public class Diet {
     @JoinColumn(name = "dietitian_id", referencedColumnName = "user_id")
     private User dietitian;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
 }

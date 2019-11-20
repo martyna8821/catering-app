@@ -15,6 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("api/diets")
 public class DietController {
 
@@ -27,14 +28,13 @@ public class DietController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/xdd")
+    //@ResponseStatus(HttpStatus.CREATED)
     public Diet addDiet(@RequestBody DietInput dietToCreate){
-
         return this.dietService.save(modelMapper.map(dietToCreate, Diet.class));
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<DietResource> getAllDiets(){
         List<Diet> diets = this.dietService.getAll();
         return diets.stream()
