@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.service.diet;
 
+import pl.martyna.catering.app.dto.input.DietInput;
 import pl.martyna.catering.app.entity.diet.Diet;
 
 import java.util.List;

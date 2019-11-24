@@ -28,10 +28,11 @@ public class DietController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("/xdd")
+    @PostMapping("")
     //@ResponseStatus(HttpStatus.CREATED)
     public Diet addDiet(@RequestBody DietInput dietToCreate){
-        return this.dietService.save(modelMapper.map(dietToCreate, Diet.class));
+        Diet diet = modelMapper.map(dietToCreate, Diet.class);
+        return this.dietService.save(diet);
     }
 
     @GetMapping

@@ -6,9 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.martyna.catering.app.dto.input.DietInput;
 import pl.martyna.catering.app.dto.resource.DietResource;
+import pl.martyna.catering.app.entity.auth.User;
 import pl.martyna.catering.app.entity.diet.Diet;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.ingredient.MeasurementUnit;
+import pl.martyna.catering.app.exception.UserNotFoundException;
 import pl.martyna.catering.app.service.ingredient.IIngredientService;
 import pl.martyna.catering.app.service.users.IUserService;
 
@@ -34,14 +36,12 @@ public class ModelMapperConfiguration {
         modelMapper.typeMap(String.class, Ingredient.class)
                 .setConverter(ctx -> this.ingredientService.getByName(ctx.getSource()));
 
+        modelMapper.typeMap(String.class, User.class)
+                .setConverter(ctx -> this.userService.findByUsername(ctx.getSource()));
+
         modelMapper.createTypeMap(Diet.class, DietResource.class)
                 .addMapping(src -> src.getDietitian().getUsername(),
                             DietResource::setDietitianUsername);
-
-        modelMapper.createTypeMap(DietInput.class, Diet.class)
-                .addMappings( mapper -> mapper.map(
-                                        src ->  this.userService.findByUsername(src.getDietitianUsername()),
-                                        Diet::setDietitian));
         return modelMapper;
     }
 

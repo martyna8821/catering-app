@@ -31,26 +31,20 @@ public class Diet {
     private int price;
 
     @Column(name = "published")
-    private boolean published;
+    private boolean published = false;
 
     @ElementCollection
     @CollectionTable(name = "diets_caloric_version", joinColumns = @JoinColumn(name = "diet_id"))
     @Column(name = "caloric_version")
-    private Set<String> caloricVersion = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "diets_forbidden_ingredients",
-            joinColumns = @JoinColumn(name = "diet_id"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
-    Set<Ingredient> forbiddenIngredients = new HashSet<>();
+    private Set<String> caloricVersions = new HashSet<>();
 
     @ElementCollection
-    @CollectionTable(name = "recipe_labels", joinColumns = @JoinColumn(name = "diet_id"))
+    @CollectionTable(name = "labels", joinColumns = @JoinColumn(name = "diet_id"))
     @Column(name = "labels")
-    Set<String> labels = new HashSet<>();
+    private Set<String> labels = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "dietitian_id", referencedColumnName = "user_id")
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;
 
     @Lob

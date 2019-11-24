@@ -58,7 +58,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable String username){
-        User userToReturn = userService.findByUsername(username).orElse(null);
+        User userToReturn = userService.findByUsername(username);
         return new ResponseEntity<>(userToReturn, HttpStatus.OK);
     }
 

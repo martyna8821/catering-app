@@ -37,8 +37,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -115,7 +116,7 @@ public class UserService implements IUserService {
     @Override
     public Optional<Boolean> validateOldPassword(String username, String oldPassword) {
 
-        String userPassword = findByUsername(username)
+        String userPassword = this.userRepository.findByUsername(username)
                                 .map(User::getPassword)
                                 .orElseThrow(UserNotFoundException::new);
 

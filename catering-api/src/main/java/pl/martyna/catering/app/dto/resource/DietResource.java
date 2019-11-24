@@ -18,8 +18,8 @@ public class DietResource {
     private String description;
     private int price;
     private boolean published;
-    private Set<String> caloricVersion = new HashSet<>();
-    private Set<String> forbiddenIngredients = new HashSet<>();
+    private Set<String> caloricVersions = new HashSet<>();
     private Set<String> labels = new HashSet<>();
     private String dietitianUsername;
+    byte[] image;
 }
