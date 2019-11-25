@@ -1,5 +1,7 @@
 package pl.martyna.catering.app.configuration;
 
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import pl.martyna.catering.app.security.jwt.JwtAuthEntryPoint;
 import pl.martyna.catering.app.security.jwt.JwtAuthTokenFilter;
 import pl.martyna.catering.app.security.service.UserDetailsServiceImpl;
@@ -66,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
+
 
 }

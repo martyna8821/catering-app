@@ -21,5 +21,5 @@ public class DietResource {
     private Set<String> caloricVersions = new HashSet<>();
     private Set<String> labels = new HashSet<>();
     private String dietitianUsername;
-    byte[] image;
+   // byte[] image;
 }
