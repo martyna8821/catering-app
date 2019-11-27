@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 import pl.martyna.catering.app.entity.order.Order;
 
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, UUID> {
+
+    List<Order> findByClient_Id(UUID id);
 }

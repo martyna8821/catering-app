@@ -1,6 +1,8 @@
 package pl.martyna.catering.app.dto.resource;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import pl.martyna.catering.app.entity.auth.User;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 
@@ -10,7 +12,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 public class DietResource {
 
     private UUID id;

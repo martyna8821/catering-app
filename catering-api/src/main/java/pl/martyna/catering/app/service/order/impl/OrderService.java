@@ -31,4 +31,9 @@ public class OrderService implements IOrderService {
     public List<Order> getAll() {
         return this.orderRepository.findAll();
     }
+
+    @Override
+    public List<Order> getUserOrders(UUID userId) {
+        return this.orderRepository.findByClient_Id(userId);
+    }
 }

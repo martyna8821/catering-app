@@ -1,5 +1,7 @@
 package pl.martyna.catering.app.configuration;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +32,7 @@ public class ModelMapperConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         modelMapper.typeMap(Ingredient.class, String.class)
           .setConverter(ctx -> ctx.getSource().getName());
         modelMapper.typeMap(MeasurementUnit.class, String.class)

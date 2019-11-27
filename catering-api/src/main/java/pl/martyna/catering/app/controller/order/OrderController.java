@@ -13,6 +13,7 @@ import pl.martyna.catering.app.service.diet.IDietService;
 import pl.martyna.catering.app.service.order.IOrderService;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,6 +43,15 @@ public class OrderController {
                 .map(order -> modelMapper.map(order, OrderResource.class))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/user/{id}")
+    public List<OrderResource> getUserOrders(@PathVariable UUID id){
+        List<Order> userOrders = this.orderService.getUserOrders(id);
+        return userOrders.stream()
+                .map(order -> modelMapper.map(order, OrderResource.class))
+                .collect(Collectors.toList());
+
+     }
 
 
 }
