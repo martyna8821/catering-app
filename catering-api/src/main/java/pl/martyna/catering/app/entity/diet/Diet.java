@@ -27,7 +27,7 @@ public class Diet {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "weekly_price")
+    @Column(name = "daily_price")
     private int price;
 
     @Column(name = "published")
@@ -46,8 +46,4 @@ public class Diet {
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;
-
-    @Column(name = "image")
-    private byte[] image;
-
 }

@@ -29,6 +29,9 @@ public class Order {
     @Column(name = "ending_date")
     private LocalDate endDate;
 
+    @Column(name = "caloric_version")
+    private String caloricVersion;
+
     @ManyToOne
     private User client;
 
@@ -37,7 +40,5 @@ public class Order {
 
     @ManyToOne
     private Address deliveryAddress;
-
-
 
 }
