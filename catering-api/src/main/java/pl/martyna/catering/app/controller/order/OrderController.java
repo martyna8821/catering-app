@@ -31,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public Order addDiet(@RequestBody OrderInput orderToCreate){
+    public Order addOrder(@RequestBody OrderInput orderToCreate){
         Order order= modelMapper.map(orderToCreate, Order.class);
         return this.orderService.save(order);
     }

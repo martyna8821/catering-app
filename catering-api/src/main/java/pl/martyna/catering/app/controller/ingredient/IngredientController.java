@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("api/ingredients")
 public class IngredientController {
 
@@ -57,7 +58,7 @@ public class IngredientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@RequestBody UUID id){
-        Ingredient ingredient = this.ingredientService.getById(id).orElseThrow(ResourceNotFoundException::new);
+        Ingredient ingredient = this.ingredientService.getById(id);
         return new ResponseEntity<>(modelMapper.map(ingredient, IngredientResource.class), HttpStatus.OK);
     }
 

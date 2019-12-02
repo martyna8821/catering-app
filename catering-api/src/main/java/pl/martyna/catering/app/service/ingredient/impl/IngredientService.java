@@ -60,8 +60,8 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public Optional<Ingredient> getById(UUID id) {
-        return Optional.empty();
+    public Ingredient getById(UUID id) {
+        return this.ingredientRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

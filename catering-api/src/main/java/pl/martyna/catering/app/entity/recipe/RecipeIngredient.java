@@ -1,12 +1,17 @@
 package pl.martyna.catering.app.entity.recipe;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="recipes_ingredients")
 public class RecipeIngredient {
