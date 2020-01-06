@@ -52,8 +52,15 @@ public class DietController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> deteleById(@RequestBody UUID id){
-        return null;
+    public ResponseEntity<?> deteleById(@PathVariable UUID id){
+        this.dietService.removeDietById(id);
+        return ResponseEntity.ok("Successfuly deleted");
+    }
+
+    @PatchMapping("/{id}/{published}")
+    public ResponseEntity<?> changeStatus(@PathVariable UUID id, @PathVariable Boolean published){
+        this.dietService.changeStatus(id, published);
+        return ResponseEntity.ok("Status changed");
     }
 
 }

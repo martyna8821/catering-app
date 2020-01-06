@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.configuration;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import pl.martyna.catering.app.security.jwt.JwtAuthEntryPoint;
@@ -30,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthEntryPoint unauthorizedHandler;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Bean
     JwtAuthTokenFilter authenticationJwtTokenFilter(){
         return new JwtAuthTokenFilter();
@@ -40,18 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throws Exception {
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
     }
 
     @Override

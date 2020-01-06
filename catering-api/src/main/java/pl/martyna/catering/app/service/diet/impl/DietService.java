@@ -49,4 +49,14 @@ public class DietService implements IDietService {
     public boolean removeDietById(UUID dietId) {
         return false;
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.dietRepository.deleteById(id);
+    }
+
+    @Override
+    public void changeStatus(UUID id, boolean published) {
+        this.dietRepository.changeStatus(id, published);
+    }
 }
