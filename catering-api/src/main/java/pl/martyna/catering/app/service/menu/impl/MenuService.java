@@ -25,9 +25,8 @@ public class MenuService implements IMenuService {
 
     @Override
     public Menu save(Menu menuToSave) {
-
-        menuToSave.getMenuEntries()
-        return null;
+        menuToSave.setId(UUID.randomUUID());
+        return this.menuRepository.save(menuToSave);
     }
 
     @Override

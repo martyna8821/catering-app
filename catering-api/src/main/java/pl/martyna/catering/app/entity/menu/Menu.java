@@ -7,6 +7,7 @@ import pl.martyna.catering.app.dto.resource.MenuEntryResource;
 import pl.martyna.catering.app.entity.diet.Diet;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "menu")
-public class Menu {
+public class Menu implements Serializable {
 
     @Id
     @Column(name = "menu_id")

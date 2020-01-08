@@ -43,6 +43,8 @@ public class ModelMapperConfiguration {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
+
+
          modelMapper.getConfiguration().setAmbiguityIgnored(true);
         modelMapper.typeMap(Ingredient.class, String.class)
           .setConverter(ctx -> ctx.getSource().getName());
