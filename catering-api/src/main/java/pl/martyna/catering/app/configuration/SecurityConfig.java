@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.configuration;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -59,7 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/diets").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.PATCH, "/api/**/password").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/users").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
