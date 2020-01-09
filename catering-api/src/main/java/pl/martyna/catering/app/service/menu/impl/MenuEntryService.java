@@ -21,7 +21,6 @@ public class MenuEntryService implements IMenuEntryService {
 
     @Override
     public MenuEntry save(MenuEntry entryToSave) {
-        entryToSave.setId(UUID.randomUUID());
         return this.menuEntryRepository.save(entryToSave);
     }
 }

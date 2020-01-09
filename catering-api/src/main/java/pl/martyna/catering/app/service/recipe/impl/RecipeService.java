@@ -15,6 +15,7 @@ import pl.martyna.catering.app.service.recipe.IRecipeStepService;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class RecipeService implements IRecipeService {
@@ -34,13 +35,8 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public Recipe add(Recipe recipe) {
-
         recipe.setMealWeight(calculateWeight(recipe.getIngredients()));
         recipe.setCaloricValue(calculateCaloricValue(recipe.getIngredients()));
-
-        recipe.getRecipeSteps().forEach(step -> {
-            this.recipeStepService.save(step);
-        });
 
         Recipe savedRecipe = this.recipeRepository.save(recipe);
 

@@ -1,6 +1,8 @@
 package pl.martyna.catering.app.entity.recipe;
 
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.entity.auth.Role;
 import pl.martyna.catering.app.entity.enums.DishType;
 import pl.martyna.catering.app.entity.enums.PostgreSQLEnumType;
@@ -24,6 +26,11 @@ public class Recipe implements Serializable {
 
     @Id
     @Column(name = "recipe_id")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "name")
@@ -53,6 +60,7 @@ public class Recipe implements Serializable {
     private Set<RecipeIngredient> ingredients = new HashSet<>();
 
     @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Set<RecipeStep> recipeSteps = new HashSet<>();
 

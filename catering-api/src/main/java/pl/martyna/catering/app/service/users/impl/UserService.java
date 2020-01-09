@@ -92,7 +92,7 @@ public class UserService implements IUserService {
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         User userToSave = new User(registerRequest.getUsername(), encodedPassword, registerRequest.getEmail(),
                 registerRequest.getFirstName(), registerRequest.getLastName(), registerRequest.getPhoneNumber());
-        userToSave.setId(UUID.randomUUID());
+
         userToSave.setEnabled(false);
 
         Set<Role> roles = new HashSet<>();

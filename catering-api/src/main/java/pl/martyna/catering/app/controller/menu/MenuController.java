@@ -37,11 +37,11 @@ public class MenuController {
     public ResponseEntity<?> addMenu(@RequestBody MenuInput menuInput){
 
         Menu menu = modelMapper.map(menuInput, Menu.class);
-        menu.setMenuEntries(new HashSet<>());
-        menuInput.getMenuEntries().forEach(menuEntryInput ->{
-            menu.getMenuEntries().add(
-                    menuEntryService.save(modelMapper.map(menuEntryInput, MenuEntry.class)));
-        });
+      //  menu.setMenuEntries(new HashSet<>());
+      //  menuInput.getMenuEntries().forEach(menuEntryInput ->{
+     //       menu.getMenuEntries().add(
+      //              menuEntryService.save(modelMapper.map(menuEntryInput, MenuEntry.class)));
+     //   });
        return ResponseEntity.ok( this.menuService.save(menu));
     }
 

@@ -20,7 +20,6 @@ public class RecipeIngredientService implements IRecipeIngredientService {
 
     @Override
     public RecipeIngredient save(RecipeIngredient recipeIngredient) {
-       // recipeIngredient.setId(UUID.randomUUID());
         return this.recipeIngredientRepository.save(recipeIngredient);
     }
 }

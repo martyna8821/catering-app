@@ -35,7 +35,6 @@ public class IngredientService implements IIngredientService {
     @Override
     public Ingredient saveIngredient(IngredientInput ingredient) {
         Ingredient ingredientToSave = new Ingredient();
-        ingredientToSave.setId(UUID.randomUUID());
         ingredientToSave.setName(ingredient.getName());
         ingredientToSave.setQuantity(ingredient.getQuantity());
         MeasurementUnit ingredientUnit = this.unitService.getUnitByAbbreviation(ingredient.getUnit());

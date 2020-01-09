@@ -22,7 +22,6 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order save(Order orderToSave) {
-        orderToSave.setId(UUID.randomUUID());
         orderToSave.setOrderDate(LocalDate.now());
         return this.orderRepository.save(orderToSave);
     }

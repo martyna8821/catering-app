@@ -3,6 +3,7 @@ package pl.martyna.catering.app.entity.ingredient;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
@@ -17,6 +18,11 @@ import java.util.UUID;
 public class Nutrition {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "name")

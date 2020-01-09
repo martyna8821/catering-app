@@ -2,6 +2,7 @@ package pl.martyna.catering.app.entity.diet;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.auth.User;
 import lombok.Getter;
@@ -19,6 +20,11 @@ import java.util.UUID;
 public class Diet implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "diet_id")
     private UUID id;
 

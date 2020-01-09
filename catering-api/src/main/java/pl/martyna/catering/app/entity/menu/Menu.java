@@ -2,6 +2,8 @@ package pl.martyna.catering.app.entity.menu;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.dto.resource.DietResource;
 import pl.martyna.catering.app.dto.resource.MenuEntryResource;
 import pl.martyna.catering.app.entity.diet.Diet;
@@ -19,6 +21,11 @@ import java.util.UUID;
 public class Menu implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "menu_id")
     private UUID id;
 
@@ -33,6 +40,7 @@ public class Menu implements Serializable {
     private String caloricVersion;
 
     @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
     private Set<MenuEntry> menuEntries;
 

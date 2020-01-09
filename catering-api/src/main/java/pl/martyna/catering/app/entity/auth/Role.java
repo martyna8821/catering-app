@@ -2,11 +2,9 @@ package pl.martyna.catering.app.entity.auth;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.UUID;
@@ -18,6 +16,11 @@ import java.util.UUID;
 public class Role implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column

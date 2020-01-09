@@ -31,7 +31,6 @@ public class DietService implements IDietService {
 
     @Override
     public Diet save(Diet dietToSave) {
-        dietToSave.setId(UUID.randomUUID());
         return this.dietRepository.save(dietToSave);
     }
 

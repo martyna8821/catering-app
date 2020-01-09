@@ -20,7 +20,6 @@ public class RecipeStepService implements IRecipeStepService {
 
     @Override
     public RecipeStep save(RecipeStep recipeStep) {
-        recipeStep.setId(UUID.randomUUID());
         return this.recipeStepRepository.save(recipeStep);
     }
 }

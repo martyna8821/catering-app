@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.entity.order;
 
+import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.entity.auth.Address;
 import pl.martyna.catering.app.entity.diet.Diet;
 import pl.martyna.catering.app.entity.auth.User;
@@ -17,6 +18,11 @@ import java.util.UUID;
 public class Order {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "order_id")
     private UUID id;
 

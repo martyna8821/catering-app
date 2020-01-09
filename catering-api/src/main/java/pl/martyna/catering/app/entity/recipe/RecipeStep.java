@@ -2,6 +2,7 @@ package pl.martyna.catering.app.entity.recipe;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -13,6 +14,11 @@ import java.util.UUID;
 public class RecipeStep {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "recipe_step_id")
     private UUID id;
 

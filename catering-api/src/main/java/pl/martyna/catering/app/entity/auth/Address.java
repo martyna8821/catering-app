@@ -3,6 +3,7 @@ package pl.martyna.catering.app.entity.auth;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +16,11 @@ import java.util.UUID;
 public class Address implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name="address_id")
     private UUID id;
 

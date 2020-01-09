@@ -40,7 +40,7 @@ public class EmailService  implements IEmailService {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            String htmlMessage = String.format("<h3>Kliknij link:<h3>\n" +
+            String htmlMessage = String.format("<h3>Kliknij w link, aby przejść do zmiany hasła:<h3>\n" +
                    " <form action=\"%s\">\n" +
                     "    <input type=\"submit\" value=\"Link\" />\n" +
                     "</form> \n", url);

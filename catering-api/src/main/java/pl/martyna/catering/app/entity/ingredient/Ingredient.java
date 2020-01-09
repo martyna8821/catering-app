@@ -4,6 +4,7 @@ package pl.martyna.catering.app.entity.ingredient;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.dto.input.NutritionInput;
 
 import javax.persistence.*;
@@ -18,6 +19,11 @@ import java.util.UUID;
 public class Ingredient implements Serializable {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "name")
