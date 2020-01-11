@@ -44,7 +44,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    public List<RecipeResource> getAllDiets(){
+    public List<RecipeResource> getAllRecipes(){
         List<Recipe> recipes = this.recipeService.getAl();
         return recipes.stream()
                 .map(recipe -> modelMapper.map(recipe, RecipeResource.class))

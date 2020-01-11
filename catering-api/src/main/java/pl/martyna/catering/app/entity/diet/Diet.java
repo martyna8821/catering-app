@@ -45,11 +45,6 @@ public class Diet implements Serializable {
     @Column(name = "caloric_version")
     private Set<String> caloricVersions = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "labels", joinColumns = @JoinColumn(name = "diet_id"))
-    @Column(name = "labels")
-    private Set<String> labels = new HashSet<>();
-
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;

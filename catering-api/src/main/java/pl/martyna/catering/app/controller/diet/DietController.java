@@ -63,4 +63,10 @@ public class DietController {
         return ResponseEntity.ok("Status changed");
     }
 
+    @PatchMapping("/{id}/caloric-version")
+    public DietResource addCaloricVersion(@PathVariable UUID id, @RequestBody String caloricVersion){
+       Diet changedDiet = this.dietService.addCaloricVersion(id, caloricVersion);
+        return this.modelMapper.map(changedDiet, DietResource.class);
+    }
+
 }

@@ -14,4 +14,5 @@ public interface IDietService {
     boolean removeDietById(UUID dietId);
     void deleteById(UUID id);
     void changeStatus(UUID id, boolean published);
+    Diet addCaloricVersion(UUID id, String caloricVersion);
 }

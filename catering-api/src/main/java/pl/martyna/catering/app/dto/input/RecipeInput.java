@@ -13,6 +13,5 @@ public class RecipeInput {
     private List<String> mealTypes = new ArrayList<>();
     private Set<RecipeIngredientInput> ingredients = new HashSet<>();
     private Set<RecipeStepInput> recipeSteps = new HashSet<>();
-    private List<String> labels = new ArrayList<>();
     private int mealWeight;
 }

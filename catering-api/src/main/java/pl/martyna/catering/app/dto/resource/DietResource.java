@@ -22,7 +22,5 @@ public class DietResource {
     private int price;
     private boolean published;
     private Set<String> caloricVersions = new HashSet<>();
-    private Set<String> labels = new HashSet<>();
     private String dietitianUsername;
-   // byte[] image;
 }

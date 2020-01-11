@@ -7,6 +7,7 @@ import pl.martyna.catering.app.entity.auth.User;
 import pl.martyna.catering.app.entity.diet.Diet;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class OrderResource {
@@ -19,4 +20,6 @@ public class OrderResource {
     private Address deliveryAddress;
     private User client;
     private LocalDate orderDate;
+    private LocalTime deliveryTime;
+    private int price;
 }

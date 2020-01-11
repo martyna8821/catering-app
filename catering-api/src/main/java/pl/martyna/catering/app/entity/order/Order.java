@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Getter
@@ -40,6 +41,12 @@ public class Order {
 
     @ManyToOne
     private User client;
+
+    @Column(name = "delivery_time")
+    private LocalTime deliveryTime;
+
+    @Column(name = "price")
+    private int price;
 
     @ManyToOne
     private Diet diet;

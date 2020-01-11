@@ -31,7 +31,6 @@ public class IngredientService implements IIngredientService {
         this.nutritionService = nutritionService;
     }
 
-
     @Override
     public Ingredient saveIngredient(IngredientInput ingredient) {
         Ingredient ingredientToSave = new Ingredient();
@@ -41,7 +40,7 @@ public class IngredientService implements IIngredientService {
         ingredientToSave.setMeasurementUnit(ingredientUnit);
         ingredientToSave.setAllergens(ingredient.getAllergens());
         ingredientToSave.setBrands(ingredient.getBrands());
-        ingredientToSave.setLabels(ingredient.getLabels());
+
         for(NutritionInput nut: ingredient.getNutrition()){
             ingredientToSave.addNutrition(
                     this.nutritionService.getByName(

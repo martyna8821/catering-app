@@ -19,7 +19,6 @@ public class IngredientInput {
     private String unit;
     private Set<String> allergens;
     private Set<String> brands;
-    private Set<String> labels;
     private Set<String> ingredientTypes;
     private Set<NutritionInput> nutrition;
 }

@@ -14,7 +14,6 @@ public class DietInput {
     private int price;
     private Set<String> caloricVersions = new HashSet<>();
     private Set<String> forbiddenIngredients = new HashSet<>();
-    private Set<String> labels = new HashSet<>();
     private String dietitianUsername;
     private byte[] image;
 }

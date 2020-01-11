@@ -1,16 +1,19 @@
-package pl.martyna.catering.app.entity.diet;
+package pl.martyna.catering.app.entity.recipe;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-@Data
 @Entity
-@Table(name = "labels")
-public class Label implements Serializable {
+@Table(name = "meal_types")
+@Data
+public class MealType implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -18,10 +21,10 @@ public class Label implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "label_id")
+    @Column(name = "meal_type_id")
     private UUID id;
 
     @Column(name = "name")
-    private  String name;
-
+    private String name;
+    
 }

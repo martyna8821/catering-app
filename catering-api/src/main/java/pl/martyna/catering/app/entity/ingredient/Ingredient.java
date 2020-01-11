@@ -46,12 +46,6 @@ public class Ingredient implements Serializable {
     @Column(name = "brands")
     private Set<String> brands = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ingredient_labels", joinColumns = @JoinColumn(name = "ingredient_id"))
-    @Column(name = "labels")
-    private Set<String> labels = new HashSet<>();
-
-
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,

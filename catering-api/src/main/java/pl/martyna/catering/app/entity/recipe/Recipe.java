@@ -3,14 +3,8 @@ package pl.martyna.catering.app.entity.recipe;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
-import pl.martyna.catering.app.entity.auth.Role;
-import pl.martyna.catering.app.entity.enums.DishType;
-import pl.martyna.catering.app.entity.enums.PostgreSQLEnumType;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import pl.martyna.catering.app.entity.ingredient.Ingredient;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,8 +14,6 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "recipes")
-@TypeDef(name = "pgsql_enum",
-        typeClass = PostgreSQLEnumType.class)
 public class Recipe implements Serializable {
 
     @Id
@@ -36,15 +28,12 @@ public class Recipe implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name = "meal_types", joinColumns = @JoinColumn(name = "recipe_id"))
-    @Column(columnDefinition = "meal_type", name = "meal_type")
-    private List<String> mealTypes = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "recipe_labels", joinColumns = @JoinColumn(name = "recipe_id"))
-    @Column(columnDefinition = "recipe_labels")
-    private List<String> labels = new ArrayList<>();
+    @ManyToMany
+    @JoinTable( name = "recipe_meal_types",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "meal_type_id")
+    )
+    private Set<MealType> mealTypes = new HashSet<>();
 
     @Column(name = "meal_weight")
     private int mealWeight;
@@ -63,6 +52,5 @@ public class Recipe implements Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Set<RecipeStep> recipeSteps = new HashSet<>();
-
 
 }
