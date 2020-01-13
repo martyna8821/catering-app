@@ -1,7 +1,9 @@
 package pl.martyna.catering.app.controller.auth;
 
+import pl.martyna.catering.app.dto.input.UserUpdateInput;
 import pl.martyna.catering.app.dto.resource.UserResource;
 import pl.martyna.catering.app.entity.auth.User;
+import pl.martyna.catering.app.exception.ResourceNotFoundException;
 import pl.martyna.catering.app.exception.UserNotFoundException;
 import pl.martyna.catering.app.dto.auth.RegisterRequest;
 import pl.martyna.catering.app.service.users.IUserService;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,6 +70,20 @@ public class UserController {
 
         userService.resetPassword(newPassword, id);
         return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser( @RequestBody UserUpdateInput userToUpdate,
+                            @PathVariable("id") UUID id){
+
+        User user = this.userService.findById(id).orElseThrow(ResourceNotFoundException::new);
+       user.setFirstName(userToUpdate.getFirstName());
+       user.setLastName(userToUpdate.getLastName());
+       user.setEmail(userToUpdate.getEmail());
+       user.setPhoneNumber(userToUpdate.getPhoneNumber());
+       user.setAddress(userToUpdate.getAddress());
+
+        return ResponseEntity.ok( this.userService.update(user));
     }
 
     @DeleteMapping("/{email}")

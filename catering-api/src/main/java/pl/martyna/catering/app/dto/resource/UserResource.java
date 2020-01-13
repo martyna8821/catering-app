@@ -14,6 +14,6 @@ public class UserResource {
     private String username;
     private String email;
     private String phoneNumber;
-    private AddressInput address;
+    private AddressResource address;
     private String[] roles;
 }

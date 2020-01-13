@@ -3,6 +3,7 @@ package pl.martyna.catering.app.entity.auth;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 
@@ -69,6 +70,7 @@ public class User implements Serializable {
     private String phoneNumber;
 
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
 

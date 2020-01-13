@@ -33,6 +33,6 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getUserOrders(UUID userId) {
-        return this.orderRepository.findByClient_Id(userId);
+        return this.orderRepository.findByUser(userId);
     }
 }

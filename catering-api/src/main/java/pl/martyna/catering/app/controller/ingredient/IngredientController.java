@@ -4,12 +4,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.martyna.catering.app.dto.input.IngredientInput;
+import pl.martyna.catering.app.dto.input.NutritionInput;
 import pl.martyna.catering.app.dto.resource.IngredientResource;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.exception.ResourceNotFoundException;
 import pl.martyna.catering.app.service.ingredient.IIngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import pl.martyna.catering.app.service.ingredient.IMeasurementUnitService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,6 +25,9 @@ public class IngredientController {
 
     private IIngredientService ingredientService;
     private ModelMapper modelMapper;
+    @Autowired
+    private IMeasurementUnitService measurementUnitService;
+
 
     @Autowired
     public IngredientController(IIngredientService ingredientService, ModelMapper modelMapper){
@@ -35,14 +40,26 @@ public class IngredientController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> add(@Valid @RequestBody List<IngredientInput> ingredients){
 
-        ingredients.forEach(this.ingredientService::saveIngredient);
+        ingredients.forEach(ingredient -> {
+            Ingredient ing =   this.modelMapper.map(ingredient, Ingredient.class);
+            ing.setMeasurementUnit(this.measurementUnitService.getUnitByAbbreviation("g"));
+           ingredient.getNutrition().forEach( nutritionInput -> {
+                if(nutritionInput.getPolishName().equals("Kalorie")){
+                    if(nutritionInput.getValue() > 0.00){
+                        ing.setCaloricValue( String.valueOf(nutritionInput.getValue()));
+                        this.ingredientService.save(ing);
+                    }
+                }
+            });
+        });
         return new ResponseEntity<>("successfully added ingredients", HttpStatus.CREATED);
     }
 
     @PostMapping("")
     public ResponseEntity<?> addIngredient(@RequestBody IngredientInput ingredientInput){
 
-        Ingredient savedIngredient = this.ingredientService.saveIngredient(ingredientInput);
+        Ingredient savedIngredient = this.ingredientService.save(
+                this.modelMapper.map(ingredientInput, Ingredient.class));
         return new ResponseEntity<>(savedIngredient, HttpStatus.CREATED);
     }
 

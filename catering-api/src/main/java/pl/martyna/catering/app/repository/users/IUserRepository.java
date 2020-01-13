@@ -20,6 +20,12 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     Boolean existsUserByUsername(String username);
     Boolean existsUserByEmail(String email);
 
+  //  User save(User user, UUID id);
+    User save(User user);
+
+    User saveAndFlush(User user);
+
+
     @Transactional
     void deleteByEmail(String email);
 
@@ -32,7 +38,7 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     @Transactional
     @Query(value = "update users set first_name = ?1, last_name = ?2 , username = ?3, " +
             "email = ?4 where user_id = ?5" ,nativeQuery = true)
-    void updateUser(String firstName, String lastName, String userName, String email, UUID id);
+    void updateUser(String firstName, String lastName, String username, String email, UUID id);
 
     @Modifying
     @Transactional

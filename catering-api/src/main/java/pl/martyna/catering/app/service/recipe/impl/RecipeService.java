@@ -2,20 +2,15 @@ package pl.martyna.catering.app.service.recipe.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.martyna.catering.app.entity.ingredient.Ingredient;
-import pl.martyna.catering.app.entity.ingredient.IngredientNutrition;
-import pl.martyna.catering.app.entity.ingredient.Nutrition;
 import pl.martyna.catering.app.entity.recipe.Recipe;
 import pl.martyna.catering.app.entity.recipe.RecipeIngredient;
 import pl.martyna.catering.app.repository.recipe.IRecipeRepository;
-import pl.martyna.catering.app.repository.recipe.IRecipeStepRepository;
 import pl.martyna.catering.app.service.recipe.IRecipeIngredientService;
 import pl.martyna.catering.app.service.recipe.IRecipeService;
 import pl.martyna.catering.app.service.recipe.IRecipeStepService;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 public class RecipeService implements IRecipeService {
@@ -55,20 +50,11 @@ public class RecipeService implements IRecipeService {
     }
 
     private double calculateCaloricValue(Set<RecipeIngredient> ingredients){
-        return ingredients.stream()
-                .mapToDouble( ingredient -> {
-                    return ingredient.getIngredient()
-                            .getNutrition()
-                            .stream()
-                                .filter( n ->
-                                         n.getNutrition()
-                                                    .getName()
-                                                    .equals("Energia")
-                                )
-                                .mapToDouble(nutrition ->
-                                    nutrition.getValue()*ingredient.getValue()/100
-                                ).sum();
-                }).sum();
+
+       return ingredients.stream().mapToDouble( recipeIngredient ->
+           Double.parseDouble(recipeIngredient.getIngredient().getCaloricValue())
+               * recipeIngredient.getValue() /100
+       ).sum();
     }
 
     @Override

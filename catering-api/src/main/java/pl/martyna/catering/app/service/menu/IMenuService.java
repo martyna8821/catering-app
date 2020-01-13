@@ -9,5 +9,5 @@ public interface IMenuService {
 
     Menu save(Menu menuToSave);
     List<Menu> getAll();
-    List<Menu> getDietsMenu(UUID dietId);
+    List<Menu> getClientsMenus(UUID userId);
 }

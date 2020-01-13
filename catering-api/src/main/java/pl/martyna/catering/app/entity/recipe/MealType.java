@@ -26,5 +26,8 @@ public class MealType implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "order_number")
+    private int orderNumber;
     
 }

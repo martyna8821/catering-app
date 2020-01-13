@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
@@ -15,10 +16,8 @@ import java.util.Set;
 public class IngredientInput {
 
     private String name;
-    private double quantity;
     private String unit;
-    private Set<String> allergens;
-    private Set<String> brands;
-    private Set<String> ingredientTypes;
+    private Set<String> allergens = new HashSet<>();;
+    private Set<String> brands = new HashSet<>();;
     private Set<NutritionInput> nutrition;
 }

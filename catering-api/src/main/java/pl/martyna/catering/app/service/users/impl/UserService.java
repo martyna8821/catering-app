@@ -73,11 +73,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void updateUser(String firstName, String lastName, String userName, String email, UUID id) {
-        userRepository.updateUser(firstName, lastName, userName, email, id );
-    }
-
-    @Override
     public void resetPassword(String newPassword, UUID userId) {
         userRepository.resetPassword(passwordEncoder.encode(newPassword), userId);
     }
@@ -107,10 +102,10 @@ public class UserService implements IUserService {
         userToSave.setRoles(roles);
        // modelMapper.map(registerRequest.getAddress(), Address.class).
          //       .collect(Collectors.toList());
-        registerRequest.getAddress().setId(UUID.randomUUID());
-        addressRepository.save(registerRequest.getAddress());
+       // registerRequest.getAddress().setId(UUID.randomUUID());
+       // addressRepository.save(registerRequest.getAddress());
         userToSave.setAddress(registerRequest.getAddress());
-        return  userRepository.saveAndFlush(userToSave);
+        return  userRepository.save(userToSave);
     }
 
     @Override
@@ -126,6 +121,12 @@ public class UserService implements IUserService {
     @Override
     public void deleteByEmail(String email){
         this.userRepository.deleteByEmail(email);
+    }
+
+
+    @Override
+    public User update(User user){
+        return this.userRepository.save(user);
     }
 
 }

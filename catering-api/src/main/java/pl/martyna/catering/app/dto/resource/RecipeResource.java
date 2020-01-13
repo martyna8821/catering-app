@@ -6,6 +6,7 @@ import pl.martyna.catering.app.entity.recipe.MealType;
 import pl.martyna.catering.app.entity.recipe.RecipeIngredient;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,9 +15,9 @@ public class RecipeResource implements Serializable {
 
     private String id;
     private String name;
-    private List<MealType> mealTypes;
-    private Set<RecipeIngredientResource> ingredients;
-    private Set<RecipeStepResource> recipeSteps;
+    private Set<MealType> mealTypes = new HashSet<>();;
+    private Set<RecipeIngredientResource> ingredients =new HashSet<>();;
+    private Set<RecipeStepResource> recipeSteps = new HashSet<>();;
     private Integer mealWeight;
     private Integer caloricValue;
 }

@@ -1,18 +1,14 @@
 package pl.martyna.catering.app.service.ingredient;
 
 import pl.martyna.catering.app.dto.input.IngredientInput;
-import pl.martyna.catering.app.dto.input.NutritionInput;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 
-import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public interface IIngredientService {
 
-    Ingredient saveIngredient(IngredientInput ingredient);
+    Ingredient save(Ingredient ingredient);
 
     List<Ingredient> getAll();
     Ingredient getById(UUID id);
