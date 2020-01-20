@@ -27,12 +27,14 @@ public class Address implements Serializable {
     @Column(name = "street")
     private String street;
 
-    @Column(name = "house_number")
+    @Column(name = "house_number",
+            length = 20)
     private String houseNumber;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "zip_code")
+    @Column(name = "zip_code",
+            length = 10)
     private String zipCode;
 }

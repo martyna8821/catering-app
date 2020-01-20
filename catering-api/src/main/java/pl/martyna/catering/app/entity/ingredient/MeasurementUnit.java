@@ -28,7 +28,8 @@ public class MeasurementUnit {
     @Column(name = "basic_value")
     private int basicValue;
 
-    @Column(name= "abbreviation")
+    @Column(name= "abbreviation",
+            length = 20)
     private String abbreviation;
 
 }

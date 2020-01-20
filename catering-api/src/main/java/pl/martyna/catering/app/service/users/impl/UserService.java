@@ -88,8 +88,6 @@ public class UserService implements IUserService {
         User userToSave = new User(registerRequest.getUsername(), encodedPassword, registerRequest.getEmail(),
                 registerRequest.getFirstName(), registerRequest.getLastName(), registerRequest.getPhoneNumber());
 
-        userToSave.setEnabled(false);
-
         Set<Role> roles = new HashSet<>();
         registerRequest.getRoles().forEach(role ->
             roles.add( roleRepository
@@ -100,10 +98,6 @@ public class UserService implements IUserService {
 
 
         userToSave.setRoles(roles);
-       // modelMapper.map(registerRequest.getAddress(), Address.class).
-         //       .collect(Collectors.toList());
-       // registerRequest.getAddress().setId(UUID.randomUUID());
-       // addressRepository.save(registerRequest.getAddress());
         userToSave.setAddress(registerRequest.getAddress());
         return  userRepository.save(userToSave);
     }

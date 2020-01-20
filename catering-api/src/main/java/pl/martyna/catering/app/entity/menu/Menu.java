@@ -40,7 +40,8 @@ public class Menu implements Serializable {
     @JoinColumn(name = "diet_id", referencedColumnName = "diet_id")
     private Diet diet;
 
-    @Column(name = "caloric_version")
+    @Column(name = "caloric_version",
+            length = 50)
     private String caloricVersion;
 
     @OneToMany

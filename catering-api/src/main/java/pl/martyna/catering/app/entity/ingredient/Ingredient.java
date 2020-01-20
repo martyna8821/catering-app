@@ -27,6 +27,10 @@ public class Ingredient implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "caloric_value",
+            length = 50)
+    private String caloricValue;
+
     @ManyToOne
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "measurement_unit_id", referencedColumnName = "measurement_unit_id")
@@ -44,6 +48,4 @@ public class Ingredient implements Serializable {
     @Column(name = "brands")
     private Set<String> brands = new HashSet<>();
 
-   @Column(name = "caloric_value")
-    private String caloricValue;
 }

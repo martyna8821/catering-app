@@ -19,8 +19,9 @@ import java.util.UUID;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"username", "email"})})
+@Table(name = "users",
+       uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"username", "email"})})
 public class User implements Serializable {
 
     public User(@NotBlank String username, @NotBlank String password,
@@ -66,16 +67,14 @@ public class User implements Serializable {
     @NaturalId
     private String email;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",
+            length = 12)
     private String phoneNumber;
 
     @ManyToOne
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
-
-    @Column
-    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",

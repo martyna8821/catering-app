@@ -38,7 +38,8 @@ public class Order {
     @Column(name = "ending_date")
     private LocalDate endDate;
 
-    @Column(name = "caloric_version")
+    @Column(name = "caloric_version",
+            length = 50)
     private String caloricVersion;
 
     @ManyToOne
