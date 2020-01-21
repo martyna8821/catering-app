@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.martyna.catering.app.dto.input.RecipeInput;
 import pl.martyna.catering.app.dto.resource.RecipeResource;
 import pl.martyna.catering.app.entity.recipe.Recipe;
-import pl.martyna.catering.app.entity.recipe.RecipeIngredient;
-import pl.martyna.catering.app.entity.recipe.RecipeIngredientId;
 import pl.martyna.catering.app.service.recipe.IRecipeService;
 
 import java.util.List;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 public class RecipeController {
 
 
-    IRecipeService recipeService;
+    private IRecipeService recipeService;
     private ModelMapper modelMapper;
 
     @Autowired
@@ -39,17 +37,18 @@ public class RecipeController {
             ingredient.setRecipe(recipe);
             ingredient.getId().setRecipe(recipe.getId());
         });
-        Recipe saved = this.recipeService.add(recipe);
-        return  ResponseEntity.ok(modelMapper.map(saved, RecipeResource.class));
+        RecipeResource savedRecipe = modelMapper.map( this.recipeService.add(recipe), RecipeResource.class);
+        return  new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<RecipeResource> getAllRecipes(){
-        List<Recipe> recipes = this.recipeService.getAl();
-        return recipes.stream()
-                .map(recipe -> modelMapper.map(recipe, RecipeResource.class))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getAllRecipes(){
+        List<RecipeResource> recipesList = this.recipeService.getAl()
+                                                            .stream()
+                                                            .map(recipe ->
+                                                                    modelMapper.map(recipe, RecipeResource.class))
+                                                            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(recipesList, HttpStatus.OK);
     }
-
-
 }

@@ -1,7 +1,7 @@
 package pl.martyna.catering.app.security.service;
 
 import pl.martyna.catering.app.entity.auth.User;
-import pl.martyna.catering.app.repository.users.IUserRepository;
+import pl.martyna.catering.app.repository.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

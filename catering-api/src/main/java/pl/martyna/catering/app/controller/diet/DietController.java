@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,45 +29,40 @@ public class DietController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("")
-    //@ResponseStatus(HttpStatus.CREATED)
-    public Diet addDiet(@RequestBody DietInput dietToCreate){
+    @PostMapping
+    public ResponseEntity<?> addDiet(@RequestBody DietInput dietToCreate){
         Diet diet = modelMapper.map(dietToCreate, Diet.class);
-        return this.dietService.save(diet);
+        return new ResponseEntity<>(this.dietService.save(diet), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<DietResource> getAllDiets(){
-        List<Diet> diets = this.dietService.getAll();
-        return diets.stream()
-                .map(diet -> modelMapper.map(diet, DietResource.class))
-                .collect(Collectors.toList());
-    }
+    public ResponseEntity allDiets(){
+        List<DietResource> diets = this.dietService.getAll()
+                                                    .stream()
+                                                    .map(diet ->
+                                                            modelMapper.map(diet, DietResource.class))
+                                                    .collect(Collectors.toList());
 
-
-
-    @PostMapping("/{id}")
-    public ResponseEntity<?> updateDiet(@RequestBody UUID id){
-     return null;
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> deteleById(@PathVariable UUID id){
-        this.dietService.removeDietById(id);
-        return ResponseEntity.ok("Successfuly deleted");
+        return new ResponseEntity<>(diets, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/{published}")
     public ResponseEntity<?> changeStatus(@PathVariable UUID id, @PathVariable Boolean published){
         this.dietService.changeStatus(id, published);
-        return ResponseEntity.ok("Status changed");
+        return new ResponseEntity<>("Status changed", HttpStatus.OK);
     }
 
     @PatchMapping("/{id}/caloric-version")
-    public DietResource addCaloricVersion(@PathVariable UUID id, @RequestBody String caloricVersion){
-       Diet changedDiet = this.dietService.addCaloricVersion(id, caloricVersion);
-        return this.modelMapper.map(changedDiet, DietResource.class);
+    public ResponseEntity<?> addCaloricVersion(@PathVariable UUID id, @RequestBody String caloricVersion){
+        Diet changedDiet = this.dietService.addCaloricVersion(id, caloricVersion);
+
+        return new ResponseEntity<>( this.modelMapper.map( changedDiet, DietResource.class),
+                                     HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable UUID id){
+        this.dietService.removeDietById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

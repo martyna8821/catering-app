@@ -57,4 +57,6 @@ public class Order {
     @ManyToOne
     private Address deliveryAddress;
 
+    public Order(User user) {
+    }
 }

@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.entity.menu;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Entity
 @Table(name = "menu")
 public class Menu implements Serializable {
@@ -50,4 +52,6 @@ public class Menu implements Serializable {
     @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
     private Set<MenuEntry> menuEntries = new HashSet<>();
 
+    public Menu(UUID randomUUID, LocalDate of, Diet diet, String s) {
+    }
 }

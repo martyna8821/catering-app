@@ -20,8 +20,8 @@ public interface IMenuRepository extends JpaRepository<Menu, UUID> {
 
     @Transactional
     @Query(value = "select * from menu m where m.diet_id = ?1 " +
-                        "and m.menu_date BETWEEN ?2 AND ?3 AND m.caloric_version = ?4",
-        nativeQuery = true)
+            "and m.menu_date BETWEEN ?2 AND ?3 AND m.caloric_version = ?4",
+            nativeQuery = true)
     List<Menu> findFromOrder(UUID dietId, LocalDate start, LocalDate end, String caloricVersion);
 
     @Transactional

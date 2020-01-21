@@ -1,12 +1,9 @@
 package pl.martyna.catering.app.entity.diet;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.auth.User;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +13,8 @@ import java.util.UUID;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "diets")
 public class Diet implements Serializable {
 
@@ -48,4 +47,7 @@ public class Diet implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;
+
+    public <E> Diet(UUID randomUUID, String test_diet, String description, int i, boolean b, Set<E> es) {
+    }
 }

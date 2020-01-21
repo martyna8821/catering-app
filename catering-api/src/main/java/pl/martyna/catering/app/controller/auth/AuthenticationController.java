@@ -1,5 +1,7 @@
 package pl.martyna.catering.app.controller.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.martyna.catering.app.entity.auth.PasswordResetToken;
 import pl.martyna.catering.app.entity.auth.User;
 import pl.martyna.catering.app.exception.UserNotFoundException;
@@ -51,41 +53,42 @@ public class AuthenticationController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwtToken = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new LoginResponse( jwtToken, userDetails.getUsername(),
-                userDetails.getId().toString(), userDetails.getAuthorities()));
+
+        return new ResponseEntity<>( new LoginResponse( jwtToken, userDetails.getUsername(),
+                                           userDetails.getId().toString(), userDetails.getAuthorities()),
+                                     HttpStatus.CREATED);
     }
 
     @PostMapping("/password-token")
-    public ResponseEntity<?> sendNewPasswordToken(@Valid @RequestBody String userEmail,
-                                              HttpServletRequest request){
+    public ResponseEntity<?> sendNewPasswordToken(@Valid @RequestBody String userEmail, HttpServletRequest request){
 
         User user = userService.findByEmail(userEmail)
                                     .orElseThrow(UserNotFoundException::new);
 
         PasswordResetToken passwordToken = passwordTokenService.createTokenForUser(user);
         emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),
-              passwordToken.getToken(), user);
+                                            passwordToken.getToken(), user);
 
         return new ResponseEntity<>(passwordToken, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/password-token/{token}")
-    public ResponseEntity<?> deletePasswordToken(@PathVariable String token){
-        passwordTokenService.delete(token);
-        return new ResponseEntity<>("Reset password token successfully deleted", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/password-token/{token}/user/id")
     public ResponseEntity<?> getUserIdFromToken(@PathVariable String token){
 
         UUID userId = passwordTokenService.getUserFromToken(token)
-                .map(User::getId)
-             //   .map(UUID::toString)
-                .orElseThrow(UserNotFoundException::new);
+                                                .map(User::getId)
+                                                .orElseThrow(UserNotFoundException::new);
 
         return new ResponseEntity<>(userId, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/password-token/{token}")
+    public ResponseEntity<?> deletePasswordToken(@PathVariable String token){
+        passwordTokenService.delete(token);
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 }

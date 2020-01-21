@@ -2,6 +2,8 @@ package pl.martyna.catering.app.controller.order;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.martyna.catering.app.dto.input.DietInput;
 import pl.martyna.catering.app.dto.input.OrderInput;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/orders")
 public class OrderController {
 
-    IOrderService orderService;
+    private IOrderService orderService;
     private ModelMapper modelMapper;
 
     @Autowired
@@ -30,28 +32,32 @@ public class OrderController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("")
-    public Order addOrder(@RequestBody OrderInput orderToCreate){
-        Order order= modelMapper.map(orderToCreate, Order.class);
-        return this.orderService.save(order);
+    @PostMapping
+    public ResponseEntity<?> addOrder(@RequestBody OrderInput orderToCreate){
+        Order savedOrder = this.orderService.save( modelMapper.map(orderToCreate, Order.class) );
+        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<OrderResource> getAllDiets(){
-        List<Order> orders = this.orderService.getAll();
-        return orders.stream()
-                .map(order -> modelMapper.map(order, OrderResource.class))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getAllDiets(){
+        List<OrderResource> ordersList = this.orderService.getAll()
+                                                            .stream()
+                                                            .map(order ->
+                                                                    modelMapper.map(order, OrderResource.class))
+                                                            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(ordersList, HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
-    public List<OrderResource> getUserOrders(@PathVariable UUID id){
-        List<Order> userOrders = this.orderService.getUserOrders(id);
-        return userOrders.stream()
-                .map(order -> modelMapper.map(order, OrderResource.class))
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getUserOrders(@PathVariable UUID id){
+        List<OrderResource> userOrdersList = this.orderService.getUserOrders(id)
+                                                            .stream()
+                                                            .map(order ->
+                                                                    modelMapper.map(order, OrderResource.class))
+                                                            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(userOrdersList, HttpStatus.OK);
 
      }
-
-
 }
