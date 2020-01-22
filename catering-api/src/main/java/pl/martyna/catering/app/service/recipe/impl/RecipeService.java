@@ -16,20 +16,18 @@ import java.util.Set;
 public class RecipeService implements IRecipeService {
 
     private IRecipeRepository recipeRepository;
-    private IRecipeStepService recipeStepService;
     private IRecipeIngredientService recipeIngredientService;
 
     @Autowired
     public RecipeService(IRecipeRepository recipeRepository,
-                         IRecipeStepService recipeStepService,
                          IRecipeIngredientService recipeIngredientService){
+
         this.recipeRepository = recipeRepository;
-        this.recipeStepService = recipeStepService;
         this.recipeIngredientService = recipeIngredientService;
     }
 
     @Override
-    public Recipe add(Recipe recipe) {
+    public Recipe save(Recipe recipe) {
         recipe.setMealWeight(calculateWeight(recipe.getIngredients()));
         recipe.setCaloricValue(calculateCaloricValue(recipe.getIngredients(), recipe.getMealWeight()));
 
@@ -39,7 +37,7 @@ public class RecipeService implements IRecipeService {
             this.recipeIngredientService.save(ingredient);
         });
 
-            return savedRecipe;
+        return savedRecipe;
     }
 
     private int calculateWeight(Set<RecipeIngredient> ingredients){
@@ -54,12 +52,12 @@ public class RecipeService implements IRecipeService {
        return ingredients.stream().mapToDouble( recipeIngredient ->
                        Double.parseDouble(recipeIngredient.getIngredient().getCaloricValue())
                        * recipeIngredient.getValue()
-                       / 100
-                    ).sum() * 100 / mealWeight;
+                       / 100)
+                      .sum() * 100 / mealWeight;
     }
 
     @Override
-    public List<Recipe> getAl() {
+    public List<Recipe> getAll() {
         return this.recipeRepository.findAll();
     }
 }

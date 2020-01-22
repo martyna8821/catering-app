@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.entity.menu;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import pl.martyna.catering.app.dto.resource.RecipeResource;
@@ -10,13 +11,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "menu_entries")
-public class MenuEntry {
+@NoArgsConstructor
+public class MenuEntry implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")

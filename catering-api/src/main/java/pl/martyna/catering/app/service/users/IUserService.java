@@ -10,17 +10,13 @@ import java.util.UUID;
 public interface IUserService {
 
     User findByUsername(String username);
-    Optional<User> findByEmail(String email);
-    Optional<User> findById(UUID id);
+    User findByEmail(String email);
+    User findById(UUID id);
     List<User> findAll();
     boolean existsUserByUsername(String username);
     boolean existsUserByEmail(String email);
-    void delete(UUID id);
     void resetPassword(String newPassword, UUID userId);
-    void updateRole(UUID roleId, UUID userId);
-    User save(RegisterRequest registerRequest);
-    Optional<Boolean> validateOldPassword(String username, String oldPassword);
+    User save(User user);
     void deleteByEmail(String email);
-
     User update(User user);
 }

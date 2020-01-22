@@ -1,18 +1,17 @@
 package pl.martyna.catering.app.entity.recipe;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "meal_types")
 @Data
+@NoArgsConstructor
 public class MealType implements Serializable {
 
     @Id

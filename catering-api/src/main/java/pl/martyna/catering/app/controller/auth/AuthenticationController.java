@@ -66,8 +66,7 @@ public class AuthenticationController {
     @PostMapping("/password-token")
     public ResponseEntity<?> sendNewPasswordToken(@Valid @RequestBody String userEmail, HttpServletRequest request){
 
-        User user = userService.findByEmail(userEmail)
-                                    .orElseThrow(UserNotFoundException::new);
+        User user = userService.findByEmail(userEmail);
 
         PasswordResetToken passwordToken = passwordTokenService.createTokenForUser(user);
         emailService.sendPasswordResetToken(request.getContextPath(), request.getLocale(),

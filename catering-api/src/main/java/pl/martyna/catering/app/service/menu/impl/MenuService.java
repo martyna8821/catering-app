@@ -19,16 +19,12 @@ import java.util.stream.Collectors;
 public class MenuService implements IMenuService {
 
     private IMenuRepository menuRepository;
-    private IMenuEntryService menuEntryService;
     private IOrderRepository orderRepository;
 
     @Autowired
-    public MenuService(IMenuRepository menuRepository,
-                       IMenuEntryService menuEntryService,
-                       IOrderRepository orderRepository){
+    public MenuService(IMenuRepository menuRepository, IOrderRepository orderRepository){
 
         this.menuRepository = menuRepository;
-        this.menuEntryService = menuEntryService;
         this.orderRepository = orderRepository;
     }
 
@@ -47,11 +43,13 @@ public class MenuService implements IMenuService {
 
         List<Order> orders = this.orderRepository.findByUser(userId);
         List<Menu> menus = new ArrayList<>();
-        orders.forEach( order -> {
-            menus.addAll(this.menuRepository.findFromOrder(
-                    order.getDiet().getId(), order.getStartDate(), order.getEndDate(),
-                    order.getCaloricVersion()));
-        });
+        orders.forEach( order ->
+                menus.addAll(this.menuRepository.findFromOrder(
+                                                order.getDiet().getId(),
+                                                order.getStartDate(),
+                                                order.getEndDate(),
+                                                order.getCaloricVersion())));
+
         return menus;
     }
 }

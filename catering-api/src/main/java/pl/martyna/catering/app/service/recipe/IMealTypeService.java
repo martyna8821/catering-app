@@ -4,5 +4,5 @@ import pl.martyna.catering.app.entity.recipe.MealType;
 
 public interface IMealTypeService {
 
-MealType findByName(String name);
+    MealType findByName(String name);
 }

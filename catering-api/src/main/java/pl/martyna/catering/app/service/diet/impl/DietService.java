@@ -18,15 +18,10 @@ import java.util.UUID;
 public class DietService implements IDietService {
 
     private IDietRepository dietRepository;
-    private IUserService userService;
-    private ModelMapper modelMapper;
 
     @Autowired
-    public DietService(IDietRepository dietRepository,
-                       IUserService userService ,ModelMapper modelMapper){
+    public DietService(IDietRepository dietRepository){
         this.dietRepository = dietRepository;
-        this.userService = userService;
-        this.modelMapper = modelMapper;
     }
 
 
@@ -38,16 +33,6 @@ public class DietService implements IDietService {
     @Override
     public List<Diet> getAll() {
         return this.dietRepository.findAll();
-    }
-
-    @Override
-    public List<Diet> getById(UUID dietId) {
-        return null;
-    }
-
-    @Override
-    public boolean removeDietById(UUID dietId) {
-        return false;
     }
 
     @Override
@@ -63,6 +48,7 @@ public class DietService implements IDietService {
     @Override
     public Diet addCaloricVersion(UUID id, String caloricVersion) {
          this.dietRepository.addCaloricVersion(id, caloricVersion);
-         return  this.dietRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+         return  this.dietRepository.findById(id)
+                                    .orElseThrow(ResourceNotFoundException::new);
     }
 }

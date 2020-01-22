@@ -2,6 +2,7 @@ package pl.martyna.catering.app.entity.ingredient;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "ingredients")
+@NoArgsConstructor
 public class Ingredient implements Serializable {
 
     @Id

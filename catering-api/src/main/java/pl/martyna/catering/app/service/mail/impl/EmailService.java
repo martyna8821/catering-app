@@ -20,8 +20,12 @@ public class EmailService  implements IEmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
+    private JavaMailSender emailSender;
+
     @Autowired
-    public JavaMailSender emailSender;
+    public EmailService(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
 
     @Override
     public void sendSimpleMessage(
@@ -39,7 +43,7 @@ public class EmailService  implements IEmailService {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            String htmlMessage = String.format("<h3>Kliknij w link, aby przejść do zmiany hasła:<h3>\n" +
+            String htmlMessage = String.format("<h3>Kliknij w link, aby zmienic haslo:<h3>\n" +
                    " <form action=\"%s\">\n" +
                     "    <input type=\"submit\" value=\"Link\" />\n" +
                     "</form> \n", url);

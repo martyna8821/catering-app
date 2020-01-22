@@ -9,11 +9,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
-@NoArgsConstructor
 @Table(name = "password_reset_token")
+@Getter @Setter
+@NoArgsConstructor
 public class PasswordResetToken implements Serializable {
 
     private static final int EXPIRATION_TIME = 60 * 48;

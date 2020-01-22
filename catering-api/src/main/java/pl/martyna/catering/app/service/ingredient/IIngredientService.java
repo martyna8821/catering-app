@@ -9,9 +9,7 @@ import java.util.UUID;
 public interface IIngredientService {
 
     Ingredient save(Ingredient ingredient);
-
     List<Ingredient> getAll();
     Ingredient getById(UUID id);
-    boolean removeById(UUID id);
     Ingredient getByName(String ingredientName);
 }

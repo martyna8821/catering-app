@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRecipeService {
 
-    Recipe add(Recipe recipe);
-    List<Recipe> getAl();
+    Recipe save(Recipe recipe);
+    List<Recipe> getAll();
 
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class RecipeIngredientService implements IRecipeIngredientService {
 
-    IRecipeIngredientRepository recipeIngredientRepository;
+    private IRecipeIngredientRepository recipeIngredientRepository;
 
     @Autowired
     public RecipeIngredientService(IRecipeIngredientRepository recipeIngredientRepository){

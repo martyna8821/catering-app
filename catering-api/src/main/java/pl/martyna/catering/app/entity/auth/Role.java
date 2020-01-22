@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.entity.auth;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,10 +10,10 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "roles")
+@Getter @Setter
+@NoArgsConstructor
 public class Role implements Serializable {
 
     @Id
@@ -26,12 +27,6 @@ public class Role implements Serializable {
     @Column
     @NotBlank
     private String role;
-
-    public Role() {}
-
-    public Role(String role) {
-        this.role = role;
-    }
 
     @Override
     public String toString(){

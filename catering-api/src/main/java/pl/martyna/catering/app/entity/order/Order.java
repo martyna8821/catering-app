@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.entity.order;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import pl.martyna.catering.app.entity.auth.Address;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -17,7 +19,8 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "orders")
-public class Order {
+@NoArgsConstructor
+public class Order implements Serializable{
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -58,5 +61,6 @@ public class Order {
     private Address deliveryAddress;
 
     public Order(User user) {
+        this.client = user;
     }
 }

@@ -23,7 +23,7 @@ public class RecipeIngredientId implements Serializable {
     @Column(name = "recipe")
     private  UUID recipe;
 
-    public RecipeIngredientId(UUID ingredient, UUID recipe) {
+    RecipeIngredientId(UUID ingredient, UUID recipe) {
         this.ingredient = ingredient;
         this.recipe = recipe;
     }

@@ -4,5 +4,5 @@ import pl.martyna.catering.app.entity.ingredient.MeasurementUnit;
 
 public interface IMeasurementUnitService {
 
-    public MeasurementUnit getUnitByAbbreviation(String  abbreviation);
+    MeasurementUnit getUnitByAbbreviation(String abbreviation);
 }

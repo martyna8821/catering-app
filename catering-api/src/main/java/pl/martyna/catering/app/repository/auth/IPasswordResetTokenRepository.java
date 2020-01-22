@@ -14,5 +14,6 @@ public interface IPasswordResetTokenRepository
 
     @Transactional
     void deleteByToken(String token);
+
     Optional<PasswordResetToken> findByToken(String token);
 }

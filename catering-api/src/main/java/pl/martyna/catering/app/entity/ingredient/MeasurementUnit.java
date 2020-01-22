@@ -1,17 +1,20 @@
 package pl.martyna.catering.app.entity.ingredient;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "measurement_units")
-public class MeasurementUnit {
+@NoArgsConstructor
+public class MeasurementUnit implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")

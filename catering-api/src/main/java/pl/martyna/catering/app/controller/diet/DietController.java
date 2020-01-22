@@ -62,7 +62,7 @@ public class DietController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable UUID id){
-        this.dietService.removeDietById(id);
+        this.dietService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

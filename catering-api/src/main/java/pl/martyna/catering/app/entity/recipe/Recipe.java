@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.entity.recipe;
 
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "recipes")
+@NoArgsConstructor
 public class Recipe implements Serializable {
 
     @Id

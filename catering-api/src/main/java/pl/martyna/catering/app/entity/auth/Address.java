@@ -1,7 +1,7 @@
 package pl.martyna.catering.app.entity.auth;
 
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,10 +9,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
-
 @Entity
 @Table(name="addresses")
 @Getter @Setter
+@NoArgsConstructor
 public class Address implements Serializable {
 
     @Id

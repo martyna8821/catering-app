@@ -2,7 +2,6 @@ package pl.martyna.catering.app.entity.diet;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import pl.martyna.catering.app.entity.ingredient.Ingredient;
 import pl.martyna.catering.app.entity.auth.User;
 
 import javax.persistence.*;
@@ -48,6 +47,12 @@ public class Diet implements Serializable {
     @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;
 
-    public <E> Diet(UUID randomUUID, String test_diet, String description, int i, boolean b, Set<E> es) {
+    public Diet(UUID id, String name, String description, int price, boolean published, Set<String> caloricVersions) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.published = published;
+        this.caloricVersions = caloricVersions;
     }
 }

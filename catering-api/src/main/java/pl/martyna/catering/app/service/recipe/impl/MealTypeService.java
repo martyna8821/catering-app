@@ -21,6 +21,6 @@ public class MealTypeService implements IMealTypeService {
     @Override
     public MealType findByName(String name) {
         return this.mealTypeRepository.findAllByName(name)
-                .orElseThrow(ResourceNotFoundException::new);
+                                      .orElseThrow(ResourceNotFoundException::new);
     }
 }

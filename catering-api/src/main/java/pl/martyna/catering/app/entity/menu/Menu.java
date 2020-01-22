@@ -3,6 +3,7 @@ package pl.martyna.catering.app.entity.menu;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "menu")
+@NoArgsConstructor
 public class Menu implements Serializable {
 
     @Id
@@ -52,6 +54,11 @@ public class Menu implements Serializable {
     @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
     private Set<MenuEntry> menuEntries = new HashSet<>();
 
-    public Menu(UUID randomUUID, LocalDate of, Diet diet, String s) {
+    public Menu(UUID id, LocalDate menuDate, Diet diet, String caloricVersion) {
+        this.id = id;
+        this.menuDate = menuDate;
+        this.diet = diet;
+        this.caloricVersion = caloricVersion;
     }
+
 }

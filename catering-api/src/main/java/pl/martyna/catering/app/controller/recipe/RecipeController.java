@@ -37,13 +37,13 @@ public class RecipeController {
             ingredient.setRecipe(recipe);
             ingredient.getId().setRecipe(recipe.getId());
         });
-        RecipeResource savedRecipe = modelMapper.map( this.recipeService.add(recipe), RecipeResource.class);
+        RecipeResource savedRecipe = modelMapper.map( this.recipeService.save(recipe), RecipeResource.class);
         return  new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllRecipes(){
-        List<RecipeResource> recipesList = this.recipeService.getAl()
+        List<RecipeResource> recipesList = this.recipeService.getAll()
                                                             .stream()
                                                             .map(recipe ->
                                                                     modelMapper.map(recipe, RecipeResource.class))

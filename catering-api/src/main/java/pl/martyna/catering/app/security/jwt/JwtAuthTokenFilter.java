@@ -20,7 +20,7 @@ import java.util.Optional;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtProvider tokenProvider;

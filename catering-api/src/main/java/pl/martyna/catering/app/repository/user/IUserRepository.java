@@ -20,11 +20,7 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     Boolean existsUserByUsername(String username);
     Boolean existsUserByEmail(String email);
 
-  //  User save(User user, UUID id);
-    User save(User user);
-
     User saveAndFlush(User user);
-
 
     @Transactional
     void deleteByEmail(String email);

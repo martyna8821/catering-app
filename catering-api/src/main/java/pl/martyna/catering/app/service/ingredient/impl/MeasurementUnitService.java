@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MeasurementUnitService implements IMeasurementUnitService {
 
-    IMeasurementUnitRepository measurementUnitRepository;
+    private IMeasurementUnitRepository measurementUnitRepository;
 
     @Autowired
     public MeasurementUnitService(IMeasurementUnitRepository measurementUnitRepository){
@@ -20,6 +20,6 @@ public class MeasurementUnitService implements IMeasurementUnitService {
     @Override
     public MeasurementUnit getUnitByAbbreviation(String abbreviation) {
         return this.measurementUnitRepository.getByAbbreviation(abbreviation)
-                        .orElseThrow(ResourceNotFoundException::new);
+                                             .orElseThrow(ResourceNotFoundException::new);
     }
 }

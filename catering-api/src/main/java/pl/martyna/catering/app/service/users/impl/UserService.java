@@ -19,35 +19,35 @@ public class UserService implements IUserService {
 
     private IUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private IRoleRepository roleRepository;
-    private IAddressRepository addressRepository;
 
     @Autowired
-    public UserService( IUserRepository userRepository,
-             PasswordEncoder passwordEncoder,
-             IRoleRepository roleRepository,
-             IAddressRepository addressRepository) {
+    public UserService( IUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.addressRepository = addressRepository;
+    }
 
+    @Override
+    public User save(User user) {
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        return  userRepository.save(user);
     }
 
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
+                             .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                             .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public Optional<User> findById(UUID id){
-        return userRepository.findById(id);
+    public User findById(UUID id) {
+        return userRepository.findById(id)
+                             .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -66,59 +66,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void delete(UUID id) {
-        userRepository.delete(id);
-    }
-
-    @Override
     public void resetPassword(String newPassword, UUID userId) {
         userRepository.resetPassword(passwordEncoder.encode(newPassword), userId);
     }
 
     @Override
-    public void updateRole(UUID roleId, UUID userId) {
-        userRepository.updateRole(roleId,userId);
-    }
-
-    @Override
-    public User save(RegisterRequest registerRequest) {
-        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-        User userToSave = new User(registerRequest.getUsername(), encodedPassword, registerRequest.getEmail(),
-                registerRequest.getFirstName(), registerRequest.getLastName(), registerRequest.getPhoneNumber());
-
-        Set<Role> roles = new HashSet<>();
-        registerRequest.getRoles().forEach(role ->
-            roles.add( roleRepository
-                        .findByRole(role)
-                        .orElseThrow(( () ->
-                                new RuntimeException("Invalid user role: "+  role))))
-        );
-
-
-        userToSave.setRoles(roles);
-        userToSave.setAddress(registerRequest.getAddress());
-        return  userRepository.save(userToSave);
-    }
-
-    @Override
-    public Optional<Boolean> validateOldPassword(String username, String oldPassword) {
-
-        String userPassword = this.userRepository.findByUsername(username)
-                                .map(User::getPassword)
-                                .orElseThrow(UserNotFoundException::new);
-
-        return Optional.of (oldPassword.equals(passwordEncoder.encode(userPassword)));
+    public User update(User user){
+        return this.userRepository.save(user);
     }
 
     @Override
     public void deleteByEmail(String email){
         this.userRepository.deleteByEmail(email);
-    }
-
-
-    @Override
-    public User update(User user){
-        return this.userRepository.save(user);
     }
 
 }

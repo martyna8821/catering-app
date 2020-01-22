@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.martyna.catering.app.dto.auth.RegisterRequest;
 import pl.martyna.catering.app.dto.input.*;
 import pl.martyna.catering.app.dto.resource.*;
 import pl.martyna.catering.app.entity.auth.Role;
@@ -57,14 +58,13 @@ public class ModelMapperConfiguration {
 
          modelMapper.getConfiguration().setAmbiguityIgnored(true);
         modelMapper.typeMap(Ingredient.class, String.class)
-          .setConverter(ctx -> ctx.getSource().getName());
+                        .setConverter(ctx -> ctx.getSource().getName());
 
         modelMapper.typeMap(String.class, MeasurementUnit.class)
-                .setConverter(ctx -> this.measurementUnitService.getUnitByAbbreviation(ctx.getSource()));
+                        .setConverter(ctx -> this.measurementUnitService.getUnitByAbbreviation(ctx.getSource()));
 
         modelMapper.typeMap(MeasurementUnit.class, String.class)
-              //  .setConverter(ctx -> ctx.getSource().getAbbreviation());
-            .setConverter(ctx -> "g");
+                      .setConverter(ctx -> "g");
 
         modelMapper.typeMap(String.class, Ingredient.class)
                 .setConverter(ctx -> this.ingredientService.getByName(ctx.getSource()));
@@ -99,7 +99,6 @@ public class ModelMapperConfiguration {
                 .addMapping(Recipe::getRecipeSteps, RecipeResource::setRecipeSteps);
 
 
-
         modelMapper.createTypeMap(MenuInput.class, Menu.class)
                 .addMapping(MenuInput::getMenuEntries, Menu::setMenuEntries);
 
@@ -109,8 +108,6 @@ public class ModelMapperConfiguration {
         modelMapper.createTypeMap(IngredientInput.class, Ingredient.class)
                 .addMapping(IngredientInput::getAllergens, Ingredient::setAllergens)
                 .addMapping(IngredientInput::getBrands, Ingredient::setBrands);
-           //     .addMapping(src -> src.getNutrition().stream().filter(i -> i.getPolishName().equals("Kalorie")).map(NutritionInput::getValue).toString(), Ingredient::setCaloricValue);
-
 
         return modelMapper;
     }

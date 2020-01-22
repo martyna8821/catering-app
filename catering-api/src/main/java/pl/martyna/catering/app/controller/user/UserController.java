@@ -2,9 +2,12 @@ package pl.martyna.catering.app.controller.user;
 
 import pl.martyna.catering.app.dto.input.UserUpdateInput;
 import pl.martyna.catering.app.dto.resource.UserResource;
+import pl.martyna.catering.app.entity.auth.Role;
 import pl.martyna.catering.app.entity.auth.User;
 import pl.martyna.catering.app.exception.ResourceNotFoundException;
 import pl.martyna.catering.app.dto.auth.RegisterRequest;
+import pl.martyna.catering.app.repository.auth.IRoleRepository;
+import pl.martyna.catering.app.repository.recipe.IRecipeRepository;
 import pl.martyna.catering.app.service.users.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,14 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private IUserService userService;
+    private IRoleRepository roleRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public UserController(IUserService userService, ModelMapper modelMapper){
+    public UserController(IUserService userService, IRoleRepository roleRepository,
+                          ModelMapper modelMapper){
         this.modelMapper = modelMapper;
+        this.roleRepository = roleRepository;
         this.userService = userService;
     }
 
@@ -35,15 +41,20 @@ public class UserController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest){
 
         if(userService.existsUserByUsername(registerRequest.getUsername())){
-            return ResponseEntity.unprocessableEntity().body("Username alredy taken");
+            return ResponseEntity.unprocessableEntity().body("Username already taken");
         }
 
         if(userService.existsUserByEmail(registerRequest.getEmail())){
             return ResponseEntity.unprocessableEntity().body("Account with provided email already exists");
         }
 
-        User savedUser = userService.save(registerRequest);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        User userToSave = modelMapper.map(registerRequest, User.class);
+        registerRequest.getRoles().forEach(role ->
+                                            userToSave.getRoles()
+                                                    .add(this.roleRepository.findByRole(role)
+                                                        .orElseThrow(ResourceNotFoundException::new)));
+
+        return new ResponseEntity<>(this.userService.save(userToSave), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -75,7 +86,7 @@ public class UserController {
     public ResponseEntity<?> updateUser( @RequestBody UserUpdateInput userToUpdate,
                             @PathVariable("id") UUID id){
 
-       User user = this.userService.findById(id).orElseThrow(ResourceNotFoundException::new);
+       User user = this.userService.findById(id);
        user.setFirstName(userToUpdate.getFirstName());
        user.setLastName(userToUpdate.getLastName());
        user.setEmail(userToUpdate.getEmail());
