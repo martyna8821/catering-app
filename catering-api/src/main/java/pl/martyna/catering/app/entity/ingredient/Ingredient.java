@@ -50,4 +50,8 @@ public class Ingredient implements Serializable {
     @Column(name = "brands")
     private Set<String> brands = new HashSet<>();
 
+    public Ingredient(String name, String caloricValue) {
+        this.name = name;
+        this.caloricValue = caloricValue;
+    }
 }

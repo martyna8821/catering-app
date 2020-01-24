@@ -26,6 +26,10 @@ public class RecipeService implements IRecipeService {
         this.recipeIngredientService = recipeIngredientService;
     }
 
+    public RecipeService() {
+
+    }
+
     @Override
     public Recipe save(Recipe recipe) {
         recipe.setMealWeight(calculateWeight(recipe.getIngredients()));
@@ -40,14 +44,14 @@ public class RecipeService implements IRecipeService {
         return savedRecipe;
     }
 
-    private int calculateWeight(Set<RecipeIngredient> ingredients){
+    public int calculateWeight(Set<RecipeIngredient> ingredients){
 
         return ingredients.stream()
                         .mapToInt(RecipeIngredient::getValue)
                         .sum();
     }
 
-    private double calculateCaloricValue(Set<RecipeIngredient> ingredients, int mealWeight){
+    public double calculateCaloricValue(Set<RecipeIngredient> ingredients, int mealWeight){
 
        return ingredients.stream().mapToDouble( recipeIngredient ->
                        Double.parseDouble(recipeIngredient.getIngredient().getCaloricValue())

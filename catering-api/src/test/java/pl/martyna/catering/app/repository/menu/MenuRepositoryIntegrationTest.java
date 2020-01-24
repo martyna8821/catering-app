@@ -36,15 +36,15 @@ public class MenuRepositoryIntegrationTest {
         LocalDate orderStartDate = LocalDate.of(2020, 1, 3);
         LocalDate orderEndDate = LocalDate.of(2020, 1, 8);
 
-        Diet diet = new Diet(UUID.randomUUID(), "test diet","description",
+        Diet diet = new Diet("test diet","description",
                             100, true, Set.of("1000", "1500"));
         entityManager.persist(diet);
 
-        Menu menuFromOrder = new Menu(UUID.randomUUID(), LocalDate.of(2020,1,5),
+        Menu menuFromOrder = new Menu( LocalDate.of(2020,1,5),
                             diet, "1000");
         entityManager.persist(menuFromOrder);
 
-        Menu menuNotFromOrder = new Menu(UUID.randomUUID(), LocalDate.of(2020,1,2),
+        Menu menuNotFromOrder = new Menu(LocalDate.of(2020,1,2),
                 diet, "1500");
         entityManager.persist(menuNotFromOrder);
         entityManager.flush();

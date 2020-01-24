@@ -54,8 +54,7 @@ public class Menu implements Serializable {
     @JoinColumn(name = "menu_id", referencedColumnName = "menu_id")
     private Set<MenuEntry> menuEntries = new HashSet<>();
 
-    public Menu(UUID id, LocalDate menuDate, Diet diet, String caloricVersion) {
-        this.id = id;
+    public Menu( LocalDate menuDate, Diet diet, String caloricVersion) {
         this.menuDate = menuDate;
         this.diet = diet;
         this.caloricVersion = caloricVersion;

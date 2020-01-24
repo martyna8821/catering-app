@@ -58,4 +58,5 @@ public class RecipeIngredient {
         return Objects.hash(ingredient.getId(),
                 recipe.getId(), value);
     }
+
 }

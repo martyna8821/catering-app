@@ -1,5 +1,6 @@
 package pl.martyna.catering.app.dto.auth;
 
+import lombok.AllArgsConstructor;
 import pl.martyna.catering.app.entity.auth.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RegisterRequest {
 
     private String username;
@@ -19,4 +21,5 @@ public class RegisterRequest {
     private String phoneNumber;
     private Address address;
     private Set<String> roles;
+
 }

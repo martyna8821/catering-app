@@ -47,8 +47,7 @@ public class Diet implements Serializable {
     @JoinColumn(name = "dietitian_username", referencedColumnName = "username")
     private User dietitian;
 
-    public Diet(UUID id, String name, String description, int price, boolean published, Set<String> caloricVersions) {
-        this.id = id;
+    public Diet(String name, String description, int price, boolean published, Set<String> caloricVersions) {
         this.name = name;
         this.description = description;
         this.price = price;

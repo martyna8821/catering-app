@@ -33,56 +33,60 @@ import java.util.UUID;
 public class ModelMapperConfiguration {
 
 
-    @Autowired
     private IUserService userService;
 
-    @Autowired
     private IIngredientService ingredientService;
 
-    @Autowired
     private IMealTypeService mealTypeService;
 
-    @Autowired
-    IRoleRepository roleRepository;
+    private IRoleRepository roleRepository;
+
+    private IMeasurementUnitService measurementUnitService;
+
+    private IRecipeRepository recipeRepository;
 
     @Autowired
-    IMeasurementUnitService measurementUnitService;
-
-    @Autowired
-    IRecipeRepository recipeRepository;
+    public ModelMapperConfiguration(IUserService userService, IIngredientService ingredientService, IMealTypeService mealTypeService, IRoleRepository roleRepository, IMeasurementUnitService measurementUnitService, IRecipeRepository recipeRepository) {
+        this.userService = userService;
+        this.ingredientService = ingredientService;
+        this.mealTypeService = mealTypeService;
+        this.roleRepository = roleRepository;
+        this.measurementUnitService = measurementUnitService;
+        this.recipeRepository = recipeRepository;
+    }
 
     @Bean
     public ModelMapper modelMapper() {
+
         ModelMapper modelMapper = new ModelMapper();
 
-
-         modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         modelMapper.typeMap(Ingredient.class, String.class)
-                        .setConverter(ctx -> ctx.getSource().getName());
+                          .setConverter(ctx -> ctx.getSource().getName());
 
         modelMapper.typeMap(String.class, MeasurementUnit.class)
-                        .setConverter(ctx -> this.measurementUnitService.getUnitByAbbreviation(ctx.getSource()));
+                          .setConverter(ctx -> this.measurementUnitService.getUnitByAbbreviation(ctx.getSource()));
 
         modelMapper.typeMap(MeasurementUnit.class, String.class)
-                      .setConverter(ctx -> "g");
+                          .setConverter(ctx -> "g");
 
         modelMapper.typeMap(String.class, Ingredient.class)
-                .setConverter(ctx -> this.ingredientService.getByName(ctx.getSource()));
+                          .setConverter(ctx -> this.ingredientService.getByName(ctx.getSource()));
 
         modelMapper.typeMap(IngredientResource.class, Ingredient.class)
-                .setConverter(ctx -> this.ingredientService.getById(ctx.getSource().getId()));
+                          .setConverter(ctx -> this.ingredientService.getById(ctx.getSource().getId()));
 
         modelMapper.typeMap(String.class, User.class)
-                .setConverter(ctx -> this.userService.findByUsername(ctx.getSource()));
+                          .setConverter(ctx -> this.userService.findByUsername(ctx.getSource()));
 
         modelMapper.typeMap(String.class, MealType.class)
-                .setConverter(ctx -> this.mealTypeService.findByName(ctx.getSource()));
+                          .setConverter(ctx -> this.mealTypeService.findByName(ctx.getSource()));
 
         modelMapper.createTypeMap(String.class, Role.class)
-                .setConverter(ctx -> this.roleRepository.findByRole(ctx.getSource()).get());
+                                .setConverter(ctx -> this.roleRepository.findByRole(ctx.getSource()).get());
 
         modelMapper.typeMap(RecipeResource.class, Recipe.class)
-                .setConverter(ctx -> this.recipeRepository.findById(UUID.fromString(ctx.getSource().getId())).get());
+                          .setConverter(ctx -> this.recipeRepository.findById(UUID.fromString(ctx.getSource().getId())).get());
 
         modelMapper.createTypeMap(RecipeIngredientInput.class, RecipeIngredient.class)
                 .addMapping(src -> src,RecipeIngredient::setRecipe);
@@ -97,7 +101,6 @@ public class ModelMapperConfiguration {
         modelMapper.createTypeMap(Recipe.class, RecipeResource.class)
                 .addMapping(Recipe::getIngredients, RecipeResource::setIngredients)
                 .addMapping(Recipe::getRecipeSteps, RecipeResource::setRecipeSteps);
-
 
         modelMapper.createTypeMap(MenuInput.class, Menu.class)
                 .addMapping(MenuInput::getMenuEntries, Menu::setMenuEntries);
