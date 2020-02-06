@@ -36,8 +36,8 @@ public class DietController {
     }
 
     @GetMapping
-    public ResponseEntity allDiets(){
-        List<DietResource> diets = this.dietService.getAll()
+    public ResponseEntity getAllDiets(){
+        List<DietResource> diets = this.dietService.getAllDiets()
                                                     .stream()
                                                     .map(diet ->
                                                             modelMapper.map(diet, DietResource.class))

@@ -31,7 +31,7 @@ public class DietService implements IDietService {
     }
 
     @Override
-    public List<Diet> getAll() {
+    public List<Diet> getAllDiets() {
         return this.dietRepository.findAll();
     }
 

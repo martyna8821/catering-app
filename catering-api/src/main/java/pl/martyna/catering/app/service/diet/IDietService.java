@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface IDietService {
 
     Diet save(Diet dietToSave);
-    List<Diet> getAll();
+    List<Diet> getAllDiets();
     void deleteById(UUID id);
     void changeStatus(UUID id, boolean published);
     Diet addCaloricVersion(UUID id, String caloricVersion);
