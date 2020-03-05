@@ -3,12 +3,19 @@ package pl.martyna.catering.app.service.pdf.impl;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
+import pl.martyna.catering.app.report.IReportBuilder;
+import pl.martyna.catering.app.report.KitchenReportBuilder;
+import pl.martyna.catering.app.report.Report;
+import pl.martyna.catering.app.report.ReportDirector;
 import pl.martyna.catering.app.service.pdf.IPDFService;
 
 import java.io.FileOutputStream;
 
+//reports for kitchen and delivery guys
+
 @Service
 public class PDFService implements IPDFService {
+
 
     @Override
     public void createHelloPdf(){
@@ -18,9 +25,13 @@ public class PDFService implements IPDFService {
 
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-            Chunk chunk = new Chunk("Hello World", font);
 
-            document.add(chunk);
+            ReportDirector director = new ReportDirector();
+            IReportBuilder kitchenReportBuilder = new KitchenReportBuilder();
+            director.constructReport(kitchenReportBuilder);
+            Report kitchenReport = kitchenReportBuilder.getResult();
+
+            document.add(kitchenReport.getDataTable());
         }catch (Exception ignored){
 
         }
