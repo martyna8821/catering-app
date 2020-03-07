@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public interface IReportBuilder {
 
-    void setReportDataDate(LocalDate reportDataDate);
     void buildMetaData();
     void buildReportData();
     void buildDataTable();

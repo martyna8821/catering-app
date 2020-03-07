@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @AllArgsConstructor
-public class ReportData<T> {
+import java.util.Collection;
+import java.util.Map;
 
+@Getter @Setter @AllArgsConstructor
+public class ReportData<T extends Map> {
     T reportData;
 }
