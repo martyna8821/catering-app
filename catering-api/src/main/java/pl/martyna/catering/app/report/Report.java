@@ -12,6 +12,7 @@ public class Report {
 
     private LocalDate creationDate;
     private String title;
+    private ReportData<?> reportData;
     private PdfPTable dataTable;
 
     public String saveReport(){

@@ -35,7 +35,7 @@ public class PDFService implements IPDFService {
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
 
             ReportDirector director = new ReportDirector();
-            KitchenReportBuilder kitchenReportBuilder = context.getBean(KitchenReportBuilder.class);
+            IReportBuilder kitchenReportBuilder = context.getBean(KitchenReportBuilder.class);
             kitchenReportBuilder.setReportDataDate(LocalDate.of(2020, 1, 20));
 
           //  IReportBuilder kitchenReportBuilder = new KitchenReportBuilder(LocalDate.of(2020, 1, 20));

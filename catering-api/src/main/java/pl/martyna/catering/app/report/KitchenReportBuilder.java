@@ -4,9 +4,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import org.apache.juli.logging.Log;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -23,15 +21,15 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 @Component
 @Scope("prototype")
 public class KitchenReportBuilder implements IReportBuilder {
 
-    private Report report;
+    private DailyReport report;
     private LocalDate reportDataDate;
-    private final Logger LOG = LogManager.getLogger(getClass());
 
     @Autowired
     private IMenuService menuService;
@@ -39,13 +37,17 @@ public class KitchenReportBuilder implements IReportBuilder {
     @Autowired
     private IOrderService orderService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     private KitchenReportBuilder(IOrderService orderService,
                                  IMenuService menuService){
         this.menuService = menuService;
         this.orderService = orderService;
-        this.report = new Report();
+        this.report = new DailyReport();
     }
 
+    @Override
     public void setReportDataDate(LocalDate reportDataDate){
         this.reportDataDate = reportDataDate;
     }
@@ -62,7 +64,6 @@ public class KitchenReportBuilder implements IReportBuilder {
 
         createdMenus.forEach( menu -> {
             int orderedMenusNumber = this.orderService.getOrderedMenusNumber(menu);
-            this.LOG.info(orderedMenusNumber);
 
             menu.getMenuEntries().forEach( menuEntry -> {
                 if(!recipesCookingData.containsKey(menuEntry.getRecipe())){
@@ -72,6 +73,14 @@ public class KitchenReportBuilder implements IReportBuilder {
                 recipesCookingData.get(menuEntry.getRecipe()).addWeight(orderedMenusNumber * menuEntry.getAmount());
             });
         });
+
+        recipesCookingData.forEach( (recipe, cookingData) -> {
+            cookingData.setKitchenRecipeIngredients(recipe.getIngredients(), this.modelMapper);
+            cookingData.setKitchenRecipeSteps(recipe.getRecipeSteps(), this.modelMapper);
+            cookingData.calculateIngredientsWeight(recipe.getMealWeight());
+        });
+
+        this.report.setReportData(new ReportData<>(recipesCookingData));
     }
 
     @Override
