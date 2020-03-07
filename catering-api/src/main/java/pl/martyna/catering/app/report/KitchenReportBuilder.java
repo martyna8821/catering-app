@@ -4,19 +4,74 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import org.apache.juli.logging.Log;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import pl.martyna.catering.app.entity.menu.Menu;
+import pl.martyna.catering.app.entity.recipe.Recipe;
+import pl.martyna.catering.app.report.kitchen.report.KitchenRecipe;
+import pl.martyna.catering.app.report.kitchen.report.MealCookingData;
+import pl.martyna.catering.app.service.menu.IMenuService;
+import pl.martyna.catering.app.service.order.IOrderService;
+import pl.martyna.catering.app.service.recipe.IRecipeService;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
+@Component
+@Scope("prototype")
 public class KitchenReportBuilder implements IReportBuilder {
 
-    private Report report = new Report();
+    private Report report;
+    private LocalDate reportDataDate;
+    private final Logger LOG = LogManager.getLogger(getClass());
 
+    @Autowired
+    private IMenuService menuService;
+
+    @Autowired
+    private IOrderService orderService;
+
+    private KitchenReportBuilder(IOrderService orderService,
+                                 IMenuService menuService){
+        this.menuService = menuService;
+        this.orderService = orderService;
+        this.report = new Report();
+    }
+
+    public void setReportDataDate(LocalDate reportDataDate){
+        this.reportDataDate = reportDataDate;
+    }
     @Override
     public void buildMetaData() {
         report.setTitle("Raport dla kuchni");
         report.setCreationDate(LocalDate.now());
-        report.setReportDate(LocalDate.now());
+    }
+
+    @Override
+    public void buildReportData() {
+        List<Menu> createdMenus = this.menuService.getMenusFromDay(this.reportDataDate);
+        Map<Recipe, MealCookingData> recipesCookingData = new HashMap<>();
+
+        createdMenus.forEach( menu -> {
+            int orderedMenusNumber = this.orderService.getOrderedMenusNumber(menu);
+            this.LOG.info(orderedMenusNumber);
+
+            menu.getMenuEntries().forEach( menuEntry -> {
+                if(!recipesCookingData.containsKey(menuEntry.getRecipe())){
+                    recipesCookingData.put(menuEntry.getRecipe(), new MealCookingData());
+                }
+                recipesCookingData.get(menuEntry.getRecipe()).addPortionsNumber(orderedMenusNumber);
+                recipesCookingData.get(menuEntry.getRecipe()).addWeight(orderedMenusNumber * menuEntry.getAmount());
+            });
+        });
     }
 
     @Override
@@ -35,6 +90,11 @@ public class KitchenReportBuilder implements IReportBuilder {
         dataTable.addCell("row 1, col 2");
         dataTable.addCell("row 1, col 3");
         this.report.setDataTable(dataTable);
+    }
+
+    @Override
+    public void buildPdfDocument() {
+
     }
 
     @Override

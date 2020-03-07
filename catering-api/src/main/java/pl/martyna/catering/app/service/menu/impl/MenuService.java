@@ -10,6 +10,7 @@ import pl.martyna.catering.app.repository.order.IOrderRepository;
 import pl.martyna.catering.app.service.menu.IMenuEntryService;
 import pl.martyna.catering.app.service.menu.IMenuService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -51,5 +52,11 @@ public class MenuService implements IMenuService {
                                                 order.getCaloricVersion())));
 
         return menus;
+    }
+
+    @Override
+    public List<Menu> getMenusFromDay(LocalDate menusDate) {
+
+        return this.menuRepository.findByMenuDate(menusDate);
     }
 }

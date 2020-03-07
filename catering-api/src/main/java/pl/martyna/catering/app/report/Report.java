@@ -10,8 +10,11 @@ import java.time.LocalDate;
 @Getter @Setter
 public class Report {
 
-    private LocalDate reportDate;
     private LocalDate creationDate;
     private String title;
     private PdfPTable dataTable;
+
+    public String saveReport(){
+        return null;
+    }
 }
