@@ -62,14 +62,14 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
 
         createdMenus.forEach( menu -> {
             int orderedMenusNumber = this.orderService.getOrderedMenusNumber(menu);
-
-            menu.getMenuEntries().forEach( menuEntry -> {
-                if(!recipesCookingData.containsKey(menuEntry.getRecipe())){
-                    recipesCookingData.put(menuEntry.getRecipe(), new MealCookingData());
-                }
-                recipesCookingData.get(menuEntry.getRecipe()).addPortions(orderedMenusNumber, menuEntry.getAmount());
-                recipesCookingData.get(menuEntry.getRecipe()).addWeight(orderedMenusNumber * menuEntry.getAmount());
-            });
+            if(orderedMenusNumber > 0 )
+                menu.getMenuEntries().forEach( menuEntry -> {
+                    if(!recipesCookingData.containsKey(menuEntry.getRecipe())){
+                        recipesCookingData.put(menuEntry.getRecipe(), new MealCookingData());
+                    }
+                    recipesCookingData.get(menuEntry.getRecipe()).addPortions(orderedMenusNumber, menuEntry.getAmount());
+                    recipesCookingData.get(menuEntry.getRecipe()).addWeight(orderedMenusNumber * menuEntry.getAmount());
+                });
         });
 
         recipesCookingData.forEach( (recipe, cookingData) -> {
