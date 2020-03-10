@@ -17,6 +17,7 @@ import java.util.UUID;
 public interface IMenuRepository extends JpaRepository<Menu, UUID> {
 
     List<Menu> findByDiet_Id(UUID dietId);
+    List<Menu> findByMenuDate(LocalDate menusDate);
 
     @Transactional
     @Query(value = "select * from menu m where m.diet_id = ?1 " +

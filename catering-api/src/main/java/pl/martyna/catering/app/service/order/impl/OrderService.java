@@ -2,6 +2,7 @@ package pl.martyna.catering.app.service.order.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.martyna.catering.app.entity.menu.Menu;
 import pl.martyna.catering.app.entity.order.Order;
 import pl.martyna.catering.app.repository.order.IOrderRepository;
 import pl.martyna.catering.app.service.order.IOrderService;
@@ -34,5 +35,10 @@ public class OrderService implements IOrderService {
     @Override
     public List<Order> getUserOrders(UUID userId) {
         return this.orderRepository.findByUser(userId);
+    }
+
+    @Override
+    public int getOrderedMenusNumber(Menu menu) {
+        return this.orderRepository.getOrderedMenusNumber(menu.getMenuDate(), menu.getDiet().getId(), menu.getCaloricVersion());
     }
 }

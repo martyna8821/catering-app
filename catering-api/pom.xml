@@ -104,10 +104,17 @@
         </dependency>
 
      <!-- AOP -->
-    <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+     <!-- PDF creation -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.1</version>
         </dependency>
     </dependencies>
 
