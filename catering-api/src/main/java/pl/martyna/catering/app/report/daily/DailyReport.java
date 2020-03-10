@@ -1,7 +1,8 @@
-package pl.martyna.catering.app.report;
+package pl.martyna.catering.app.report.daily;
 
 import lombok.Getter;
 import lombok.Setter;
+import pl.martyna.catering.app.report.Report;
 
 import java.time.LocalDate;
 

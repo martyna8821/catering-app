@@ -6,7 +6,6 @@ public interface IReportBuilder {
 
     void buildMetaData();
     void buildReportData();
-    void buildDataTable();
-    void buildPdfDocument();
+    void buildPdfElements();
     Report getResult();
 }

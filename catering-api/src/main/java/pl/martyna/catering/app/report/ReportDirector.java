@@ -5,7 +5,6 @@ public class ReportDirector {
     public void constructReport(IReportBuilder builder){
         builder.buildMetaData();
         builder.buildReportData();
-        builder.buildDataTable();
-        builder.buildPdfDocument();
+        builder.buildPdfElements();
     }
 }

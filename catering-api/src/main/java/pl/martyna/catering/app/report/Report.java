@@ -10,17 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
 public class Report {
 
     private LocalDate creationDate;
     private String title;
-    private ReportData<?> reportData;
-    private PdfPTable dataTable;
-    private List<Element> pdfData = new ArrayList<>();
-
-    public String saveReport(){
-        return null;
-    }
+    private Map<?,?> reportData;
+    private List<Element> pdfElements = new ArrayList<>();
 }

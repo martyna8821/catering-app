@@ -1,4 +1,4 @@
-package pl.martyna.catering.app.report;
+package pl.martyna.catering.app.report.daily.kitchenreport;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
@@ -12,15 +12,18 @@ import pl.martyna.catering.app.dto.resource.RecipeIngredientResource;
 import pl.martyna.catering.app.dto.resource.RecipeStepResource;
 import pl.martyna.catering.app.entity.menu.Menu;
 import pl.martyna.catering.app.entity.recipe.Recipe;
-import pl.martyna.catering.app.report.kitchen.IDailyReportBuilder;
-import pl.martyna.catering.app.report.kitchen.report.KitchenRecipe;
-import pl.martyna.catering.app.report.kitchen.report.MealCookingData;
+import pl.martyna.catering.app.report.Report;
+import pl.martyna.catering.app.report.daily.DailyReport;
+import pl.martyna.catering.app.report.daily.IDailyReportBuilder;
+import pl.martyna.catering.app.report.daily.kitchenreport.utils.KitchenReportRecipe;
+import pl.martyna.catering.app.report.daily.kitchenreport.utils.MealCookingData;
 import pl.martyna.catering.app.service.menu.IMenuService;
 import pl.martyna.catering.app.service.order.IOrderService;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Scope("prototype")
@@ -28,43 +31,63 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
 
     private DailyReport report;
     private LocalDate reportDataDate;
-
-    @Autowired
     private IMenuService menuService;
-
-    @Autowired
     private IOrderService orderService;
-
-    @Autowired
     private ModelMapper modelMapper;
-
-    @Qualifier("arial")
-    @Autowired
     private BaseFont arialFont;
-
-    @Qualifier("arial-bold")
-    @Autowired
     private BaseFont arialBoldFont;
 
-    private KitchenReportBuilder(IOrderService orderService,
-                                 IMenuService menuService){
+  //region Injection
+    @Autowired
+    public void setMenuService(IMenuService menuService){
         this.menuService = menuService;
+    }
+
+    @Autowired
+    public void setOrderService(IOrderService orderService){
         this.orderService = orderService;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
+    }
+
+    @Autowired
+    @Qualifier("arial")
+    public void setArialFont(BaseFont arialFont){
+        this.arialFont = arialFont;
+    }
+
+    @Autowired
+    @Qualifier("arial-bold")
+    public void setArialBoldFont(BaseFont arialBoldFont){
+        this.arialBoldFont = arialBoldFont;
+    }
+
+  //endregion
+
+    private KitchenReportBuilder(){
+
         this.report = new DailyReport();
     }
 
     @Override
     public void setReportDataDate(LocalDate reportDataDate){
+
         this.reportDataDate = reportDataDate;
     }
+
     @Override
     public void buildMetaData() {
+
         report.setTitle("Raport dla kuchni");
         report.setCreationDate(LocalDate.now());
     }
 
     @Override
     public void buildReportData() {
+
         List<Menu> createdMenus = this.menuService.getMenusFromDay(this.reportDataDate);
         Map<Recipe, MealCookingData> recipesCookingData = new HashMap<>();
 
@@ -75,8 +98,10 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
                     if(!recipesCookingData.containsKey(menuEntry.getRecipe())){
                         recipesCookingData.put(menuEntry.getRecipe(), new MealCookingData());
                     }
-                    recipesCookingData.get(menuEntry.getRecipe()).addPortions(orderedMenusNumber, menuEntry.getAmount());
-                    recipesCookingData.get(menuEntry.getRecipe()).addWeight(orderedMenusNumber * menuEntry.getAmount());
+                    recipesCookingData.get(menuEntry.getRecipe())
+                            .addPortions(orderedMenusNumber, menuEntry.getAmount());
+                    recipesCookingData.get(menuEntry.getRecipe())
+                            .addWeight(orderedMenusNumber * menuEntry.getAmount());
                 });
         });
 
@@ -87,58 +112,47 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
             cookingData.calculateIngredientsWeight(recipe.getMealWeight());
         });
 
-        this.report.setReportData(new ReportData<>(recipesCookingData));
+        this.report.setReportData(recipesCookingData);
     }
 
     @Override
-    public void buildDataTable() {
+    public void buildPdfElements() {
 
-       // this.report.setDataTable(dataTable);
-    }
-
-    @Override
-    public void buildPdfDocument() {
-        List<Element> list = new ArrayList();
+        List<Element> pdfElements = new ArrayList();
         Font titleFont = new Font(arialBoldFont, 20);
         Font recipeBoldHeaderFont = new Font(arialBoldFont, 15);
         Font recipeHeaderFont = new Font(arialFont, 15);
         Font recipeFont = new Font(arialFont, 12);
 
-        list.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n", titleFont));
+        pdfElements.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n", titleFont));
 
-        this.report.getReportData().reportData.values().stream()
+        this.report.getReportData().values()
+            .stream()
             .map(MealCookingData.class::cast)
             .forEach( cookingData -> {
 
                 StringBuilder recipeHeaderString = new StringBuilder();
                 recipeHeaderString.append("POSIŁEK: ");
-                recipeHeaderString.append(((MealCookingData) cookingData).getKitchenRecipe().getName());
+                recipeHeaderString.append(cookingData.getKitchenReportRecipe().getName());
                 recipeHeaderString.append(" ILOŚĆ: ");
-                recipeHeaderString.append(((MealCookingData) cookingData).getWeight());
+                recipeHeaderString.append(cookingData.getWeight());
                 recipeHeaderString.append("g\n");
-                list.add(new Paragraph(recipeHeaderString.toString(), recipeBoldHeaderFont));
+                pdfElements.add(new Paragraph(recipeHeaderString.toString(), recipeBoldHeaderFont));
 
-                ((MealCookingData) cookingData).getPortionsWeightNumberMap()
-                     .forEach((weight, number) ->{
-                         StringBuilder weightPortionsString = new StringBuilder();
-                         weightPortionsString.append("* Liczba porcji o wadze ");
-                         weightPortionsString.append(weight);
-                         weightPortionsString.append("g : ");
-                         weightPortionsString.append(number);
-                         weightPortionsString.append("\n");
-                         list.add(new Paragraph( weightPortionsString.toString() ,recipeHeaderFont));
-                });
+                pdfElements.add(new Paragraph(
+                            this.getPortionsWeightHeaderString(cookingData),
+                            recipeHeaderFont));
 
-                list.add(new Paragraph(
-                            this.getRecipeIngredientsString(((MealCookingData) cookingData).getKitchenRecipe()),
+                pdfElements.add(new Paragraph(
+                            this.getRecipeIngredientsString(cookingData.getKitchenReportRecipe()),
                             recipeFont));
 
-                list.add(new Paragraph(
-                        this.getRecipeStepsString(((MealCookingData) cookingData).getKitchenRecipe()),
-                        recipeFont));
+                pdfElements.add(new Paragraph(
+                            this.getRecipeStepsString(cookingData.getKitchenReportRecipe()),
+                            recipeFont));
             });
 
-        this.report.setPdfData(list);
+        this.report.setPdfElements(pdfElements);
     }
 
     @Override
@@ -146,7 +160,28 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
         return this.report;
     }
 
-    private String getRecipeIngredientsString(KitchenRecipe recipe){
+  //region PdfElementGenerators
+    private String getPortionsWeightHeaderString(MealCookingData cookingData){
+
+        StringBuilder weightPortionsString = new StringBuilder();
+        cookingData.getPortionsWeightNumberMap()
+                .entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (weight, number) -> weight, HashMap::new))
+                .forEach((weight, number) ->{
+                    weightPortionsString.append("* Liczba porcji o wadze ");
+                    weightPortionsString.append(weight);
+                    weightPortionsString.append("g : ");
+                    weightPortionsString.append(number);
+                    weightPortionsString.append("\n");
+                });
+
+        return weightPortionsString.toString();
+    }
+
+    private String getRecipeIngredientsString(KitchenReportRecipe recipe){
 
         StringBuilder recipeIngredientsString = new StringBuilder();
         recipeIngredientsString.append("\n");
@@ -165,8 +200,7 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
         return recipeIngredientsString.toString();
     }
 
-
-    private String getRecipeStepsString(KitchenRecipe recipe){
+    private String getRecipeStepsString(KitchenReportRecipe recipe){
 
         StringBuilder recipeStepsString = new StringBuilder();
         recipe.getRecipeSteps().stream()
@@ -182,4 +216,5 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
 
         return recipeStepsString.toString();
     }
+  //endregion
 }
