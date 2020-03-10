@@ -5,11 +5,15 @@ import com.itextpdf.text.pdf.BaseFont;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import pl.martyna.catering.app.dto.resource.RecipeIngredientResource;
+import pl.martyna.catering.app.dto.resource.RecipeStepResource;
 import pl.martyna.catering.app.entity.menu.Menu;
 import pl.martyna.catering.app.entity.recipe.Recipe;
 import pl.martyna.catering.app.report.kitchen.IDailyReportBuilder;
+import pl.martyna.catering.app.report.kitchen.report.KitchenRecipe;
 import pl.martyna.catering.app.report.kitchen.report.MealCookingData;
 import pl.martyna.catering.app.service.menu.IMenuService;
 import pl.martyna.catering.app.service.order.IOrderService;
@@ -34,8 +38,13 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Qualifier("arial")
     @Autowired
     private BaseFont arialFont;
+
+    @Qualifier("arial-bold")
+    @Autowired
+    private BaseFont arialBoldFont;
 
     private KitchenReportBuilder(IOrderService orderService,
                                  IMenuService menuService){
@@ -90,7 +99,8 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
     @Override
     public void buildPdfDocument() {
         List<Element> list = new ArrayList();
-        Font titleFont = new Font(arialFont, 20);
+        Font titleFont = new Font(arialBoldFont, 20);
+        Font recipeBoldHeaderFont = new Font(arialBoldFont, 15);
         Font recipeHeaderFont = new Font(arialFont, 15);
         Font recipeFont = new Font(arialFont, 12);
 
@@ -105,8 +115,8 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
                 recipeHeaderString.append(((MealCookingData) cookingData).getKitchenRecipe().getName());
                 recipeHeaderString.append(" ILOŚĆ: ");
                 recipeHeaderString.append(((MealCookingData) cookingData).getWeight());
-                recipeHeaderString.append("\n");
-                list.add(new Paragraph(recipeHeaderString.toString(), recipeHeaderFont));
+                recipeHeaderString.append("g\n");
+                list.add(new Paragraph(recipeHeaderString.toString(), recipeBoldHeaderFont));
 
                 ((MealCookingData) cookingData).getPortionsWeightNumberMap()
                      .forEach((weight, number) ->{
@@ -119,10 +129,14 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
                          list.add(new Paragraph( weightPortionsString.toString() ,recipeHeaderFont));
                 });
 
+                list.add(new Paragraph(
+                            this.getRecipeIngredientsString(((MealCookingData) cookingData).getKitchenRecipe()),
+                            recipeFont));
 
+                list.add(new Paragraph(
+                        this.getRecipeStepsString(((MealCookingData) cookingData).getKitchenRecipe()),
+                        recipeFont));
             });
-
-
 
         this.report.setPdfData(list);
     }
@@ -130,5 +144,42 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
     @Override
     public Report getResult() {
         return this.report;
+    }
+
+    private String getRecipeIngredientsString(KitchenRecipe recipe){
+
+        StringBuilder recipeIngredientsString = new StringBuilder();
+        recipeIngredientsString.append("\n");
+        recipe.getIngredients()
+            .stream()
+            .sorted(Comparator.comparingInt(RecipeIngredientResource::getValue)
+                .reversed())
+            .forEach(ingredient ->{
+                recipeIngredientsString.append("\t - ");
+                recipeIngredientsString.append(ingredient.getValue());
+                recipeIngredientsString.append("g ");
+                recipeIngredientsString.append(ingredient.getIngredient().getName());
+                recipeIngredientsString.append("\n");
+        });
+
+        return recipeIngredientsString.toString();
+    }
+
+
+    private String getRecipeStepsString(KitchenRecipe recipe){
+
+        StringBuilder recipeStepsString = new StringBuilder();
+        recipe.getRecipeSteps().stream()
+            .sorted(Comparator.comparingInt(RecipeStepResource::getStepNumber))
+            .forEach(step -> {
+                recipeStepsString.append("\n");
+                recipeStepsString.append(step.getStepNumber());
+                recipeStepsString.append(". ");
+                recipeStepsString.append(step.getDescription());
+                recipeStepsString.append("\n");
+        });
+        recipeStepsString.append("\n");
+
+        return recipeStepsString.toString();
     }
 }

@@ -32,10 +32,21 @@ public class BasicConfiguration {
         return factory;
     }
 
-    @Bean
+    @Bean("arial")
     public BaseFont getBaseArialFontWithPolishLetters() throws IOException, DocumentException {
 
-       return BaseFont.createFont("/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/Arial.ttf",
-                        BaseFont.CP1250, BaseFont.EMBEDDED);
+       return BaseFont.createFont(
+               "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial.ttf",
+                      BaseFont.CP1250,
+                      BaseFont.EMBEDDED);
+    }
+
+    @Bean("arial-bold")
+    public BaseFont getBaseArialBoldFontWithPolishLetters() throws IOException, DocumentException {
+
+        return BaseFont.createFont(
+                "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial-bold.ttf",
+                       BaseFont.CP1250,
+                       BaseFont.EMBEDDED);
     }
 }
