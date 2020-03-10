@@ -11,6 +11,6 @@ import java.util.Set;
 public class KitchenReportRecipe {
 
     private String name;
-    private Set<RecipeIngredientResource> ingredients =new HashSet<>();;
-    private Set<RecipeStepResource> recipeSteps = new HashSet<>();;
+    private Set<RecipeIngredientResource> ingredients =new HashSet<>();
+    private Set<RecipeStepResource> recipeSteps = new HashSet<>();
 }
