@@ -35,6 +35,10 @@ public class MealCookingData {
         }
     }
 
+    public void setKitchenRecipeName(String kitchenRecipeName){
+        this.kitchenRecipe.setName(kitchenRecipeName);
+    }
+
     public void setKitchenRecipeSteps(Set<RecipeStep> recipeSteps, ModelMapper modelMapper){
         recipeSteps.forEach( step ->{
             kitchenRecipe.getRecipeSteps().add(modelMapper.map(step, RecipeStepResource.class));

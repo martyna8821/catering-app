@@ -1,12 +1,10 @@
 package pl.martyna.catering.app.report;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.interfaces.IAccessibleElement;
+import com.itextpdf.text.pdf.BaseFont;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.martyna.catering.app.entity.menu.Menu;
@@ -19,8 +17,6 @@ import pl.martyna.catering.app.service.order.IOrderService;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.zip.CheckedInputStream;
 
 @Component
 @Scope("prototype")
@@ -37,6 +33,9 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private BaseFont arialFont;
 
     private KitchenReportBuilder(IOrderService orderService,
                                  IMenuService menuService){
@@ -73,6 +72,7 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
         });
 
         recipesCookingData.forEach( (recipe, cookingData) -> {
+            cookingData.setKitchenRecipeName(recipe.getName());
             cookingData.setKitchenRecipeIngredients(recipe.getIngredients(), this.modelMapper);
             cookingData.setKitchenRecipeSteps(recipe.getRecipeSteps(), this.modelMapper);
             cookingData.calculateIngredientsWeight(recipe.getMealWeight());
@@ -90,46 +90,41 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
     @Override
     public void buildPdfDocument() {
         List<Element> list = new ArrayList();
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
-        Chunk title = new Chunk("Raport dla kuchni : " + this.reportDataDate+"\n", titleFont);
-        list.add(title);
-        list.add(Chunk.NEWLINE);
-        list.add(Chunk.NEWLINE);
+        Font titleFont = new Font(arialFont, 20);
+        Font recipeHeaderFont = new Font(arialFont, 15);
+        Font recipeFont = new Font(arialFont, 12);
 
-        Font recipeHeaderFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 15, BaseColor.BLACK);
-        Font recipeFont = FontFactory.getFont(FontFactory.HELVETICA, 20, BaseColor.BLACK);
+        list.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n", titleFont));
 
         this.report.getReportData().reportData.values().stream()
-                .map(MealCookingData.class::cast)
-                .forEach( cookingData ->{
+            .map(MealCookingData.class::cast)
+            .forEach( cookingData -> {
 
-                    StringBuilder recipeHeaderString = new StringBuilder();
-                    recipeHeaderString.append("POSIŁEK: ");
-                    recipeHeaderString.append(((MealCookingData) cookingData).getKitchenRecipe().getName());
-                    recipeHeaderString.append(" ILOŚĆ: ");
-                    recipeHeaderString.append(((MealCookingData) cookingData).getWeight());
-                    recipeHeaderString.append("\n");
-                    Paragraph p = new Paragraph();
-                    p.add("this will be in bold \n");
-                    list.add(p);
-                    list.add(new Chunk( recipeHeaderString.toString(), recipeHeaderFont));
+                StringBuilder recipeHeaderString = new StringBuilder();
+                recipeHeaderString.append("POSIŁEK: ");
+                recipeHeaderString.append(((MealCookingData) cookingData).getKitchenRecipe().getName());
+                recipeHeaderString.append(" ILOŚĆ: ");
+                recipeHeaderString.append(((MealCookingData) cookingData).getWeight());
+                recipeHeaderString.append("\n");
+                list.add(new Paragraph(recipeHeaderString.toString(), recipeHeaderFont));
+
+                ((MealCookingData) cookingData).getPortionsWeightNumberMap()
+                     .forEach((weight, number) ->{
+                         StringBuilder weightPortionsString = new StringBuilder();
+                         weightPortionsString.append("* Liczba porcji o wadze ");
+                         weightPortionsString.append(weight);
+                         weightPortionsString.append("g : ");
+                         weightPortionsString.append(number);
+                         weightPortionsString.append("\n");
+                         list.add(new Paragraph( weightPortionsString.toString() ,recipeHeaderFont));
+                });
 
 
-                    ((MealCookingData) cookingData).getPortionsWeightNumberMap().forEach((weight, number) ->{
-                        StringBuilder weightPortionsString = new StringBuilder();
-                        weightPortionsString.append("* ");
-                        weightPortionsString.append(number);
-                        weightPortionsString.append(" porcji o wadze ");
-                        weightPortionsString.append(weight);
-                        weightPortionsString.append("g\n");
+            });
 
-                        list.add(new Chunk( weightPortionsString.toString() ,recipeHeaderFont));
-                        list.add(Chunk.NEWLINE);
-                    });
-        });
+
 
         this.report.setPdfData(list);
-
     }
 
     @Override
