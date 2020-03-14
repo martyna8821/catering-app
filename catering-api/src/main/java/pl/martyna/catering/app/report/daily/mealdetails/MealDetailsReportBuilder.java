@@ -54,7 +54,7 @@ public class MealDetailsReportBuilder
 
     @Override
     public void buildMetaData() {
-        this.report.setTitle("Dane posiłków z dnia: " + this.report.getReportDataDate());
+        this.report.setTitle("Dane posiłków z dnia: " + this.reportDataDate);
         this.report.setCreationDate(LocalDate.now());
     }
 
@@ -95,7 +95,9 @@ public class MealDetailsReportBuilder
                 Paragraph boxDescription = new Paragraph(boxDescriptionString)
                                             .setFont(arialFont)
                                             .setFontSize(12);
-                boxDescription.setBorder(new SolidBorder(1));
+                boxDescription.setBorder(new SolidBorder(1)).setPaddingLeft(5);
+                boxDescription.setKeepTogether(true);
+
                 pdfElements.add(boxDescription);
                 pdfElements.add(new LineSeparator(new DottedLine(1, 2)).setMarginTop(-4));
             }
@@ -121,7 +123,7 @@ public class MealDetailsReportBuilder
         boxDescriptionStringBuilder.append("data dostarczenia: ");
         boxDescriptionStringBuilder.append(this.reportDataDate);
         boxDescriptionStringBuilder.append("\n");
-        boxDescriptionStringBuilder.append(boxData.getMealName());
+        boxDescriptionStringBuilder.append(boxData.getMealType());
         boxDescriptionStringBuilder.append(": ");
         boxDescriptionStringBuilder.append(boxData.getMealName());
         boxDescriptionStringBuilder.append(" ");
@@ -129,7 +131,7 @@ public class MealDetailsReportBuilder
         boxDescriptionStringBuilder.append("kcal \n");
         boxDescriptionStringBuilder.append("waga posiłku: ");
         boxDescriptionStringBuilder.append(boxData.getMealWeight());
-        boxDescriptionStringBuilder.append("g \n\n");
+        boxDescriptionStringBuilder.append("g \n");
 
         return boxDescriptionStringBuilder.toString();
     }
