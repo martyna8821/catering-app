@@ -1,8 +1,7 @@
 package pl.martyna.catering.app.report;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.interfaces.IAccessibleElement;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.IElement;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +17,5 @@ public class Report {
     private LocalDate creationDate;
     private String title;
     private Map<?,?> reportData;
-    private List<Element> pdfElements = new ArrayList<>();
+    private List<IBlockElement> pdfElements = new ArrayList<>();
 }

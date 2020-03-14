@@ -1,11 +1,10 @@
 package pl.martyna.catering.app.report.daily.kitchenreport;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Paragraph;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.martyna.catering.app.dto.resource.RecipeIngredientResource;
@@ -21,6 +20,7 @@ import pl.martyna.catering.app.report.daily.kitchenreport.utils.MealCookingData;
 import pl.martyna.catering.app.service.menu.IMenuService;
 import pl.martyna.catering.app.service.order.IOrderService;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -98,13 +98,11 @@ public class KitchenReportBuilder
     @Override
     public void buildPdfElements() {
 
-        List<Element> pdfElements = new ArrayList();
-        Font titleFont = new Font(arialBoldFont, 20);
-        Font recipeBoldHeaderFont = new Font(arialBoldFont, 15);
-        Font recipeHeaderFont = new Font(arialFont, 15);
-        Font recipeFont = new Font(arialFont, 12);
+        List<IBlockElement> pdfElements = new ArrayList();
 
-        pdfElements.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n", titleFont));
+        pdfElements.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n")
+                            .setFont(arialBoldFont)
+                            .setFontSize(15));
 
         this.report.getReportData().values()
             .stream()
@@ -117,19 +115,24 @@ public class KitchenReportBuilder
                 recipeHeaderString.append(" ILOŚĆ: ");
                 recipeHeaderString.append(cookingData.getWeight());
                 recipeHeaderString.append("g\n");
-                pdfElements.add(new Paragraph(recipeHeaderString.toString(), recipeBoldHeaderFont));
+                pdfElements.add(new Paragraph(recipeHeaderString.toString())
+                                    .setFont(arialBoldFont)
+                                    .setFontSize(12));
 
                 pdfElements.add(new Paragraph(
-                            this.getPortionsWeightHeaderString(cookingData),
-                            recipeHeaderFont));
+                            this.getPortionsWeightHeaderString(cookingData))
+                                .setFont(arialFont)
+                                .setFontSize(12));
 
                 pdfElements.add(new Paragraph(
-                            this.getRecipeIngredientsString(cookingData.getKitchenReportRecipe()),
-                            recipeFont));
+                            this.getRecipeIngredientsString(cookingData.getKitchenReportRecipe()))
+                                .setFont(arialFont)
+                                .setFontSize(11));
 
                 pdfElements.add(new Paragraph(
-                            this.getRecipeStepsString(cookingData.getKitchenReportRecipe()),
-                            recipeFont));
+                            this.getRecipeStepsString(cookingData.getKitchenReportRecipe()))
+                                .setFont(arialFont)
+                                .setFontSize(11));
             });
 
         this.report.setPdfElements(pdfElements);

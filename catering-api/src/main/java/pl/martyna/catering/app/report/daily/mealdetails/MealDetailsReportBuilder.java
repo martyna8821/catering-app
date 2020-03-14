@@ -1,28 +1,23 @@
 package pl.martyna.catering.app.report.daily.mealdetails;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
-import com.itextpdf.text.pdf.draw.LineSeparator;
-import org.modelmapper.ModelMapper;
+import com.itextpdf.kernel.pdf.canvas.draw.DottedLine;
+import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.LineSeparator;
+import com.itextpdf.layout.element.Paragraph;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.martyna.catering.app.entity.menu.Menu;
-import pl.martyna.catering.app.entity.recipe.Recipe;
 import pl.martyna.catering.app.report.Report;
 import pl.martyna.catering.app.report.daily.DailyReport;
 import pl.martyna.catering.app.report.daily.DailyReportBuilder;
 import pl.martyna.catering.app.report.daily.IDailyReportBuilder;
-import pl.martyna.catering.app.report.daily.kitchenreport.utils.MealCookingData;
 import pl.martyna.catering.app.report.daily.mealdetails.utils.BoxDescriptionsData;
 import pl.martyna.catering.app.service.menu.IMenuService;
 import pl.martyna.catering.app.service.order.IOrderService;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -84,12 +79,11 @@ public class MealDetailsReportBuilder
 
     @Override
     public void buildPdfElements() {
-        List<Element> pdfElements = new ArrayList();
-        Font titleFont = new Font(arialBoldFont, 20);
-        Font dataFont = new Font(arialFont, 12);
-        Font dataBoldFont = new Font(arialBoldFont, 12);
+        List<IBlockElement> pdfElements = new ArrayList();
 
-        pdfElements.add(new Paragraph(this.report.getTitle()+"\n\n", titleFont));
+        pdfElements.add(new Paragraph(this.report.getTitle()+"\n\n")
+                        .setFont(arialBoldFont)
+                        .setFontSize(15));
 
         for (Map.Entry<?, ?> entry : this.report.getReportData()
                 .entrySet()) {
@@ -98,10 +92,12 @@ public class MealDetailsReportBuilder
             String boxDescriptionString = this.getBoxDescriptionString(boxDescriptionsDataIntegerEntry.getKey());
             for (int i = 0; i < boxDescriptionsDataIntegerEntry.getValue(); i++) {
 
-                //Paragraph boxDescription = new Paragraph(boxDescriptionString, dataFont);
-                //boxDescription.setBorder(new SolidBorder(1));
-                //pdfElements.add();
-                pdfElements.add(new DottedLineSeparator());
+                Paragraph boxDescription = new Paragraph(boxDescriptionString)
+                                            .setFont(arialFont)
+                                            .setFontSize(12);
+                boxDescription.setBorder(new SolidBorder(1));
+                pdfElements.add(boxDescription);
+                pdfElements.add(new LineSeparator(new DottedLine(1, 2)).setMarginTop(-4));
             }
 
             pdfElements.add(new Paragraph("\n"));

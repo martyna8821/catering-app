@@ -1,6 +1,7 @@
 package pl.martyna.catering.app.report.daily;
 
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.kernel.font.PdfFont;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,8 +17,8 @@ public class DailyReportBuilder {
     protected DailyReport report;
     protected LocalDate reportDataDate;
     protected ModelMapper modelMapper;
-    protected BaseFont arialFont;
-    protected BaseFont arialBoldFont;
+    protected PdfFont arialFont;
+    protected PdfFont arialBoldFont;
 
   //region Injection
     @Autowired
@@ -27,13 +28,13 @@ public class DailyReportBuilder {
 
     @Autowired
     @Qualifier("arial")
-    public void setArialFont(BaseFont arialFont){
+    public void setArialFont(PdfFont arialFont){
         this.arialFont = arialFont;
     }
 
     @Autowired
     @Qualifier("arial-bold")
-    public void setArialBoldFont(BaseFont arialBoldFont){
+    public void setArialBoldFont(PdfFont arialBoldFont){
         this.arialBoldFont = arialBoldFont;
     }
   //endregion

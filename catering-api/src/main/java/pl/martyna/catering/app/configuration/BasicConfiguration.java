@@ -1,13 +1,16 @@
 package pl.martyna.catering.app.configuration;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -32,20 +35,22 @@ public class BasicConfiguration {
     }
 
     @Bean("arial")
-    public BaseFont getBaseArialFontWithPolishLetters() throws IOException, DocumentException {
+    @Scope("prototype")
+    public PdfFont getBaseArialFontWithPolishLetters() throws IOException {
 
-       return BaseFont.createFont(
-               "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial.ttf",
-                      BaseFont.CP1250,
-                      BaseFont.EMBEDDED);
+       FontProgram arialFont = FontProgramFactory.createFont(
+               "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial.ttf");
+        return PdfFontFactory.createFont(arialFont,"CP1250" ,true);
     }
 
     @Bean("arial-bold")
-    public BaseFont getBaseArialBoldFontWithPolishLetters() throws IOException, DocumentException {
 
-        return BaseFont.createFont(
-                "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial-bold.ttf",
-                       BaseFont.CP1250,
-                       BaseFont.EMBEDDED);
+    @Scope("prototype")
+    public PdfFont getBaseArialBoldFontWithPolishLetters() throws IOException {
+
+        FontProgram arialBoldFont = FontProgramFactory.createFont(
+                "/home/martyna/git/api-catering/catering-app/catering-api/src/main/resources/arial-bold.ttf");
+
+        return PdfFontFactory.createFont(arialBoldFont,"CP1250" ,true);
     }
 }
