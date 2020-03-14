@@ -46,4 +46,8 @@ public class MenuEntry implements Serializable {
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Recipe recipe;
 
+    @ManyToOne
+    @JoinColumn(name="menu_id")
+    private Menu menu;
+
 }

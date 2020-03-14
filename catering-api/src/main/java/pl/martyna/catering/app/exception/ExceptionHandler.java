@@ -1,6 +1,5 @@
 package pl.martyna.catering.app.exception;
 
-import com.itextpdf.text.DocumentException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +23,9 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = {
-            DocumentException.class,
             IOException.class
     })
-     private ResponseEntity<Object> handleDocumentException(Exception ex, WebRequest request) {
+     private ResponseEntity<Object> handleIOExceptionException(Exception ex, WebRequest request) {
 
         return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);

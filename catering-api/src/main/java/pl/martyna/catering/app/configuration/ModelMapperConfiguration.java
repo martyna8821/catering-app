@@ -18,6 +18,7 @@ import pl.martyna.catering.app.entity.menu.Menu;
 import pl.martyna.catering.app.entity.order.Order;
 import pl.martyna.catering.app.entity.recipe.Recipe;
 import pl.martyna.catering.app.entity.recipe.RecipeIngredient;
+import pl.martyna.catering.app.report.daily.mealdetails.utils.BoxDescriptionsData;
 import pl.martyna.catering.app.repository.auth.IRoleRepository;
 import pl.martyna.catering.app.repository.ingredient.IMeasurementUnitRepository;
 import pl.martyna.catering.app.repository.recipe.IMealTypeRepository;
@@ -111,6 +112,14 @@ public class ModelMapperConfiguration {
         modelMapper.createTypeMap(IngredientInput.class, Ingredient.class)
                 .addMapping(IngredientInput::getAllergens, Ingredient::setAllergens)
                 .addMapping(IngredientInput::getBrands, Ingredient::setBrands);
+
+        modelMapper.createTypeMap(MenuEntry.class, BoxDescriptionsData.class)
+                .addMapping(MenuEntry::getCaloricValue, BoxDescriptionsData::setMealCaloricValue)
+                .addMapping(src -> src.getMealType().getName(), BoxDescriptionsData::setMealType)
+                .addMapping(src -> src.getRecipe().getName(), BoxDescriptionsData::setMealName)
+                .addMapping(MenuEntry::getAmount, BoxDescriptionsData::setMealWeight)
+                .addMapping(src -> src.getMenu().getCaloricVersion(), BoxDescriptionsData::setDietCaloricVersion)
+                .addMapping(src -> src.getMenu().getDiet().getName(), BoxDescriptionsData::setDietName);
 
         return modelMapper;
     }
