@@ -55,7 +55,7 @@ public class KitchenReportBuilder
     @Override
     public void setReportDataDate(LocalDate reportDataDate){
 
-        this.reportDataDate = reportDataDate;
+        this.report.setReportDataDate(reportDataDate);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class KitchenReportBuilder
     @Override
     public void buildReportData() {
 
-        List<Menu> createdMenus = this.menuService.getMenusFromDay(this.reportDataDate);
+        List<Menu> createdMenus = this.menuService.getMenusFromDay(this.report.getReportDataDate());
         Map<Recipe, MealCookingData> recipesCookingData = new HashMap<>();
 
         createdMenus.forEach( menu -> {
@@ -100,7 +100,7 @@ public class KitchenReportBuilder
 
         List<IBlockElement> pdfElements = new ArrayList();
 
-        pdfElements.add(new Paragraph("Raport dla kuchni : " + this.reportDataDate+"\n\n")
+        pdfElements.add(new Paragraph("Raport dla kuchni : " + this.report.getReportDataDate()+"\n\n")
                             .setFont(arialBoldFont)
                             .setFontSize(15));
 

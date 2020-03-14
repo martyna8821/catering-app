@@ -15,7 +15,6 @@ import java.time.LocalDate;
 public class DailyReportBuilder {
 
     protected DailyReport report;
-    protected LocalDate reportDataDate;
     protected ModelMapper modelMapper;
     protected PdfFont arialFont;
     protected PdfFont arialBoldFont;

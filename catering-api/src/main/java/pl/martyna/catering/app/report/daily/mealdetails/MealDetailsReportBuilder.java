@@ -49,18 +49,18 @@ public class MealDetailsReportBuilder
 
     @Override
     public void setReportDataDate(LocalDate reportDataDate) {
-        this.reportDataDate = reportDataDate;
+        this.report.setReportDataDate(reportDataDate);
     }
 
     @Override
     public void buildMetaData() {
-        this.report.setTitle("Dane posiłków z dnia: " + this.reportDataDate);
+        this.report.setTitle("Dane posiłków z dnia: " + this.report.getReportDataDate());
         this.report.setCreationDate(LocalDate.now());
     }
 
     @Override
     public void buildReportData() {
-        List<Menu> createdMenus = this.menuService.getMenusFromDay(this.reportDataDate);
+        List<Menu> createdMenus = this.menuService.getMenusFromDay(this.report.getReportDataDate());
         Map<BoxDescriptionsData, Integer> boxDescriptionsDataMap = new HashMap<>();
 
         createdMenus.forEach( menu -> {
@@ -121,14 +121,14 @@ public class MealDetailsReportBuilder
         boxDescriptionStringBuilder.append(boxData.getDietCaloricVersion());
         boxDescriptionStringBuilder.append("kcal \n");
         boxDescriptionStringBuilder.append("data dostarczenia: ");
-        boxDescriptionStringBuilder.append(this.reportDataDate);
+        boxDescriptionStringBuilder.append(this.report.getReportDataDate());
         boxDescriptionStringBuilder.append("\n");
         boxDescriptionStringBuilder.append(boxData.getMealType());
         boxDescriptionStringBuilder.append(": ");
         boxDescriptionStringBuilder.append(boxData.getMealName());
         boxDescriptionStringBuilder.append(" ");
         boxDescriptionStringBuilder.append(boxData.getMealCaloricValue());
-        boxDescriptionStringBuilder.append("kcal \n");
+        boxDescriptionStringBuilder.append(" kcal \n");
         boxDescriptionStringBuilder.append("waga posiłku: ");
         boxDescriptionStringBuilder.append(boxData.getMealWeight());
         boxDescriptionStringBuilder.append("g \n");

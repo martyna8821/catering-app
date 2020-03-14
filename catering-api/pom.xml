@@ -116,13 +116,11 @@
             <artifactId>kernel</artifactId>
             <version>7.1.10</version>
         </dependency>
-        <!-- always needed -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>io</artifactId>
             <version>7.1.10</version>
         </dependency>
-        <!-- always needed -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>layout</artifactId>
