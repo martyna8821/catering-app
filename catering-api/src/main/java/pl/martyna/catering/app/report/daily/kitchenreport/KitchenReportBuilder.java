@@ -14,6 +14,7 @@ import pl.martyna.catering.app.entity.menu.Menu;
 import pl.martyna.catering.app.entity.recipe.Recipe;
 import pl.martyna.catering.app.report.Report;
 import pl.martyna.catering.app.report.daily.DailyReport;
+import pl.martyna.catering.app.report.daily.DailyReportBuilder;
 import pl.martyna.catering.app.report.daily.IDailyReportBuilder;
 import pl.martyna.catering.app.report.daily.kitchenreport.utils.KitchenReportRecipe;
 import pl.martyna.catering.app.report.daily.kitchenreport.utils.MealCookingData;
@@ -27,15 +28,12 @@ import java.util.stream.Collectors;
 
 @Component
 @Scope("prototype")
-public class KitchenReportBuilder implements IDailyReportBuilder {
+public class KitchenReportBuilder
+                    extends DailyReportBuilder
+                    implements IDailyReportBuilder {
 
-    private DailyReport report;
-    private LocalDate reportDataDate;
     private IMenuService menuService;
     private IOrderService orderService;
-    private ModelMapper modelMapper;
-    private BaseFont arialFont;
-    private BaseFont arialBoldFont;
 
   //region Injection
     @Autowired
@@ -47,24 +45,6 @@ public class KitchenReportBuilder implements IDailyReportBuilder {
     public void setOrderService(IOrderService orderService){
         this.orderService = orderService;
     }
-
-    @Autowired
-    public void setModelMapper(ModelMapper modelMapper){
-        this.modelMapper = modelMapper;
-    }
-
-    @Autowired
-    @Qualifier("arial")
-    public void setArialFont(BaseFont arialFont){
-        this.arialFont = arialFont;
-    }
-
-    @Autowired
-    @Qualifier("arial-bold")
-    public void setArialBoldFont(BaseFont arialBoldFont){
-        this.arialBoldFont = arialBoldFont;
-    }
-
   //endregion
 
     private KitchenReportBuilder(){

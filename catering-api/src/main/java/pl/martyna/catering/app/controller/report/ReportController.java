@@ -29,7 +29,7 @@ public class ReportController {
     }
   //endregion
 
-    @GetMapping(value = "/kitchen-report/{dataDate}",
+    @GetMapping(value = "/kitchen/{dataDate}",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void getKitchenDailyReport(HttpServletResponse response,
                                       @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate dataDate)
@@ -52,5 +52,27 @@ public class ReportController {
         document.close();
     }
 
+    @GetMapping(value = "/box-descriptions/{dataDate}",
+                produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void getBoxDescriptionsDailyReport(HttpServletResponse response,
+                                      @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate dataDate)
+            throws DocumentException, IOException {
+
+        Report generatedReport = this.reportService.getBoxDescriptionsReport(dataDate);
+        Document document = new Document();
+        response.setContentType("application/pdf");
+        PdfWriter.getInstance(document, response.getOutputStream());
+
+        document.open();
+        generatedReport.getPdfElements()
+                .forEach( element -> {
+                    try {
+                        document.add(element);
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
+                });
+        document.close();
+    }
 }
 

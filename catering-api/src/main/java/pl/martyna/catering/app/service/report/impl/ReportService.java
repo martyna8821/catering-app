@@ -9,6 +9,7 @@ import pl.martyna.catering.app.report.daily.kitchenreport.KitchenReportBuilder;
 import pl.martyna.catering.app.report.Report;
 import pl.martyna.catering.app.report.ReportDirector;
 import pl.martyna.catering.app.report.daily.IDailyReportBuilder;
+import pl.martyna.catering.app.report.daily.mealdetails.MealDetailsReportBuilder;
 import pl.martyna.catering.app.service.report.IReportService;
 
 import java.io.FileOutputStream;
@@ -26,7 +27,7 @@ public class ReportService implements IReportService {
     public ReportService(ApplicationContext context) {
         this.context = context;
     }
-    //endregion
+  //endregion
 
     @Override
     public Report getKitchenReport(LocalDate dataDate) {
@@ -37,5 +38,15 @@ public class ReportService implements IReportService {
         director.constructReport(kitchenReportBuilder);
 
         return kitchenReportBuilder.getResult();
+    }
+
+    @Override
+    public Report getBoxDescriptionsReport(LocalDate dataDate) {
+        ReportDirector director = new ReportDirector();
+        IDailyReportBuilder mealDetailsReportBuilder = context.getBean(MealDetailsReportBuilder.class);
+        mealDetailsReportBuilder.setReportDataDate(dataDate);
+        director.constructReport(mealDetailsReportBuilder);
+
+        return mealDetailsReportBuilder.getResult();
     }
 }

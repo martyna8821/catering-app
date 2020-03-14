@@ -8,4 +8,5 @@ import java.time.LocalDate;
 public interface IReportService {
 
     Report getKitchenReport(LocalDate dataDate);
+    Report getBoxDescriptionsReport(LocalDate dataDate);
 }
