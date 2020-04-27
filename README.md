@@ -1,6 +1,6 @@
 # Catering app REST API
 
-Backend aplication of a system supporting catering company work. Allows to create menus for diets, place orders, generate reports, administrate users and available recipes. Client application can be found in following [repository](https://github.com/martyna8821/catering-client)
+Backend application of a system supporting catering company work. Allows to create menus for diets, place orders, generate reports, administrate users and available recipes. Client application can be found in following [repository](https://github.com/martyna8821/catering-client)
 
 
 ## Documentation
