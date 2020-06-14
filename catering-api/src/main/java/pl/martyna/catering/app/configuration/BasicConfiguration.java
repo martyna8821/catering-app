@@ -1,10 +1,13 @@
 package pl.martyna.catering.app.configuration;
 
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import org.apache.coyote.http2.Http2Protocol;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.*;
@@ -24,6 +27,9 @@ import java.io.IOException;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class BasicConfiguration {
+
+    @Value( "${blobservice.connection.string}" )
+    private String blobConnectionString;
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -66,5 +72,11 @@ public class BasicConfiguration {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
                 .build();
+    }
+
+    @Bean
+    public BlobServiceClient getBlobServiceClient(){
+        return new BlobServiceClientBuilder().connectionString(blobConnectionString).buildClient();
+
     }
 }
